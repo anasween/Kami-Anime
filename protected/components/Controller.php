@@ -309,6 +309,10 @@ class Controller extends CController
                             'label' => Yum::t('Sent messages'), 
                             'url' => array('/message/message/sent')
                         ),
+                        array(
+                            'label' => Yum::t('Write a message'), 
+                            'url' => array('/message/message/compose')
+                        ),
                     ),
                 ),
                 array(
