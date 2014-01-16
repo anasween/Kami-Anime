@@ -1,0 +1,113 @@
+/* 
+    Created on : 14.12.2013, 19:20:54
+    Author     : beer
+*/
+footer {
+  text-align: center;
+}
+.pagination {
+  text-align: center;
+  margin: 0;
+}
+.post {
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -khtml-border-radius: 10px;
+}
+.post h1 {
+  text-align: center;
+}
+.post h1 .btn-group {
+  float: right;
+}
+.post .post_description {
+  text-align: center;
+  vertical-align: middle;
+  padding-left: 0;
+  background-color: #c2c2c2;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -khtml-border-radius: 10px;
+}
+.post .post_description div {
+  margin-top: 10px;
+}
+.post .btn {
+  margin: 10px;
+}
+.post .post_body {
+  padding-left: 10px;
+}
+.list-view {
+  padding: 0 !important;
+}
+.view_user {
+  padding: 5px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -khtml-border-radius: 10px;
+}
+.view_user.online {
+  background-color: #4C834C;
+}
+.view_user img {
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  width: 50px;
+}
+.view_user .avatar {
+  margin: 0;
+}
+.view_user p {
+  margin: 0;
+  font-weight: bold;
+}
+.view {
+  margin-bottom: 10px;
+}
+.sort-link .caret {
+  display: none;
+}
+.sort-link.asc .caret {
+  border-bottom: 4px solid;
+  display: inline-block;
+  border-top: 0;
+}
+.sort-link.desc .caret {
+  display: inline-block;
+}
+.grid-view-loading:before {
+  content: url('../images/loading.gif');
+}
+.list-view-loading:before {
+  content: url('../images/loading.gif');
+}
+.sorter ul {
+  display: inline-block;
+  width: 100%;
+}
+.sorter ul li {
+  float: right;
+  display: inline;
+  margin-left: 5px;
+}
+.sorter ul li a .caret {
+  display: none;
+}
+.sorter ul li a.asc .caret {
+  border-bottom: 4px solid;
+  display: inline-block;
+  border-top: 0;
+}
+.sorter ul li a.desc .caret {
+  display: inline-block;
+}

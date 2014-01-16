@@ -1,0 +1,195 @@
+/* 
+    Created on : 14.12.2013, 19:20:54
+    Author     : beer
+*/
+
+@post-bg-color: #f5f5f5;
+
+.border_radius(@radius)
+{
+    border-radius: @radius; 
+    -webkit-border-radius: @radius; 
+    -moz-border-radius: @radius; 
+    -khtml-border-radius: @radius;
+}
+
+.container
+{
+    //margin-top: 45px;
+}
+
+footer
+{
+    text-align: center;
+}
+
+.pagination
+{
+    text-align: center;
+    margin: 0;
+}
+
+.post
+{
+    margin-bottom: 20px;
+    background-color: @post-bg-color;
+    .border_radius(10px);
+    
+    h1
+    {
+        text-align: center;
+        
+        .btn-group
+        {
+            float: right;
+        }
+    }
+    
+    .post_description
+    {
+        text-align: center;
+        vertical-align: middle;
+        padding-left: 0;
+        background-color: darken(@post-bg-color, 20%);
+        .border_radius(10px);
+        
+        div
+        {
+            margin-top: 10px;
+        }
+    }
+    
+    .btn
+    {
+        margin: 10px;
+    }
+    
+    .post_body
+    {
+        padding-left: 10px;
+    }
+}
+
+.list-view
+{
+    padding: 0 !important;
+}
+
+.view_user
+{
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    .border_radius(10px);
+    
+    &.online
+    {
+        background-color: #4C834C;
+    }
+    
+    img
+    {
+        .border_radius(10px);
+        width: 50px;
+    }
+    
+    .avatar
+    {
+        margin: 0;
+    }
+    
+    p
+    {
+        margin: 0;
+        font-weight: bold;
+    }
+}
+
+.view
+{
+    margin-bottom: 10px;
+}
+
+.sort-link
+{
+    .caret
+    {
+        display: none;
+    }
+    
+    &.asc
+    {
+        .caret
+        {
+            border-bottom: 4px solid;
+            display: inline-block;
+            border-top: 0;
+        }
+    }
+    
+    &.desc
+    {
+        .caret
+        {
+            display: inline-block;
+        }
+    }
+}
+
+.grid-view-loading
+{
+    &:before
+    {
+        content: url('../images/loading.gif');
+    }
+}
+
+.list-view-loading
+{
+    &:before
+    {
+        content: url('../images/loading.gif');
+    }
+}
+
+.sorter
+{
+    ul
+    {
+        display: inline-block;
+        width: 100%;
+        
+        li
+        {
+            float: right;
+            display: inline;
+            margin-left: 5px;
+            
+            a
+            {
+                .caret
+                {
+                    display: none;
+                }
+
+                &.asc
+                {
+                    .caret
+                    {
+                        border-bottom: 4px solid;
+                        display: inline-block;
+                        border-top: 0;
+                    }
+                }
+
+                &.desc
+                {
+                    .caret
+                    {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+}
