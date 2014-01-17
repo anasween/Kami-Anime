@@ -226,11 +226,11 @@ class YumUser extends YumActiveRecord
           'Username length needs to be between {minLen} and {maxlen} characters', array(
             '{minLen}' => $usernameRequirements['minLen'],
             '{maxLen}' => $usernameRequirements['maxLen'])));
-//      $rules[] = array(
-//        'username',
-//        'match',
-//        'pattern' => $usernameRequirements['match'],
-//        'message' => Yum::t($usernameRequirements['dontMatchMessage']));
+      $rules[] = array(
+        'username',
+        'match',
+        'pattern' => $usernameRequirements['match'],
+        'message' => Yum::t($usernameRequirements['dontMatchMessage']));
     }
 
     $rules[] = array('username', 'unique',
