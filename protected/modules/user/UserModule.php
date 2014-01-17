@@ -47,8 +47,8 @@ class UserModule extends CWebModule {
     public $offlineIndicationTime = 300; // 5 Minutes
 
     // set to false to enable case insensitive users.
-// for example, demo and Demo would be the same user then
-    public $caseSensitiveUsers = true;
+    // for example, demo and Demo would be the same user then
+    public $caseSensitiveUsers = false;
 
     // set this to true if you do want to access data through a REST api. 
     // Disabled by default for security reasons.
