@@ -96,6 +96,14 @@ class News extends CActiveRecord
                 ),
             ));
 	}
+        
+        public function getCommentsDataProvider() 
+        {
+            $criteria = new CDbCriteria;
+            $criteria->compare('news_id', $this->id);
+
+            return new CActiveDataProvider('Comments', array('criteria' => $criteria));
+        }
 
 	/**
 	 * Returns the static model of the specified AR class.

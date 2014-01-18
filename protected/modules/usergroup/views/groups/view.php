@@ -16,8 +16,7 @@ if($model->owner)
 {
     printf('%s: %s',
         Yum::t('Owner'),
-        CHtml::link($model->owner->username, array(
-                '//profile/profile/view', 'id' => $model->owner_id)));
+    BSHtml::link($model->owner->username, array('//profile/profile/view', 'id' => $model->owner_id)));
 }
 
 printf('<h3> %s </h3>', Yum::t('Participants'));

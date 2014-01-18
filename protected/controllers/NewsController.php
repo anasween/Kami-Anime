@@ -44,9 +44,10 @@ class NewsController extends Controller
      */
     public function actionView($id)
     {
+        $newsModel = $this->loadModel($id);
         $this->render('view',array(
-            'model'=>$this->loadModel($id),
-            'comments'=>$this->loadComments($id),
+            'model'=> $newsModel,
+            'comments'=> $newsModel->getCommentsDataProvider(),
         ));
     }
 
@@ -160,12 +161,6 @@ class NewsController extends Controller
         $model=News::model()->findByPk($id);
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
-        return $model;
-    }
-    
-    public function loadComments($id)
-    {
-        $model=  Comments::model()->findAllByAttributes(array('news_id'=>$id));
         return $model;
     }
 

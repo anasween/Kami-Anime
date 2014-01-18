@@ -42,6 +42,16 @@ footer {
 .post .post_body {
   padding-left: 10px;
 }
+.comment h3 {
+  text-align: center;
+  margin: 0;
+}
+.comment .avatar {
+  text-align: center;
+}
+.comment .avatar img {
+  width: 90% !important;
+}
 .list-view {
   padding: 0 !important;
 }

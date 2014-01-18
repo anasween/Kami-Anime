@@ -10,10 +10,11 @@ $this->breadcrumbs = array(
     <div class="col-md-12">
         <?php
             $this->renderPartial('_shortView', array('model'=>$model));
-            foreach ($comments as $comment)
-            {
-                $this->renderPartial('//comments/_view', array('model'=>$comment));
-            }
+            $this->widget('bootstrap.widgets.BsListView', array(
+                'dataProvider'=>$comments,
+                'itemView'=>'_comment', 
+                'template'=>"{items}\n{pager}"
+            )); 
         ?>
     </div>
 </div>

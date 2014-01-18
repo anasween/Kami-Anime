@@ -1,6 +1,6 @@
 <div class="form">
 
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+<?php $form=$this->beginWidget('bootstrap.widgets.BsActiveForm', array(
 	'id'=>'comment-form',
 	'enableAjaxValidation'=>true,
 	'htmlOptions' => array(
@@ -31,17 +31,11 @@
             'rows' => 20,
         ),
     ));
+    echo BSHtml::submitButton($model->isNewRecord ? Yum::t('Create') : Yum::t('Save'), array(
+        'color' => BSHtml::BUTTON_COLOR_PRIMARY,
+        'icon' => BSHtml::GLYPHICON_THUMBS_UP,
+    ));
 ?>
-<div></div>
-<?php $this->widget(
-        'bootstrap.widgets.TbButton',
-        array(
-            'buttonType' => 'submit', 
-            'label' => $model->isNewRecord ? Yum::t('Create') : Yum::t('Save'),
-            'type' => 'primary',
-            'icon' => 'thumbs-up',
-        )
-);?>
 
 <?php $this->endWidget(); ?>
 
