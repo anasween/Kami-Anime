@@ -193,36 +193,38 @@ class YumMessage extends YumActiveRecord
 			return Yum::t('new');
 	}
 
-	public function unread($id = false) 
+	public static function unread($id = false) 
 	{
-		if(!$id)
-			$id = Yii::app()->user->id;
+            if(!$id)
+            {
+                $id = Yii::app()->user->id;
+            }
 
-		$this->getDbCriteria()->mergeWith(array(
-					'condition' => "to_user_id = {$id} and message_read = 0"
-				));
-		return $this;
+            $sql = 'select count(*) from '.Yum::module('message')->messageTable.' where to_user_id = '.$id.' and message_read = 0';
+            $result = Yii::app()->db->createCommand($sql)->queryAll();
+            return $result[0]['count(*)'];
 	}
 
 	// Always show the newest message at the top
-/*  public function defaultScope()
+        /*  public function defaultScope()
 	{
 		return array(
-				'order'=>'timestamp DESC'
-				);
+                        'order'=>'timestamp DESC'
+                        );
 	} */
+        
 	public function scopes() {
 		$id = Yii::app()->user->id;
 		return array(
-				'all' => array(
-					'condition' => "to_user_id = {$id} or from_user_id = {$id}"), 
-				'read' => array(
-					'condition' => "to_user_id = {$id} and message_read = 1"),
-				'sent' => array(
-					'condition' => "from_user_id = {$id}"),
-				'answered' => array(
-					'condition' => "to_user_id = {$id} and answered > 0"),
-				);
+                        'all' => array(
+                                'condition' => "to_user_id = {$id} or from_user_id = {$id}"), 
+                        'read' => array(
+                                'condition' => "to_user_id = {$id} and message_read = 1"),
+                        'sent' => array(
+                                'condition' => "from_user_id = {$id}"),
+                        'answered' => array(
+                                'condition' => "to_user_id = {$id} and answered > 0"),
+                    );
 	}
 
 	public function limit($limit=10)

@@ -42,6 +42,7 @@ class Controller extends CController
         
         private function getAdminMenuItems()
         {
+            $unreadMessages = (YumMessage::unread() > 0) ? ' [' . YumMessage::unread() . ']' : '';
             return array(
                 array(
                     'label' => Yum::t('Administration'),
@@ -53,7 +54,8 @@ class Controller extends CController
                         ),
                         array(
                             'label' => Yum::t('User Administration'), 
-                            'url' => array('//user/user/admin')
+                            'url' => array('//user/user/admin'),
+                            'visible' => Yum::hasModule('user')
                         ),
                         array(
                             'label' => Yum::t('Avatar administration'), 
@@ -110,7 +112,8 @@ class Controller extends CController
                     'items' => array(
                         array(
                             'label' => Yum::t('Create new User'), 
-                            'url' => array('//user/user/create')
+                            'url' => array('//user/user/create'),
+                            'visible' => Yum::hasModule('user')
                         ),
                         array(
                             'label' => Yum::t('Generate Demo Data'), 
@@ -119,19 +122,23 @@ class Controller extends CController
                         ),
                         array(
                             'label' => Yum::t('Create new role'), 
-                            'url' => array('//role/role/create')
+                            'url' => array('//role/role/create'),
+                            'visible' => Yum::hasModule('role')
                         ),
                         array(
                             'label' => Yum::t('Grant permission'),
-                            'url' => array('//role/permission/create')
+                            'url' => array('//role/permission/create'),
+                            'visible' => Yum::hasModule('role')
                         ),
                         array(
                             'label' => Yum::t('Create new action'), 
-                            'url' => array('//role/action/create')
+                            'url' => array('//role/action/create'),
+                            'visible' => Yum::hasModule('role')
                         ),
                         array(
                             'label' => Yum::t('Create new payment type'), 
-                            'url' => array('//membership/payment/create')
+                            'url' => array('//membership/payment/create'),
+                            'visible' => Yum::hasModule('membership')
                         ),
                         array(
                             'label' => Yum::t('Create new usergroup'), 
@@ -155,11 +162,13 @@ class Controller extends CController
                         ),
                         array(
                             'label' => Yum::t('My profile'), 
-                            'url' => array('//profile/profile/view')
+                            'url' => array('//profile/profile/view'),
+                            'visible' => Yum::hasModule('profile'),
                         ),
                         array(
                             'label' => Yum::t('Edit personal data'), 
-                            'url' => array('//profile/profile/update')
+                            'url' => array('//profile/profile/update'),
+                            'visible' => Yum::hasModule('profile'),
                         ),
                         array(
                             'label' => Yum::t('Upload avatar image'),
@@ -168,7 +177,8 @@ class Controller extends CController
                         ),
                         array(
                             'label' => Yum::t('Privacy settings'), 
-                            'url' => array('/profile/privacy/update')
+                            'url' => array('/profile/privacy/update'),
+                            'visible' => Yum::hasModule('profile'),
                         ),
                         array(
                             'label' => Yum::t('My friends'),
@@ -177,7 +187,8 @@ class Controller extends CController
                         ),
                         array(
                             'label' => Yum::t('Browse users'), 
-                            'url' => array('/user/user/browse')
+                            'url' => array('/user/user/browse'),
+                            'visible' => Yum::hasModule('user'),
                         ),
                         array(
                             'label' => Yum::t('My groups'), 
@@ -192,7 +203,7 @@ class Controller extends CController
                     )
                 ),
                 array(
-                    'label' => Yum::t('Messages'),
+                    'label' => Yum::t('Messages') . $unreadMessages,
                     'visible' => Yum::hasModule('message'),
                     'url' => array('#'),
                     'items' => array (
@@ -224,6 +235,7 @@ class Controller extends CController
         
         private function getUserMenuItems()
         {
+            $unreadMessages = (YumMessage::unread() > 0) ? ' [' . YumMessage::unread() . ']' : '';
             return array(
                 array(
                     'label' => Yum::t('Profile'), 
@@ -297,7 +309,7 @@ class Controller extends CController
                     )
                 ),
                 array(
-                    'label' => Yum::t('Messages'),
+                    'label' => Yum::t('Messages') . $unreadMessages,
                     'visible' => Yum::hasModule('message'),
                     'url' => array('#'),
                     'items' => array (
