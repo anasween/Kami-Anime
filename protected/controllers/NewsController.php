@@ -32,6 +32,10 @@ class NewsController extends Controller
                 'actions'=>array('admin'),
                 'expression' => 'Yii::app()->user->can("news", "admin")'
             ),
+            array('allow',
+                'actions'=>array('delete'),
+                'expression' => 'Yii::app()->user->can("news", "delete")'
+            ),
             array('deny',  // deny all other users
                 'users'=>array('*'),
             ),

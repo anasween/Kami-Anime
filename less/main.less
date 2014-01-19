@@ -72,10 +72,24 @@ footer
 
 .comment
 {
-    h3
+    background-color: @post-bg-color;
+    .border_radius(10px);
+    
+    .btn-group
     {
-        text-align: center;
-        margin: 0;
+        float: right;
+    }
+    
+    .info
+    {
+        background-color: darken(@post-bg-color, 20%);
+        .border_radius(10px);
+        
+        h3
+        {
+            text-align: center;
+            margin: 0;
+        }
     }
     
     .avatar
