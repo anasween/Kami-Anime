@@ -92,18 +92,18 @@ class Controller extends CController
                     ),
                     array(
                         'label' => Yum::t('Text translations'), 
-                        'url' => array('//user/translation/admin')
-                         && Yii::app()->user->can("translation", "admin")
+                        'url' => array('//user/translation/admin'),
+                        'visible' => Yii::app()->user->can("translation", "admin")
                     ),
                     array(
                         'label' => Yum::t('Show profile visits'), 
-                        'url' => array('//profile/profile/visits')
-                         && Yii::app()->user->isAdmin()
+                        'url' => array('//profile/profile/visits'),
+                        'visible' => Yii::app()->user->isAdmin()
                     ),
                     array(
                         'label' => Yum::t('Statistics'), 
-                        'url'=>array('//user/statistics/index')
-                         && Yii::app()->user->isAdmin()
+                        'url'=>array('//user/statistics/index'),
+                        'visible' => Yii::app()->user->isAdmin()
                     ),
                     array(
                         'label' => Yum::t('Manage news'),
@@ -114,6 +114,11 @@ class Controller extends CController
                         'label' => Yum::t('Manage comments'),
                         'url' => array('/news/admin'),
                         'visible' => Yii::app()->user->can("comments", "admin")
+                    ),
+                    array(
+                        'label' => Yum::t('Manage zhanrs'),
+                        'url' => array('/zhanrs/admin'),
+                        'visible' => Yii::app()->user->can("zhanrs", "admin")
                     ),
                 )
             ),
@@ -172,6 +177,11 @@ class Controller extends CController
                         'label' => Yum::t('Create new comment'),
                         'url' => array('/news/create'),
                         'visible' => Yii::app()->user->can("comment", "create")
+                    ),
+                    array(
+                        'label' => Yum::t('create new zhanr'),
+                        'url' => array('/zhanrs/admin'),
+                        'visible' => Yii::app()->user->can("zhanrs", "admin")
                     ),
                 )
             ),

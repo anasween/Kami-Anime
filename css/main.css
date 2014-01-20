@@ -119,3 +119,7 @@ footer {
 .sorter ul li a.desc .caret {
   display: inline-block;
 }
+.moder-panel {
+  margin: 10px;
+  text-align: right;
+}

@@ -30,7 +30,7 @@
                                             'delete',
                                             'id'=>$model->id
                                         ),
-                                        'confirm'=>Yum::t('Are you sure to delete this item?'),
+                                        'confirm' => Yum::t('Are you sure to delete this item?'),
                                     ),
                                     'visible' => Yii::app()->user->can('news', 'delete'),
                                 ),
