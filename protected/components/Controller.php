@@ -25,6 +25,7 @@ class Controller extends CController
         {
             return array(
                 'accessControl',
+                'postOnly + delete'
             );
         }
         
@@ -104,6 +105,16 @@ class Controller extends CController
                             'label' => Yum::t('Statistics'), 
                             'url'=>array('//user/statistics/index')
                         ),
+                        array(
+                            'label' => Yum::t('Manage news'),
+                            'url' => array('/news/admin'),
+                            'visible' => Yii::app()->user->can("news", "admin")
+                        ),
+                        array(
+                            'label' => Yum::t('Manage comments'),
+                            'url' => array('/news/admin'),
+                            'visible' => Yii::app()->user->can("comments", "admin")
+                        ),
                     )
                 ),
                 array(
@@ -144,6 +155,16 @@ class Controller extends CController
                             'label' => Yum::t('Create new usergroup'), 
                             'url' => array('/usergroup/groups/create'),
                             'visible' => Yum::hasModule('usergroup')
+                        ),
+                        array(
+                            'label' => Yum::t('Create new news'),
+                            'url' => array('/news/create'),
+                            'visible' => Yii::app()->user->can("news", "create")
+                        ),
+                        array(
+                            'label' => Yum::t('Create new comment'),
+                            'url' => array('/news/create'),
+                            'visible' => Yii::app()->user->can("comment", "create")
                         ),
                     )
                 ),

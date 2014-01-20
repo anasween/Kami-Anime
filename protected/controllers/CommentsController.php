@@ -2,18 +2,6 @@
 
 class CommentsController extends Controller
 {
-
-    /**
-    * @return array action filters
-    */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-            'postOnly + delete', // we only allow deletion via POST request
-        );
-    }
-
     /**
     * Specifies the access control rules.
     * This method is used by the 'accessControl' filter.
@@ -71,25 +59,6 @@ class CommentsController extends Controller
     }
 
     /**
-    * Creates a new model.
-    * If creation is successful, the browser will be redirected to the 'view' page.
-    */
-    public function actionCreate()
-    {
-        $model=new Comments;
-
-        if(isset($_POST['Comments']))
-        {
-            $model->attributes=$_POST['Comments'];
-            $model->autor_id=Yii::app()->user->id;
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
-        }
-
-        throw new CHttpException(400,Yum::t('Invalid request. Please do not repeat this request again.'));
-    }
-
-    /**
     * Updates a particular model.
     * If update is successful, the browser will be redirected to the 'view' page.
     * @param integer $id the ID of the model to be updated
@@ -98,14 +67,11 @@ class CommentsController extends Controller
     {
         $model=$this->loadInternModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if(isset($_POST['Comments']))
         {
             $model->attributes=$_POST['Comments'];
             if($model->save())
-            $this->redirect(array('view','id'=>$model->id));
+                $this->redirect(array('//news/view','id'=>$model->news_id));
         }
 
         $this->render('update',array(
@@ -122,12 +88,13 @@ class CommentsController extends Controller
     {
         if(Yii::app()->request->isPostRequest)
         {
-            // we only allow deletion via POST request
-            $this->loadInternModel($id)->delete();
+            $comment = $this->loadInternModel($id);
+            $news_id = $comment->news_id;
+            $comment->delete();
+            unset($comment);
 
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if(!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('//news/view', 'id'=>$news_id));
         }
         else
             throw new CHttpException(400,Yum::t('Invalid request. Please do not repeat this request again.'));

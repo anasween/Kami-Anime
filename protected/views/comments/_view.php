@@ -15,7 +15,7 @@
                             array(
                                 array(
                                     'label' => Yum::t('Update'), 
-                                    'url' => array("comments/update", "id"=>$data->id),
+                                    'url' => array("//comments/update", "id"=>$data->id),
                                     'visible' => Yii::app()->user->can('comments', 'update'),
                                 ),
                                 array(
@@ -23,7 +23,7 @@
                                     'url'=>'#', 
                                     'linkOptions'=>array(
                                         'submit'=>array(
-                                            'delete',
+                                            '//comments/delete',
                                             'id'=>$data->id
                                         ),
                                         'confirm'=>Yum::t('Are you sure to delete this item?'),

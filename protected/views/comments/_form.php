@@ -12,6 +12,7 @@
     //echo BSHtml::pageHeader(Yum::t('Write comment'));
 
     echo CHtml::hiddenField('Comments[news_id]', $model->news_id);
+    echo CHtml::hiddenField('Comments[autor_id]', Yii::app()->user->id);
     $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
         'model' => $model,
         'attribute' => 'text',

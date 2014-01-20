@@ -46,23 +46,7 @@
             'label' => Yum::t('Main'), 
             'url' => array('/'.Yii::app()->defaultController), 
             'active'=>Yii::app()->controller->id==Yii::app()->defaultController,
-            'items' => array(
-                array(
-                    'label' => Yum::t('Add'),
-                    'url' => array('/news/create'),
-                    'visible' => Yii::app()->user->can("news", "create")
-                ),
-                array(
-                    'label' => Yum::t('List'),
-                    'url' => array('/news'),
-                    'visible' => Yii::app()->user->can("news", "read")
-                ),
-                array(
-                    'label' => Yum::t('Manage'),
-                    'url' => array('/news/admin'),
-                    'visible' => Yii::app()->user->can("news", "admin")
-                ),
-            )
+            'visible' => Yii::app()->user->can("news", "read"),
         ),
         array(
             'label' => Yum::t('Anime'), 

@@ -12,6 +12,7 @@
  *
  * The followings are the available model relations:
  * @property YumUser $autor
+ * @property Comments $comments
  */
 class News extends CActiveRecord
 {

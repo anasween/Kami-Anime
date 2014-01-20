@@ -58,7 +58,7 @@ class NewsController extends Controller
         if(isset($_POST['Comments']))
         {
             $commentModel->attributes=$_POST['Comments'];
-            $commentModel->autor_id=Yii::app()->user->id;
+            $commentModel->createTime = new CDbExpression('NOW()');
             if($commentModel->save())
                 $this->redirect(array('view','id'=>$id));
         }
