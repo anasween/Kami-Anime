@@ -127,6 +127,10 @@ class Controller extends CController
                 'url' => array('#'),
                 Yii::app()->user->can("create"),
                 'items' => array(
+                    BSHtml::menuText(
+                        Yum::t('Creating'),
+                        array('pull' => BSHtml::NAVBAR_NAV_PULL_RIGHT)
+                    ),
                     array(
                         'label' => Yum::t('Create new User'), 
                         'url' => array('//user/user/create'),
@@ -245,6 +249,10 @@ class Controller extends CController
                 'visible' => Yum::hasModule('message'),
                 'url' => array('#'),
                 'items' => array (
+                    BSHtml::menuText(
+                        Yum::t('Messages'),
+                        array('pull' => BSHtml::NAVBAR_NAV_PULL_RIGHT)
+                    ),
                     array('label' => Yum::t('Admin inbox'), 'url' => array('/message/message/index')),
                     array('label' => Yum::t('Sent messages'), 'url' => array('/message/message/sent')),
                     array('label' => Yum::t('Write a message'), 'url' => array('/message/message/compose')),
@@ -254,6 +262,10 @@ class Controller extends CController
                 'label' => Yum::t('Misc'),
                 'url' => array('#'),
                 'items' => array(
+                    BSHtml::menuText(
+                        Yum::t('Misc'),
+                        array('pull' => BSHtml::NAVBAR_NAV_PULL_RIGHT)
+                    ),
                     array(
                         'label' => Yum::t('Upload avatar for admin'), 'url' => array('//avatar/avatar/editAvatar'),
                         'visible' => Yum::hasModule('avatar')
