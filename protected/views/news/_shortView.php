@@ -50,10 +50,18 @@
             <?php echo $model->text; ?>
         </div>
     </div>
-    <div class="row post_description">
-        <div class="col-md-12">
-            <?php echo '<a href="' . $this->createUrl('user/admin/view',array('id'=>$model->autor->id)) . '">' . $model->autor->username . '</a> ' . Yii::app()->dateFormatter->format('d MMMM yyyy HH:mm:ss', $model->create_Date); ?>
-        </div>
+    <div class="post_description">
+        <?php 
+        echo BSHtml::icon(BSHtml::GLYPHICON_EYE_OPEN) . ' '
+                . $model->views . ' '
+                . '<a href="' . $this->createUrl('user/admin/view',array('id'=>$model->autor->id)) . '">'
+                . BSHtml::icon(BSHtml::GLYPHICON_USER) . ' '
+                . $model->autor->username 
+                . '</a> '
+                . BSHtml::icon(BSHtml::GLYPHICON_CALENDAR) . ' '
+                . Yii::app()->dateFormatter->format('d MMMM yyyy HH:mm:ss', $model->create_Date) . ' '
+                . BSHtml::icon(BSHtml::GLYPHICON_COMMENT) . ' '
+                . count($model->comments); ?>
     </div>
     </div>
 </div>

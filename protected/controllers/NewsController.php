@@ -49,8 +49,23 @@ class NewsController extends Controller
     public function actionView($id)
     {
         $newsModel = $this->loadModel($id);
+        $newsModel->views = $newsModel->views + 1;
+        $newsModel->save();
+        
+        $commentModel = new Comments;
+        $commentModel->news_id = $id;
+
+        if(isset($_POST['Comments']))
+        {
+            $commentModel->attributes=$_POST['Comments'];
+            $commentModel->autor_id=Yii::app()->user->id;
+            if($commentModel->save())
+                $this->redirect(array('view','id'=>$id));
+        }
+        
         $this->render('view',array(
             'model'=> $newsModel,
+            'commentModel' => $commentModel,
             'comments'=> $newsModel->getCommentsDataProvider(),
         ));
     }

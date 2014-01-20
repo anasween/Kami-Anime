@@ -11,7 +11,7 @@
  * @property string $create_Date
  *
  * The followings are the available model relations:
- * @property TblUsers $autor
+ * @property YumUser $autor
  */
 class News extends CActiveRecord
 {
@@ -30,7 +30,7 @@ class News extends CActiveRecord
 	{
             return array(
                 array('text, autor_id, title', 'required'),
-                array('autor_id', 'numerical', 'integerOnly'=>true),
+                array('autor_id, views', 'numerical', 'integerOnly'=>true),
                 array('title', 'length', 'max'=>100),
                 array('id, autor_id, title, text, create_Date', 'safe', 'on'=>'search'),
             );
@@ -59,6 +59,7 @@ class News extends CActiveRecord
                 'title' => Yum::t('Title'),
                 'text' => Yum::t('Text'),
                 'create_Date' => Yum::t('Create date'),
+                'views' => Yum::t('Views')
             );
 	}
 

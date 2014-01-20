@@ -43,7 +43,7 @@ class CommentsController extends Controller
             ),
             array('allow',
                 'actions'=>array('create'),
-                'expression' => 'Yii::app()->user->can("comments", "create")'
+                'users'=>array('@'),
             ),
             array('allow',
                 'actions'=>array('admin'),
@@ -78,19 +78,15 @@ class CommentsController extends Controller
     {
         $model=new Comments;
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if(isset($_POST['Comments']))
         {
             $model->attributes=$_POST['Comments'];
+            $model->autor_id=Yii::app()->user->id;
             if($model->save())
                 $this->redirect(array('view','id'=>$model->id));
         }
 
-        $this->render('create',array(
-            'model'=>$model,
-        ));
+        throw new CHttpException(400,Yum::t('Invalid request. Please do not repeat this request again.'));
     }
 
     /**
@@ -134,7 +130,7 @@ class CommentsController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
         else
-            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400,Yum::t('Invalid request. Please do not repeat this request again.'));
     }
 
     /**

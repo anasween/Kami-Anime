@@ -10,6 +10,7 @@ $this->breadcrumbs = array(
     <div class="col-md-12">
         <?php
             $this->renderPartial('_shortView', array('model'=>$model));
+            $this->renderPartial('//comments/_form', array('model'=>$commentModel));
             $this->widget('bootstrap.widgets.BsListView', array(
                 'dataProvider'=>$comments,
                 'itemView'=>'_comment', 

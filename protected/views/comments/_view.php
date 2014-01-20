@@ -14,11 +14,6 @@
                     echo BSHtml::buttonDropdown(Yum::t('Actions'), 
                             array(
                                 array(
-                                    'label' => Yum::t('Create'), 
-                                    'url' => array('comments/create'),
-                                    'visible' => Yii::app()->user->can('comments', 'create'),
-                                ),
-                                array(
                                     'label' => Yum::t('Update'), 
                                     'url' => array("comments/update", "id"=>$data->id),
                                     'visible' => Yii::app()->user->can('comments', 'update'),

@@ -12,7 +12,7 @@
  *
  * The followings are the available model relations:
  * @property News $news
- * @property TblUsers $autor
+ * @property YumUser $autor
  */
 class Comments extends CActiveRecord
 {
@@ -53,11 +53,11 @@ class Comments extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id' => 'ID',
-            'autor_id' => 'Автор',
-            'text' => 'Текст',
-            'createTime' => 'Дата создания',
-            'news_id' => 'Новость',
+            'id' => Yum::t('ID'),
+            'autor_id' => Yum::t('Autor'),
+            'text' => Yum::t('Text'),
+            'createTime' => Yum::t('Create date'),
+            'news_id' => Yum::t('New'),
         );
     }
 
