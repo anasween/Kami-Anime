@@ -31,7 +31,10 @@ class Controller extends CController
 
     public function getUserMenu()
     {
-        $unreadMessages = (YumMessage::unread() > 0) ? ' [' . YumMessage::unread() . ']' : '';
+        if (Yii::app()->user->isGuest)
+            $unreadMessages = '';
+        else
+            $unreadMessages = (YumMessage::unread() > 0) ? ' [' . YumMessage::unread() . ']' : '';
         return array(
             array(
                 'label' => Yum::t('Administration'),

@@ -382,6 +382,7 @@ class YumUser extends YumActiveRecord
 			$relations = array(
                             'news' => array(self::HAS_MANY, 'News', 'id'),
                             'comments' => array(self::HAS_MANY, 'Comments', 'id'),
+                            'anime' => array(self::HAS_MANY, 'Anime', 'id'),
                         );
 
 			if (Yum::hasModule('role')) {
