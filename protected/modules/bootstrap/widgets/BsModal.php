@@ -120,8 +120,9 @@ class BsModal extends CWidget
         \bootstrap\helpers\BSArray::defaultValue('id', $this->getId(), $this->htmlOptions);
         \bootstrap\helpers\BSArray::defaultValue('role', 'dialog', $this->htmlOptions);
         \bootstrap\helpers\BSArray::defaultValue('tabindex', '-1', $this->htmlOptions);
+        \bootstrap\helpers\BSArray::defaultValue('aria-hidden', true, $this->htmlOptions);
 
-        BSHtml::addCssClass('modal hide', $this->htmlOptions);
+        BSHtml::addCssClass('modal', $this->htmlOptions);
         if ($this->fade) {
             BSHtml::addCssClass('fade', $this->htmlOptions);
         }
