@@ -50,7 +50,7 @@ return array(
             'debug' => false,
             'userTable' => 'user',
             'translationTable' => 'translation',
-            'loginType' => 7,
+            //'loginType' => 7,
             'profileView' => '//profile/profile/view',
             'hybridAuthProviders' => array(
                 'Facebook',
