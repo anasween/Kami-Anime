@@ -46,7 +46,6 @@
             'label' => Yum::t('Main'), 
             'url' => array('/'.Yii::app()->defaultController), 
             'active'=>Yii::app()->controller->id==Yii::app()->defaultController,
-            'visible' => Yii::app()->user->can("news", "read"),
         ),
         array(
             'label' => Yum::t('Anime'), 

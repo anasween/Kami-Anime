@@ -128,11 +128,14 @@ class Controller extends CController
             array(
                 'label' => Yum::t('Create menu'), 
                 'url' => array('#'),
-                Yii::app()->user->can("create"),
+                'visible' => Yii::app()->user->can("create"),
                 'items' => array(
                     BSHtml::menuText(
                         Yum::t('Creating'),
-                        array('pull' => BSHtml::NAVBAR_NAV_PULL_RIGHT)
+                        array(
+                            'pull' => BSHtml::NAVBAR_NAV_PULL_RIGHT,
+                            'visible' => Yii::app()->user->can("create"),
+                        )
                     ),
                     array(
                         'label' => Yum::t('Create new User'), 
@@ -194,7 +197,7 @@ class Controller extends CController
             ),
             array(
                 'label' => Yum::t('Profile'), 
-                'visible' => Yum::hasModule('profile'), 
+                'visible' => Yum::hasModule('profile') && !Yii::app()->user->isGuest, 
                 'url' => array('#'),
                 'items' => array(
                     BSHtml::menuText(
@@ -249,7 +252,7 @@ class Controller extends CController
             ),
             array(
                 'label' => Yum::t('Messages') . $unreadMessages,
-                'visible' => Yum::hasModule('message'),
+                'visible' => Yum::hasModule('message') && !Yii::app()->user->isGuest,
                 'url' => array('#'),
                 'items' => array (
                     BSHtml::menuText(
@@ -264,6 +267,7 @@ class Controller extends CController
             array(
                 'label' => Yum::t('Misc'),
                 'url' => array('#'),
+                'visible' => !Yii::app()->user->isGuest,
                 'items' => array(
                     BSHtml::menuText(
                         Yum::t('Misc'),
