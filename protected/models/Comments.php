@@ -77,8 +77,10 @@ class Comments extends CActiveRecord
     {
         $criteria=new CDbCriteria;
 
+        $criteria->together = true;
+        $criteria->with = array('autor');
         $criteria->compare('id',$this->id);
-        $criteria->compare('autor_id',$this->autor_id);
+        $criteria->compare('autor.username',$this->autor_id);
         $criteria->compare('text',$this->text,true);
         $criteria->compare('createTime',$this->createTime,true);
         $criteria->compare('news_id',$this->news_id);

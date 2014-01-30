@@ -28,11 +28,6 @@ Yii::app()->clientScript->registerScript('search',
         <h3 class="panel-title"><?php echo BSHtml::button(Yum::t('Advanced search'),array('class' =>'search-button', 'icon' => BSHtml::GLYPHICON_SEARCH,'color' => BSHtml::BUTTON_COLOR_PRIMARY), '#'); ?></h3>
     </div>
     <div class="panel-body">
-        <p>
-            You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>
-                &lt;&gt;</b>
-            or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-        </p>
         <div class="search-form" style="display:none">
             <?php $this->renderPartial('_search',array(
                 'model'=>$model,
@@ -45,12 +40,20 @@ Yii::app()->clientScript->registerScript('search',
             'filter'=>$model,
             'columns'=>array(
                 'id',
-                'autor_id',
+                array(           
+                    'name'=>'autor_id',
+                    'value'=>'$data->autor->username',
+                ),
                 'text',
                 'createTime',
                 'news_id',
                 array(
                     'class'=>'bootstrap.widgets.BsButtonColumn',
+                    'buttons'=>array(
+                        'view' => array(
+                            'url' => 'Yii::app()->createUrl("news/view", array("id"=>$data->news_id))'
+                        )
+                    ),
                 ),
             ),
         )); ?>

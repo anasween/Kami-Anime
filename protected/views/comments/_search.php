@@ -13,13 +13,13 @@
 
     <?php echo $form->textFieldControlGroup($model,'id',array('maxlength'=>10)); ?>
     
-    <?php echo $form->dropDownListControlGroup($model,'autor_id',
-            CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
+    <?php
+    echo $form->dropDownListControlGroup($model,'autor_id',
+            CHtml::listData(YumUser::model()->findAll(), 'username', 'username'),
             array(
             )
-    ); ?>
-
-    <?php echo $form->textFieldControlGroup($model,'autor_id',array('maxlength'=>10)); ?>
+    ); 
+    ?>
 
     <?php echo $form->textAreaControlGroup($model,'text',array('rows'=>6)); ?>
 

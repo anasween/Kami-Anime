@@ -115,7 +115,7 @@ class Controller extends CController
                     ),
                     array(
                         'label' => Yum::t('Manage comments'),
-                        'url' => array('/news/admin'),
+                        'url' => array('/comments/admin'),
                         'visible' => Yii::app()->user->can("comments", "admin")
                     ),
                     array(
@@ -185,13 +185,13 @@ class Controller extends CController
                     ),
                     array(
                         'label' => Yum::t('Create new comment'),
-                        'url' => array('/news/create'),
+                        'url' => array('/comments/create'),
                         'visible' => Yii::app()->user->can("comment", "create")
                     ),
                     array(
-                        'label' => Yum::t('create new zhanr'),
-                        'url' => array('/zhanrs/admin'),
-                        'visible' => Yii::app()->user->can("zhanrs", "admin")
+                        'label' => Yum::t('Create new zhanr'),
+                        'url' => array('/zhanrs/create'),
+                        'visible' => Yii::app()->user->can("zhanrs", "create")
                     ),
                 )
             ),

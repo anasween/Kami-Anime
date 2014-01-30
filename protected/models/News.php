@@ -80,7 +80,7 @@ class News extends CActiveRecord
 	{
             $criteria=new CDbCriteria;
 
-            $criteria->together = true; //without this you wont be able to search the second table's data
+            $criteria->together = true;
             $criteria->with = array('autor');
             $criteria->compare('t.id',$this->id,true);
             $criteria->compare('t.title',$this->title,true);

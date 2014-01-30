@@ -23,7 +23,7 @@
     <?php echo $form->textFieldControlGroup($model,'title',array('maxlength'=>255)); ?>
 
     <?php echo BSHtml::formActions(array(
-        BSHtml::submitButton(Yum::t('Submit'), array('color' => BSHtml::BUTTON_COLOR_PRIMARY)),
+        BSHtml::submitButton(Yum::t('Create'), array('color' => BSHtml::BUTTON_COLOR_PRIMARY)),
     )); ?>
 
     <?php $this->endWidget(); ?>
