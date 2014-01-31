@@ -254,6 +254,7 @@ class Controller extends CController
                 'label' => Yum::t('Messages') . $unreadMessages,
                 'visible' => Yum::hasModule('message') && !Yii::app()->user->isGuest,
                 'url' => array('#'),
+                'class' => 'visible-sm visible-xs',
                 'items' => array (
                     BSHtml::menuText(
                         Yum::t('Messages'),

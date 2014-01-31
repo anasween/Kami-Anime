@@ -8,6 +8,26 @@ $this->breadcrumbs = array(
 ?>
 <h2><?php echo Yum::t('Sent messages'); ?></h2>
 <?php
+echo '<div class="item">';
+
+echo BSHtml::pills(array(
+    array(
+        'label' => Yum::t('Admin inbox'), 
+        'url' => array('/message/message/index')
+    ),
+    array(
+        'label' => Yum::t('Sent messages'), 
+        'url' => array('/message/message/sent'),
+        'active' => true
+    ),
+    array(
+        'label' => Yum::t('Write a message'), 
+        'url' => array('/message/message/compose')
+    ),
+), array(
+    'justified' => true
+));
+
 $this->widget('bootstrap.widgets.BsGridView', array(
         'id'=>'yum-sent-message-grid',
         'dataProvider' => $model->search(true),
@@ -33,3 +53,5 @@ $this->widget('bootstrap.widgets.BsGridView', array(
         ),
     )
 ); 
+
+echo '</div>';

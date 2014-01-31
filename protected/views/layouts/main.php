@@ -107,7 +107,7 @@
     ?>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-<?php echo (!Yii::app()->user->isGuest) ? '9' : '12'; ?>">
                 <?php if(isset($this->breadcrumbs)):?>
                         <?php $this->widget(
                             'bootstrap.widgets.BsBreadcrumb',
@@ -119,9 +119,14 @@
 
                 <?php echo $content; ?>
             </div>
+            <?php if (!Yii::app()->user->isGuest): ?>
+            <div class="col-md-3">
+                <?php $this->renderPartial('//layouts/sidebar', array()); ?>
+            </div>
+            <?php endif; ?>
         </div>
-        <div class="row-fluid">    
-            <footer class="span12">
+        <div class="row">    
+            <footer class="col-md-12">
                 Copyright &copy; 2007-<?php echo date('Y'); ?> by Kami-Anime. Все права защищены.
             </footer>
         </div>

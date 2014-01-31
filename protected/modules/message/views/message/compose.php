@@ -12,6 +12,29 @@ if(!$to_user_id)
 }
 ?>
 
+<?php
+echo '<div class="item">';
+
+echo BSHtml::pills(array(
+    array(
+        'label' => Yum::t('Admin inbox'), 
+        'url' => array('/message/message/index')
+    ),
+    array(
+        'label' => Yum::t('Sent messages'), 
+        'url' => array('/message/message/sent')
+    ),
+    array(
+        'label' => Yum::t('Write a message'), 
+        'url' => array('/message/message/compose'),
+        'active' => true
+    ),
+), array(
+    'justified' => true,
+    'style' => 'margin-bottom: 10px;'
+));
+?>
+
 <div class="form">
 
 <?php 
@@ -65,3 +88,4 @@ else
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+</div>

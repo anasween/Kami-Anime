@@ -10,6 +10,26 @@ echo Yum::renderFlash();
 
 echo '<h2>' . Yum::t('Messages') . '</h2>';
 
+echo '<div class="item">';
+
+echo BSHtml::pills(array(
+    array(
+        'label' => Yum::t('Admin inbox'), 
+        'url' => array('/message/message/index'),
+        'active' => true
+    ),
+    array(
+        'label' => Yum::t('Sent messages'), 
+        'url' => array('/message/message/sent')
+    ),
+    array(
+        'label' => Yum::t('Write a message'), 
+        'url' => array('/message/message/compose')
+    ),
+), array(
+    'justified' => true
+));
+
 $this->widget('bootstrap.widgets.BsGridView', array(
         'id'=>'yum-message-grid',
         'dataProvider' => $model->search(),
@@ -34,4 +54,6 @@ $this->widget('bootstrap.widgets.BsGridView', array(
             ),
         ),
     )
-); 
+);
+
+echo '</div>';
