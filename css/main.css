@@ -116,6 +116,9 @@ footer {
   margin: 0;
   font-weight: bold;
 }
+.view_user:hover {
+  cursor: pointer;
+}
 .view {
   margin-bottom: 10px;
 }

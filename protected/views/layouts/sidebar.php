@@ -30,7 +30,7 @@ $model = YumUser::model()->findByPk(Yii::app()->user->id);
             'label' => Yum::t('Groups'),
             'url' => array('/usergroup/groups/index'),
             'visible' => Yum::hasModule('usergroup'),
-            'active' => Yii::app()->controller->id === 'usergroup',
+            'active' => Yii::app()->controller->id === 'groups',
         )
     ));
     ?>

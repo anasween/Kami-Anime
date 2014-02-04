@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
 	Yum::t('Usergroups')=>array('index'),
-	Yum::t( 'Manage'),
+	Yum::t('Manage'),
 );
 Yii::app()->clientScript->registerScript('search', "
     $('.search-button').click(function(){

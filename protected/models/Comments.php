@@ -13,6 +13,7 @@
  * The followings are the available model relations:
  * @property News $news
  * @property YumUser $autor
+ * @property YumUsergroup $groups
  */
 class Comments extends CActiveRecord
 {
@@ -31,8 +32,8 @@ class Comments extends CActiveRecord
     {
         return array(
             array('autor_id, text, createTime', 'required'),
-            array('autor_id, news_id', 'numerical', 'integerOnly'=>true),
-            array('id, autor_id, text, createTime, news_id', 'safe', 'on'=>'search'),
+            array('autor_id, news_id, group_id', 'numerical', 'integerOnly'=>true),
+            array('id, autor_id, text, createTime, news_id, group_id', 'safe', 'on'=>'search'),
         );
     }
 
@@ -44,6 +45,7 @@ class Comments extends CActiveRecord
         return array(
             'news' => array(self::BELONGS_TO, 'News', 'news_id'),
             'autor' => array(self::BELONGS_TO, 'YumUser', 'autor_id'),
+            'groups' => array(self::BELONGS_TO, 'YumUsergroup', 'autor_id'),
         );
     }
 
@@ -58,6 +60,7 @@ class Comments extends CActiveRecord
             'text' => Yum::t('Text'),
             'createTime' => Yum::t('Create date'),
             'news_id' => Yum::t('New'),
+            'group_id' => Yum::t('Group'),
         );
     }
 
@@ -84,6 +87,7 @@ class Comments extends CActiveRecord
         $criteria->compare('text',$this->text,true);
         $criteria->compare('createTime',$this->createTime,true);
         $criteria->compare('news_id',$this->news_id);
+        $criteria->compare('group_id',$this->group_id);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

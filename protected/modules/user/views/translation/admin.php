@@ -7,6 +7,8 @@ $this->breadcrumbs = array(
 
 <h1><?php echo Yum::t('Manage Translations'); ?> </h1>
 
+<div class="item">
+
 <?php $this->widget('bootstrap.widgets.BsGridView', array(
         'id'=>'category-grid',
         'dataProvider'=>$model->search(),
@@ -43,3 +45,6 @@ $this->breadcrumbs = array(
         'icon' =>  BSHtml::GLYPHICON_THUMBS_UP,
         'url' => array('create')
     ));
+?>
+    
+</div>

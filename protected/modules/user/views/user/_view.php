@@ -1,7 +1,3 @@
-<div class="tooltip" id="tooltip_<?php echo $data->id; ?>"> 
-    <?php // $this->renderPartial('application.modules.user.views.user._tooltip', array('data' =>  $data)); ?>
-</div>
-
 <?php
 $online = '';
 if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) 
@@ -10,27 +6,17 @@ if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting)
     {
         if($data->isOnline()) 
         {
-            $online = true;
+            $online = 'online';
         }
     }
 }
+$divContent = $data->getAvatar(true);
+$divContent .= BSHtml::tag('p',array(),$data->username);
 
-?>
-
-<div class="view_user <?php echo $online ? 'online' : ''; ?>" id="user_<?php echo $data->id;?>"> 
-
-<?php echo CHtml::link($data->getAvatar(true), array('//profile/profile/view', 'id' => $data->id)); ?>
-<?php printf('<p>%s</p>', $data->username); ?>
-</div>
-
-<?php
-//Yii::app()->clientScript->registerScript('tooltip_'.$data->id, "
-//$('#user_{$data->id}').popover({
-//'position': 'top',
-//'offset': [0, -50],
-//'tip': '#tooltip_{$data->id}',
-//'predelay': 100,
-//'fadeOutSpeed': 100,
-//
-//}); 
-//");
+echo BSHtml::tag('div',array(
+            'class' => 'view_user' . $online,
+            'id' => 'user_' . $data->id,
+            'data-content' => $this->renderPartial('application.modules.user.views.user._tooltip', array('data' =>  $data),true,true),
+            'data-toggle' => 'popover'
+        ),
+        $divContent);

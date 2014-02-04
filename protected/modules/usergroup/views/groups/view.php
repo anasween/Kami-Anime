@@ -1,59 +1,62 @@
-<?php // Yum::register('css/yum.css');
-
+<?php
 $this->breadcrumbs = array(
             Yum::t('Usergroups')=>array('index'),
             $model->title,
         );
 ?>
-
 <h3> <?php echo $model->title;  ?> </h3>
-
-<p> <?php echo $model->description; ?> </p>
-
-<?php
-
-if($model->owner)
-{
-    printf('%s: %s',
-        Yum::t('Owner'),
-    BSHtml::link($model->owner->username, array('//profile/profile/view', 'id' => $model->owner_id)));
-}
-
-printf('<h3> %s </h3>', Yum::t('Participants'));
-
-$this->widget('bootstrap.widgets.BsListView', array(
-    'dataProvider'=>$model->getParticipantDataProvider(),
-    'itemView'=>'_participant', 
-    'template' => '{items}{pager}'
-)); 
-
-?>
-
- <div style="clear: both;"> </div> 
-<?php
-printf('<h3> %s </h3>', Yum::t('Messages'));
-
-$this->widget('bootstrap.widgets.BsListView', array(
-    'dataProvider'=>$model->getMessageDataProvider(),
-    'itemView'=>'_message', 
-)); 
-
-?>
-
-<?php
-    echo BSHtml::Button(Yum::t('Write a message'), array(
-        'color' => BSHtml::BUTTON_COLOR_PRIMARY,
-        'icon' =>  BSHtml::GLYPHICON_THUMBS_UP,
-        'onClick' => "$('#usergroup_message').toggle(500)"
-    ));
-?>
-
-<div style="display:none;" id="usergroup_message">
-<h3> <?php echo Yum::t('Write a message'); ?> </h3>
-<?php $this->renderPartial('_message_form', array('group_id' => $model->id)); ?>
+<div class="item">
+    <?php 
+    echo BSHtml::bold(Yum::t('Description') . ':');
+    echo BSHtml::tag('p',array(),$model->description);
+    ?>
+    <?php
+    if($model->owner)
+    {
+        echo BSHtml::bold(Yum::t('Owner') . ':');
+        echo BSHtml::tag('p',array(),$this->renderPartial('application.modules.user.views.user._view', array('data' => $model->owner),true,true));
+    }
+    ?>
 </div>
+<h3><?php echo Yum::t('Participants'); ?></h3>
+<div class="item">
+    <?php
+    $this->widget('bootstrap.widgets.BsListView', array(
+        'dataProvider' => $model->getParticipantDataProvider(),
+        'itemView' => '_participant', 
+        'template' => '{items}{pager}'
+    )); 
+    ?>
+</div>
+<div class="clearfix"></div>
+<h3><?php echo Yum::t('Messages'); ?></h3>
+<?php
+$this->widget('bootstrap.widgets.BsListView', array(
+    'dataProvider' => $model->getCommentsDataProvider(),
+    'itemView' => '_message', 
+)); 
+?>
 
-<div style="clear: both;"> </div>
-
-
-
+<?php 
+if (Yii::app()->user->can("comment", "create") 
+        && (is_array($model->participants) && in_array(Yii::app()->user->id, $model->participants))
+        || Yii::app()->user->isAdmin())
+{
+    echo BSHtml::Button(Yum::t('Write a comment'), array(
+        'color' => BSHtml::BUTTON_COLOR_PRIMARY,
+        'icon' =>  BSHtml::GLYPHICON_COMMENT,
+        'onClick' => "$('#comment-add-form').toggle(500)",
+        'style' => 'margin: 10px',
+    ));
+    echo BSHtml::tag('div', array(
+        'id' => 'comment-add-form',
+        'style' => 'overflow: hidden; display: block;',
+    ), $this->renderPartial('_message_form', array('model' => $commentModel),true,true));
+}
+?>
+<?php
+    Yii::app()->clientScript->registerScript('helloscript',"
+        $('#comment-add-form').toggle(500);
+    ",CClientScript::POS_READY);
+?>
+<div class="clearfix"></div>
