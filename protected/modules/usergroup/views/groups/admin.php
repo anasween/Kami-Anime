@@ -39,7 +39,7 @@ $locale = CLocale::getInstance(Yii::app()->language);
 		'title',
 		'description',
 		array(
-			'class'=>'bootstrap.widgets.BsButtonColumn',
+                    'class'=>'bootstrap.widgets.BsButtonColumn',
 		),
 	),
-)); ?>
+)); 

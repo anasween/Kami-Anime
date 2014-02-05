@@ -9,10 +9,15 @@ if(!$profile = $model->profile)
         echo '<h2>' . Yum::t('Friends of {username}', array(
                                 '{username}' => $model->username)) . '</h2>';
         
-        foreach($model->friends as $friend) 
-        {
-            $this->renderPartial('application.modules.user.views.user._view', array('data' => $friend));
-        }
+        echo '<div class="item">';
+        
+        $this->widget('bootstrap.widgets.BsListView', array(
+            'dataProvider' => $model->getFriendsDataProvider(),
+            'itemView' => 'application.modules.user.views.user._view', 
+            'template' => '{items}{pager}'
+        )); 
+        
+        echo '</div>';
     } 
     else 
     {

@@ -36,21 +36,23 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->id == $model->id)
         )
     ));
 } ?>
+<div class="item">
     <div style="margin: 5px;">
         <?php echo $model->getAvatar(); ?>
     </div>
-<?php $this->renderPartial(Yum::module('profile')->publicFieldsView, array('profile' => $model->profile)); ?>
-<br />
+    <?php $this->renderPartial(Yum::module('profile')->publicFieldsView, array('profile' => $model->profile)); ?>
+</div>
 <?php
 if(Yum::hasModule('friendship'))
 {
 $this->renderPartial(
-        'application.modules.friendship.views.friendship.friends', 
-        array(
-            'model' => $model
-        )
-    ); 
-} ?>
+    'application.modules.friendship.views.friendship.friends', 
+    array(
+        'model' => $model
+    )
+); 
+} 
+?>
 <br />
 <?php
 if(Yum::module('message')->messageSystem != YumMessage::MSG_NONE)

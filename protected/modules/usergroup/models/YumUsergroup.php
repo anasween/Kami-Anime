@@ -1,78 +1,74 @@
 <?php
 
-class YumUsergroup extends YumActiveRecord{
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+class YumUsergroup extends YumActiveRecord {
 
-	public function behaviors() {
-		return array('CSerializeBehavior' => array(
-					'class' => 'application.modules.user.components.CSerializeBehavior',
-					'serialAttributes' => array('participants')));
-	}
+    public static function model($className = __CLASS__) {
+        return parent::model($className);
+    }
 
-	public function tableName()
-	{
-		return Yum::module('usergroup')->usergroupTable;
-	}
+    public function behaviors() {
+        return array('CSerializeBehavior' => array(
+                'class' => 'application.modules.user.components.CSerializeBehavior',
+                'serialAttributes' => array('participants')));
+    }
 
-	public function rules()
-	{
-		return array(
-			array('title, description', 'required'),
-			array('id, owner_id', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>255),
-			array('participants', 'safe'),
-			array('id, title, description', 'safe', 'on'=>'search'),
-		);
-	}
+    public function tableName() {
+        return Yum::module('usergroup')->usergroupTable;
+    }
 
-	public function relations()
-	{
-		return array(
-			'owner' => array(self::BELONGS_TO, 'YumUser', 'owner_id'),
-			'messages' => array(self::HAS_MANY, 'Comments', 'group_id'),
-			'messagesCount' => array(self::STAT, 'Comments', 'group_id')
-		);
-	}
+    public function rules() {
+        return array(
+            array('title, description', 'required'),
+            array('id, owner_id', 'numerical', 'integerOnly' => true),
+            array('title', 'length', 'max' => 255),
+            array('participants', 'safe'),
+            array('id, title, description', 'safe', 'on' => 'search'),
+        );
+    }
 
-	public function attributeLabels()
-	{
-		return array(
-			'id' => Yum::t('group id'),
-			'title' => Yum::t('Group title'),
-			'description' => Yum::t('Description'),
-			'participants' => Yum::t('Participants'),
-			'owner_id' => Yum::t('Group owner'),
-		);
-	}
+    public function relations() {
+        return array(
+            'owner' => array(self::BELONGS_TO, 'YumUser', 'owner_id'),
+            'messages' => array(self::HAS_MANY, 'Comments', 'group_id'),
+            'messagesCount' => array(self::STAT, 'Comments', 'group_id')
+        );
+    }
 
-	public function getParticipantDataProvider() {
-		$criteria = new CDbCriteria;
-		$criteria->addInCondition('id', $this->participants);
-	
-		return new CActiveDataProvider('YumUser', array('criteria' => $criteria));
-	}
+    public function attributeLabels() {
+        return array(
+            'id' => Yum::t('group id'),
+            'title' => Yum::t('Group title'),
+            'description' => Yum::t('Description'),
+            'participants' => Yum::t('Participants'),
+            'owner_id' => Yum::t('Group owner'),
+        );
+    }
 
-	public function getCommentsDataProvider() {
-		$criteria = new CDbCriteria;
-		$criteria->compare('group_id', $this->id);
-	
-		return new CActiveDataProvider('Comments', array(
-					'criteria' => $criteria));
-	}
+    public function getParticipantDataProvider() {
+        $criteria = new CDbCriteria;
+        $criteria->addInCondition('id', $this->participants);
 
-	public function search()
-	{
-		$criteria=new CDbCriteria;
+        return new CActiveDataProvider('YumUser', array('criteria' => $criteria));
+    }
 
-		$criteria->compare('id', $this->id);
-		$criteria->compare('title', $this->title, true);
-		$criteria->compare('description', $this->description, true);
+    public function getCommentsDataProvider() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('group_id', $this->id);
 
-		return new CActiveDataProvider(get_class($this), array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider('Comments', array(
+            'criteria' => $criteria));
+    }
+
+    public function search() {
+        $criteria = new CDbCriteria;
+
+        $criteria->compare('id', $this->id);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('description', $this->description, true);
+
+        return new CActiveDataProvider(get_class($this), array(
+            'criteria' => $criteria,
+        ));
+    }
+
 }

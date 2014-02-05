@@ -6,7 +6,7 @@ if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting)
     {
         if($data->isOnline()) 
         {
-            $online = 'online';
+            $online = ' online';
         }
     }
 }
