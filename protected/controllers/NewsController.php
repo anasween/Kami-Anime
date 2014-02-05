@@ -1,16 +1,15 @@
 <?php
 
-class NewsController extends Controller
-{
-    public function accessRules() 
-    {
+class NewsController extends Controller {
+
+    public function accessRules() {
         return array(
             array('allow',
-                'actions'=>array('index', 'view', 'error'),
-                'users'=>array('*'),
+                'actions' => array('index', 'view', 'error'),
+                'users' => array('*'),
             ),
             array('allow',
-                'actions'=>array(
+                'actions' => array(
                     'admin',
                     'delete',
                     'create',
@@ -21,23 +20,23 @@ class NewsController extends Controller
                 'expression' => 'Yii::app()->user->isAdmin()'
             ),
             array('allow',
-                'actions'=>array('update'),
+                'actions' => array('update'),
                 'expression' => 'Yii::app()->user->can("news", "update")'
             ),
             array('allow',
-                'actions'=>array('create'),
+                'actions' => array('create'),
                 'expression' => 'Yii::app()->user->can("news", "create")'
             ),
             array('allow',
-                'actions'=>array('admin'),
+                'actions' => array('admin'),
                 'expression' => 'Yii::app()->user->can("news", "admin")'
             ),
             array('allow',
-                'actions'=>array('delete'),
+                'actions' => array('delete'),
                 'expression' => 'Yii::app()->user->can("news", "delete")'
             ),
-            array('deny',  // deny all other users
-                'users'=>array('*'),
+            array('deny', // deny all other users
+                'users' => array('*'),
             ),
         );
     }
@@ -46,27 +45,26 @@ class NewsController extends Controller
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         $newsModel = $this->loadModel($id);
         $newsModel->views = $newsModel->views + 1;
         $newsModel->save();
-        
+
         $commentModel = new Comments;
         $commentModel->news_id = $id;
 
-        if(isset($_POST['Comments']))
-        {
-            $commentModel->attributes=$_POST['Comments'];
-            $commentModel->createTime = new CDbExpression('NOW()');
-            if($commentModel->save())
-                $this->redirect(array('view','id'=>$id));
+        if (isset($_POST['Comments'])) {
+            $commentModel->attributes = $_POST['Comments'];
+            $commentModel->createtime = new CDbExpression('NOW()');
+            if ($commentModel->save()) {
+                $this->redirect(array('view', 'id' => $id));
+            }
         }
-        
-        $this->render('view',array(
-            'model'=> $newsModel,
+
+        $this->render('view', array(
+            'model' => $newsModel,
             'commentModel' => $commentModel,
-            'comments'=> $newsModel->getCommentsDataProvider(),
+            'comments' => $newsModel->getCommentsDataProvider(),
         ));
     }
 
@@ -74,21 +72,20 @@ class NewsController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
-    {
-        $model=new News;
+    public function actionCreate() {
+        $model = new News;
 
         $this->performAjaxValidation($model);
 
-        if(isset($_POST['News']))
-        {
-            $model->attributes=$_POST['News'];
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+        if (isset($_POST['News'])) {
+            $model->attributes = $_POST['News'];
+            if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
-        $this->render('create',array(
-            'model'=>$model,
+        $this->render('create', array(
+            'model' => $model,
         ));
     }
 
@@ -97,21 +94,20 @@ class NewsController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate($id)
-    {
-        $model=$this->loadModel($id);
+    public function actionUpdate($id) {
+        $model = $this->loadModel($id);
 
         $this->performAjaxValidation($model);
 
-        if(isset($_POST['News']))
-        {
-            $model->attributes=$_POST['News'];
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+        if (isset($_POST['News'])) {
+            $model->attributes = $_POST['News'];
+            if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
-        $this->render('update',array(
-            'model'=>$model,
+        $this->render('update', array(
+            'model' => $model,
         ));
     }
 
@@ -120,13 +116,11 @@ class NewsController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->loadModel($id)->delete();
-        
+
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if(!isset($_GET['ajax']))
-        {
+        if (!isset($_GET['ajax'])) {
             $this->redirect(Yii::app()->request->getParam('returnUrl', array('admin')));
         }
     }
@@ -134,21 +128,20 @@ class NewsController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
-    {
-        $dataProvider=new CActiveDataProvider('News');
+    public function actionIndex() {
+        $dataProvider = new CActiveDataProvider('News');
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
         $criteria->order = 'create_Date DESC';
 
-        $pages=new CPagination(News::model()->count($criteria));
-        $pages->pageSize=10;
+        $pages = new CPagination(News::model()->count($criteria));
+        $pages->pageSize = 10;
         $pages->applyLimit($criteria);
         $news = News::model()->findAll($criteria);
 
-        $this->render('index',array(
-            'dataProvider'=>$dataProvider,
-            'news' => $news, 
+        $this->render('index', array(
+            'dataProvider' => $dataProvider,
+            'news' => $news,
             'pages' => $pages,
         ));
     }
@@ -156,15 +149,15 @@ class NewsController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
-    {
-        $model=new News('search');
+    public function actionAdmin() {
+        $model = new News('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['News']))
-            $model->attributes=$_GET['News'];
+        if (isset($_GET['News'])) {
+            $model->attributes = $_GET['News'];
+        }
 
-        $this->render('admin',array(
-            'model'=>$model,
+        $this->render('admin', array(
+            'model' => $model,
         ));
     }
 
@@ -175,11 +168,11 @@ class NewsController extends Controller
      * @return News the loaded model
      * @throws CHttpException
      */
-    public function loadModel($id)
-    {
-        $model=News::model()->findByPk($id);
-        if($model===null)
-            throw new CHttpException(404,'The requested page does not exist.');
+    public function loadModel($id) {
+        $model = News::model()->findByPk($id);
+        if ($model === null) {
+            throw new CHttpException(404, Yum::t('The requested page does not exist.'));
+        }
         return $model;
     }
 
@@ -187,23 +180,21 @@ class NewsController extends Controller
      * Performs the AJAX validation.
      * @param News $model the model to be validated
      */
-    protected function performAjaxValidation($model)
-    {
-        if(isset($_POST['ajax']) && $_POST['ajax']==='news-form')
-        {
+    protected function performAjaxValidation($model) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'news-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
     }
 
-    public function actionError()
-    {
-        if($error=Yii::app()->errorHandler->error)
-        {
-            if(Yii::app()->request->isAjaxRequest)
+    public function actionError() {
+        if ($error = Yii::app()->errorHandler->error) {
+            if (Yii::app()->request->isAjaxRequest) {
                 echo $error['message'];
-            else
+            } else {
                 $this->render('error', $error);
+            }
         }
     }
+
 }

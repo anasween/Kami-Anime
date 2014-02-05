@@ -15,9 +15,13 @@
     {
         echo CHtml::hiddenField('Comments[news_id]', $model->news_id);
     }
-    if ($model->group_id)
+    elseif ($model->group_id)
     {
         echo CHtml::hiddenField('Comments[group_id]', $model->group_id);
+    }
+    elseif ($model->profile_id)
+    {
+        echo CHtml::hiddenField('Comments[profile_id]', $model->profile_id);
     }
     echo CHtml::hiddenField('Comments[autor_id]', Yii::app()->user->id);
     $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(

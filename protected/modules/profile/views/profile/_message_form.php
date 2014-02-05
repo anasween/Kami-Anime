@@ -1,0 +1,1 @@
+<?php $this->renderPartial('application.views.comments._form', array('model' => $model)); ?>

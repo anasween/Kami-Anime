@@ -8,7 +8,7 @@
     <div class="col-md-10 text">
         <div clas="info">
             <?php 
-                echo Yii::app()->dateFormatter->format('d MMMM yyyy HH:mm:ss', $data->createTime);
+                echo Yii::app()->dateFormatter->format('d MMMM yyyy HH:mm:ss', $data->createtime);
                 if (Yii::app()->user->can('comments'))
                 {
                     echo BSHtml::buttonDropdown(Yum::t('Actions'), 

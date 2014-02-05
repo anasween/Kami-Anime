@@ -820,12 +820,24 @@ class YumUser extends YumActiveRecord {
     public function getFriendsDataProvider() {
         $criteria = new CDbCriteria;
         $criteria->mergeWith(array(
-            'join'=>'LEFT JOIN '.YumFriendship::model()->tableName().' fr ON fr.inviter_id = t.id OR fr.friend_id = t.id',
+            'join' => 'LEFT JOIN ' . YumFriendship::model()->tableName() . ' fr ON fr.inviter_id = t.id OR fr.friend_id = t.id',
             'condition' => '(fr.inviter_id = :uid OR fr.friend_id = :uid) AND t.id <> :uid'
         ));
         $criteria->params = array(':uid' => $this->id);
 
         return new CActiveDataProvider('YumUser', array(
+            'criteria' => $criteria));
+    }
+    
+     /**
+     * Returns comments data provider.
+     * @return \CActiveDataProvider
+     */
+    public function getCommentsDataProvider() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('profile_id', $this->profile->id);
+
+        return new CActiveDataProvider('Comments', array(
             'criteria' => $criteria));
     }
 

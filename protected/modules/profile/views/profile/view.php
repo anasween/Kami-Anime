@@ -53,24 +53,32 @@ $this->renderPartial(
 ); 
 } 
 ?>
-<br />
+<h3><?php echo Yum::t('Messages'); ?></h3>
 <?php
-if(Yum::module('message')->messageSystem != YumMessage::MSG_NONE)
-{
-    $this->renderPartial('application.modules.message.views.message.write_a_message', array('model' => $model)); 
-} ?>
-<br />
-<?php
-if(Yum::module('profile')->enableProfileComments
-		&& Yii::app()->controller->action->id != 'update'
-		&& isset($model->profile))
-{
-    $this->renderPartial(
-        Yum::module('profile')->profileCommentIndexView, 
-        array(
-            'model' => $model->profile
-        )
-    ); 
-} ?>
-</div>
+$this->widget('bootstrap.widgets.BsListView', array(
+    'dataProvider' => $model->getCommentsDataProvider(),
+    'itemView' => '_message', 
+)); 
+?>
 
+<?php 
+if (Yii::app()->user->can("comment", "create"))
+{
+    echo BSHtml::Button(Yum::t('Write a comment'), array(
+        'color' => BSHtml::BUTTON_COLOR_PRIMARY,
+        'icon' =>  BSHtml::GLYPHICON_COMMENT,
+        'onClick' => "$('#comment-add-form').toggle(500)",
+        'style' => 'margin: 10px',
+    ));
+    echo BSHtml::tag('div', array(
+        'id' => 'comment-add-form',
+        'style' => 'overflow: hidden; display: block;',
+    ), $this->renderPartial('_message_form', array('model' => $commentModel),true,true));
+}
+?>
+<?php
+    Yii::app()->clientScript->registerScript('helloscript',"
+        $('#comment-add-form').toggle(500);
+    ",CClientScript::POS_READY);
+?>
+</div>

@@ -2,6 +2,11 @@
 
 class YumProfile extends YumActiveRecord {
 
+    /**
+     * Returns last comments.
+     * @param integer $count - count of comments
+     * @return array
+     */
     public function recentComments($count = 3) {
         $criteria = new CDbCriteria;
         $criteria->condition = 'id = ' . $this->id;
@@ -47,7 +52,7 @@ class YumProfile extends YumActiveRecord {
     public function relations() {
         return array(
             'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
-            'comments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
+            'comments' => array(self::HAS_MANY, 'Comments', 'profile_id'),
         );
     }
 

@@ -58,5 +58,3 @@ if (Yii::app()->user->can("comment", "create")
     Yii::app()->clientScript->registerScript('helloscript',"
         $('#comment-add-form').toggle(500);
     ",CClientScript::POS_READY);
-?>
-<div class="clearfix"></div>

@@ -1,184 +1,155 @@
 <?php
+
 $profiles = Yum::hasModule('profile');
 
-if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL & $profiles)
-{
-    $this->title = Yum::t('View user "{email}"',array(
-			'{email}'=>$model->profile->email));
-}
-else
-{
-    $this->title = Yum::t('View user "{username}"',array(
-			'{username}'=>$model->username));
+if (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL & $profiles) {
+    $this->title = Yum::t('View user "{email}"', array(
+                '{email}' => $model->profile->email));
+} else {
+    $this->title = Yum::t('View user "{username}"', array(
+                '{username}' => $model->username));
 }
 
 $this->breadcrumbs = array(
-            Yum::t('Users') => array('index'), 
-            $model->username
-        );
+    Yum::t('Users') => array('index'),
+    $model->username
+);
 
 echo Yum::renderFlash();
 
-if(Yii::app()->user->isAdmin()) 
-{
-    $attributes = array(
-                    'id',
-                    );
+echo '<div class="item">';
 
-    if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
-    {
+if (Yii::app()->user->isAdmin()) {
+    $attributes = array(
+        'id',
+    );
+
+    if (!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) {
         $attributes[] = 'username';
     }
 
-    if($profiles && $model->profile) 
-    {
-        foreach(YumProfile::getProfileFields() as $field) 
-        {
+    if ($profiles && $model->profile) {
+        foreach (YumProfile::getProfileFields() as $field) {
             array_push($attributes, array(
-                                    'label' => Yum::t($field),
-                                    'type' => 'raw',
-                                    'value' => $model->profile->getAttribute($field)
-                                    ));
+                'label' => Yum::t($field),
+                'type' => 'raw',
+                'value' => $model->profile->getAttribute($field)
+            ));
         }
     }
 
     array_push($attributes,
-        /*
-        There is no added value to showing the password/salt/activationKey because 
-        these are all encrypted 'password', 'salt', 'activationKey',*/
-        array(
-            'name' => 'createtime',
-            'value' => date(UserModule::$dateFormat,$model->createtime),
-        ),
-        array(
-            'name' => 'lastvisit',
-            'value' => date(UserModule::$dateFormat,$model->lastvisit),
-        ),
-        array(
-            'name' => 'lastpasswordchange',
-            'value' => date(UserModule::$dateFormat,$model->lastpasswordchange),
-        ),
-        array(
-            'name' => 'superuser',
-            'value' => YumUser::itemAlias("AdminStatus",$model->superuser),
-        ),
-        array(
-            'name' => Yum::t('Activation link'),
-            'value' =>$model->getActivationUrl()
-        ),
-        array(
-            'name' => 'status',
-            'value' => YumUser::itemAlias("UserStatus",$model->status),
-        )
+            /*
+              There is no added value to showing the password/salt/activationKey because
+              these are all encrypted 'password', 'salt', 'activationKey', */ array(
+        'name' => 'createtime',
+        'value' => date(UserModule::$dateFormat, $model->createtime),
+            ), array(
+        'name' => 'lastvisit',
+        'value' => date(UserModule::$dateFormat, $model->lastvisit),
+            ), array(
+        'name' => 'lastpasswordchange',
+        'value' => date(UserModule::$dateFormat, $model->lastpasswordchange),
+            ), array(
+        'name' => 'superuser',
+        'value' => YumUser::itemAlias("AdminStatus", $model->superuser),
+            ), array(
+        'name' => 'status',
+        'value' => YumUser::itemAlias("UserStatus", $model->status),
+            )
     );
 
     $this->widget(
-        'bootstrap.widgets.BsDetailView', 
-        array(
-            'data'=>$model,
-            'attributes'=>$attributes,
-        )
+            'bootstrap.widgets.BsDetailView', array(
+        'data' => $model,
+        'attributes' => $attributes,
+            )
     );
-
-} 
-else 
-{
+} else {
     // For all users
     $attributes = array(
-                    'username',
-                    );
+        'username',
+    );
 
-    if($profiles) 
-    {
+    if ($profiles) {
         $profileFields = YumProfile::getProfileFields();
-        if ($profileFields) 
-        {
-            foreach($profileFields as $field) 
-            {
-                array_push($attributes,
-                        array(
-                            'label' => Yum::t($field),
-                            'name' => $field,
-                            'value' => $model->profile->getAttribute($field),
+        if ($profileFields) {
+            foreach ($profileFields as $field) {
+                array_push($attributes, array(
+                    'label' => Yum::t($field),
+                    'name' => $field,
+                    'value' => $model->profile->getAttribute($field),
                         )
                 );
             }
         }
     }
 
-    array_push($attributes,
-        array(
-            'name' => 'createtime',
-            'value' => date(UserModule::$dateFormat,$model->createtime),
-        ),
-        array(
-            'name' => 'lastvisit',
-            'value' => date(UserModule::$dateFormat,$model->lastvisit),
-        )
+    array_push($attributes, array(
+        'name' => 'createtime',
+        'value' => date(UserModule::$dateFormat, $model->createtime),
+            ), array(
+        'name' => 'lastvisit',
+        'value' => date(UserModule::$dateFormat, $model->lastvisit),
+            )
     );
 
     $this->widget(
-        'bootstrap.widgets.BsDetailView', 
-        array(
-            'data'=>$model,
-            'attributes'=>$attributes,
-        )
+            'bootstrap.widgets.BsDetailView', array(
+        'data' => $model,
+        'attributes' => $attributes,
+            )
     );
 }
 
 
-if(Yum::hasModule('role') && Yii::app()->user->isAdmin()) 
-{
+if (Yum::hasModule('role') && Yii::app()->user->isAdmin()) {
     Yii::import('application.modules.role.models.*');
-    echo '<h2>'.Yum::t('This user belongs to these roles:') .'</h2>';
+    echo '<h2>' . Yum::t('This user belongs to these roles:') . '</h2>';
 
-    if($model->roles) 
-    {
+    if ($model->roles) {
         echo "<ul>";
-        foreach($model->roles as $role) 
-        {
-            echo CHtml::tag('li',array(),CHtml::link($role->title,array('//role/role/view','id'=>$role->id)),true);
+        foreach ($model->roles as $role) {
+            echo CHtml::tag('li', array(), CHtml::link($role->title, array('//role/role/view', 'id' => $role->id)), true);
         }
         echo "</ul>";
-    } 
-    else 
-    {
+    } else {
         printf('<p>%s</p>', Yum::t('None'));
     }
 }
 
 $buttons = array();
 
-if(Yii::app()->user->isAdmin()) 
-{
+if (Yii::app()->user->isAdmin()) {
     array_push(
-        $buttons,
-        array(
-            'label' => Yum::t('Manage Users'), 
-            'url' => array('//user/user/admin'),
-            'color' => BSHtml::BUTTON_COLOR_INFO,
-            'type' => BSHtml::BUTTON_TYPE_LINK
-        ),
-        array(
-            'label' => Yum::t('Update User'), 
-            'url' => array('user/update', 'id' => $model->id),
-            'color' => BSHtml::BUTTON_COLOR_INFO,
-            'type' => BSHtml::BUTTON_TYPE_LINK
-        )
+            $buttons, array(
+        'label' => Yum::t('Manage Users'),
+        'url' => array('//user/user/admin'),
+        'color' => BSHtml::BUTTON_COLOR_INFO,
+        'type' => BSHtml::BUTTON_TYPE_LINK,
+        'icon' => BSHtml::GLYPHICON_TH
+            ), array(
+        'label' => Yum::t('Update User'),
+        'url' => array('user/update', 'id' => $model->id),
+        'color' => BSHtml::BUTTON_COLOR_INFO,
+        'type' => BSHtml::BUTTON_TYPE_LINK,
+        'icon' => BSHtml::GLYPHICON_EDIT
+            )
     );
 }
 
-if(Yum::hasModule('profile'))
-{
+if (Yum::hasModule('profile')) {
     array_push(
-        $buttons,
-        array(
-            'label' => Yum::t('Visit profile'), 
-            'url' => array('//profile/profile/view', 'id' => $model->id),
-            'color' => BSHtml::BUTTON_COLOR_INFO,
-            'type' => BSHtml::BUTTON_TYPE_LINK
-        )
+            $buttons, array(
+        'label' => Yum::t('Visit profile'),
+        'url' => array('//profile/profile/view', 'id' => $model->id),
+        'color' => BSHtml::BUTTON_COLOR_INFO,
+        'type' => BSHtml::BUTTON_TYPE_LINK,
+        'icon' => BSHtml::GLYPHICON_USER
+            )
     );
 }
 
 echo BSHtml::buttonGroup($buttons);
+
+echo '</div>';

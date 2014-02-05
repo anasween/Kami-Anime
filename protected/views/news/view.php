@@ -39,4 +39,3 @@ $this->breadcrumbs = array(
     Yii::app()->clientScript->registerScript('helloscript',"
         $('#comment-add-form').toggle(500);
     ",CClientScript::POS_READY);
-?>

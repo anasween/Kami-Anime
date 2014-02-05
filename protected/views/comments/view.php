@@ -21,7 +21,7 @@ $this->breadcrumbs=array(
         'id',
         'autor_id',
         'text',
-        'createTime',
+        'createtime',
         'news_id',
     ),
 ));

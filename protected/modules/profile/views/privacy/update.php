@@ -93,10 +93,16 @@ echo '<div class="clear"></div>';
         '1' => Yum::t( 'Appear in search'))
     );
 } ?>
-
-<?php echo $form->textFieldControlGroup($model, 'ignore_users',  array('size' => 100)); ?>
-<p> <?php echo Yum::t('Separate usernames with comma to ignore specified users'); ?> </p>
-</div>
+<?php
+echo $form->LabelEx($model, 'ignore_users');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'ignore_users',
+        'htmlOptions' => array('multiple' => 'multiple', 'style' => 'width: 100%;'),
+        'data' => CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
+    ));
+?>
+<div style="margin-top: 10px;">
 <?php
 echo BSHtml::buttonGroup(array(
     array(
@@ -116,4 +122,5 @@ echo BSHtml::buttonGroup(array(
 ));
 ?>
 <?php $this->endWidget(); ?>
+</div>
 </div> <!-- form -->
