@@ -5,7 +5,6 @@ $this->breadcrumbs=array(
 	Yum::t('Update'),
 );
 ?>
-
-<h1><?php echo Yum::t('Update Friendship') . ' ' . $model->id; ?></h1>
+<?php BSHtml::pageHeader(Yum::t('Update Friendship') . ' ' . $model->id) ?>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

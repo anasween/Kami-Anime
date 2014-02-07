@@ -15,7 +15,7 @@ echo '</div>';
 echo '<h2>'.Yum::t('Password recovery').'</h2>';
 ?>
 
-<div class="form">
+<div class="form well">
 <?php echo BSHtml::beginFormBs(); ?>
 
     <?php echo BSHtml::errorSummary($form); ?>

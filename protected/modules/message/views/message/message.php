@@ -1,8 +1,7 @@
 <?php $this->pageTitle=Yum::t('Messages'); ?>
 
-<h1><?php echo $title; ?></h1>
+<?php echo BSHtml::pageHeader($title); ?>
 
 <div class="form">
 <?php echo $content; ?>
-
 </div><!-- yiiForm -->

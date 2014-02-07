@@ -2,7 +2,9 @@
 $this->title = Yum::t('Friendship administration');
 $this->breadcrumbs = array(Yum::t('Friends'), Yum::t('Admin'));
 
-printf('<p>%s</p>', Yum::t('All friendships in the system'));
+echo '<div class="well">';
+
+echo BSHtml::pageHeader(Yum::t('All friendships in the system'));
 
 $this->widget('bootstrap.widgets.BsGridView', array(
 	'dataProvider'=>$model->search(),
@@ -37,3 +39,5 @@ $this->widget('bootstrap.widgets.BsGridView', array(
         )
     )
 ); 
+
+echo '</div>';

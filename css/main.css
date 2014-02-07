@@ -40,11 +40,6 @@ footer {
 }
 .post {
   margin-bottom: 20px;
-  background-color: #ffffff;
-  border-radius: 20px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -khtml-border-radius: 20px;
 }
 .post h1 {
   text-align: center;
@@ -58,21 +53,12 @@ footer {
 .post .post_description {
   text-align: center;
   vertical-align: middle;
-  padding: 5px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -khtml-border-radius: 10px;
 }
 .post .post_description div {
   margin-top: 10px;
 }
 .post .btn {
-  margin: 10px;
-}
-.post .post_body {
-  padding-left: 10px;
+  /*margin: 10px;*/
 }
 .comment .btn-group {
   float: right;

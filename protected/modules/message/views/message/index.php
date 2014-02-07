@@ -8,9 +8,7 @@ $this->breadcrumbs= array(
 
 echo Yum::renderFlash();
 
-echo '<h2>' . Yum::t('Messages') . '</h2>';
-
-echo '<div class="item">';
+echo '<div class="well">';
 
 echo BSHtml::pills(array(
     array(
@@ -29,6 +27,8 @@ echo BSHtml::pills(array(
 ), array(
     'justified' => true
 ));
+
+echo BSHtml::pageHeader(Yum::t('Messages'));
 
 $this->widget('bootstrap.widgets.BsGridView', array(
         'id'=>'yum-message-grid',

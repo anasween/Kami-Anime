@@ -57,19 +57,24 @@ class Controller extends CController {
                         'visible' => Yum::hasModule('avatar') && Yii::app()->user->can("avatar", "admin")
                     ),
                     array(
-                        'label' => Yum::t('Roles'),
+                        'label' => Yum::t('Manage Roles'),
                         'url' => array('//role/role/admin'),
                         'visible' => Yum::hasModule('role') && Yii::app()->user->can("role", "admin")
                     ),
                     array(
-                        'label' => Yum::t('Permissions'),
+                        'label' => Yum::t('Manage permissions'),
                         'url' => array('//role/permission/admin'),
                         'visible' => Yum::hasModule('role') && Yii::app()->user->can("role", "admin")
                     ),
                     array(
-                        'label' => Yum::t('Actions'),
+                        'label' => Yum::t('Manage Actions'),
                         'url' => array('//role/action/admin'),
                         'visible' => Yum::hasModule('role') && Yii::app()->user->can("role", "admin")
+                    ),
+                    array(
+                        'label' => Yum::t('Manage friendships'),
+                        'url' => array('//friendship/friendship/admin'),
+                        'visible' => Yum::hasModule('friendship') && Yii::app()->user->can("friendship", "admin")
                     ),
                     array(
                         'label' => Yum::t('Ordered memberships'),

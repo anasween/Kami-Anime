@@ -3,11 +3,9 @@ $this->breadcrumbs = array(
             Yum::t('Permissions')=>array('index'),
             Yum::t('Manage')
         );
-?>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Manage permissions'));
 
-<h1> <?php echo Yum::t('Manage permissions'); ?> </h1>
-
-<?php
 echo BSHtml::linkButton(Yum::t('Assign permission'), array(
     'color' => BSHtml::BUTTON_COLOR_SUCCESS,
     'icon' =>  BSHtml::GLYPHICON_PLUS,
@@ -60,3 +58,4 @@ $this->widget('bootstrap.widgets.BsGridView',
         ),
     )
 );
+echo '</div>';

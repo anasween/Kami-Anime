@@ -442,12 +442,15 @@ class YumUser extends YumActiveRecord {
     }
 
     public function isFriendOf($invited_id) {
-        foreach ($this->getFriendships() as $friendship) {
-            if ($friendship->inviter_id == $this->id && $friendship->friend_id == $invited_id) {
-                return $friendship->status;
-            }
+        $condition = '(inviter_id = :uid1 and friend_id = :uid2) or (inviter_id = :uid2 or friend_id = :uid1)';
+        Yii::import('application.modules.friendship.models.YumFriendship');
+        $friendship = YumFriendship::model()->find($condition, array(
+            ':uid1' => $this->id,
+            ':uid2' => $invited_id,
+        ));
+        if ($friendship) {
+            return $friendship->status;
         }
-
         return false;
     }
 
@@ -456,14 +459,16 @@ class YumUser extends YumActiveRecord {
         return YumFriendship::model()->findAll($condition, array(':uid' => $this->id));
     }
 
-    // Friends can not be retrieve via the relations() method because a friend
-    // can either be in the invited_id or in the friend_id column.
-    // set $everything to true to also return pending and rejected friendships
+    /**
+     * Returns friends of user. Put everything = true if you want not confirmed friends.
+     * @param boolean $everything
+     * @return array
+     */
     public function getFriends($everything = false) {
         if ($everything) {
-            $condition = 'inviter_id = :uid';
+            $condition = 'inviter_id = :uid or friend_id = :uid';
         } else {
-            $condition = 'inviter_id = :uid and status = 2';
+            $condition = '(inviter_id = :uid or friend_id = :uid) and status = 2';
         }
 
         $friends = array();
@@ -476,27 +481,7 @@ class YumUser extends YumActiveRecord {
 
         if ($friendships) {
             foreach ($friendships as $friendship) {
-                $friends[] = YumUser::model()->findByPk($friendship->friend_id);
-            }
-        }
-
-        if ($everything) {
-            $condition = 'friend_id = :uid';
-        } else {
-            $condition = 'friend_id = :uid and status = 2';
-        }
-
-        $friendships = YumFriendship::model()->findAll($condition, array(
-            ':uid' => $this->id));
-
-        if ($friendships != NULL && !is_array($friendships)) {
-            $friendships = array($friendships);
-        }
-
-
-        if ($friendships) {
-            foreach ($friendships as $friendship) {
-                $friends[] = YumUser::model()->findByPk($friendship->inviter_id);
+                $friends[] = YumUser::model()->findByPk(($friendship->friend_id != $this->id) ? $friendship->friend_id : $friendship->inviter_id);
             }
         }
 
@@ -779,6 +764,11 @@ class YumUser extends YumActiveRecord {
         }
     }
 
+    /**
+     * Returns avatar image.
+     * @param boolean $thumb
+     * @return string
+     */
     public function getAvatar($thumb = false) {
         if (Yum::hasModule('avatar') && $this->profile) {
             $options = array();
@@ -812,6 +802,73 @@ class YumUser extends YumActiveRecord {
             return $return;
         }
     }
+    
+    public function getUserAvatarWithInfo() {
+        
+        $returnCode = '';
+        $online = '';
+        
+        if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) 
+        {
+            if($this->privacy && $this->privacy->show_online_status) 
+            {
+                if($this->isOnline()) 
+                {
+                    $online = ' online';
+                }
+            }
+        }
+        $divContent = $this->getAvatar(true);
+        $divContent .= BSHtml::tag('p',array(),$this->username);
+
+        $returnCode .= BSHtml::tag('div',array(
+                    'class' => 'view_user' . $online,
+                    'id' => 'user_' . $this->id,
+                    'data-content' => $this->getUserShortInfo(),
+                    'data-toggle' => 'popover'
+                ),
+                $divContent);
+        
+        return $returnCode;
+    }
+    
+    /**
+     * Returns user short info in HTML.
+     * @param string $user
+     * @return string
+     */
+    public function getUserShortInfo() {
+        
+        $shortInfo = '';
+        
+        if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) 
+        {
+            if($this->privacy && $this->privacy->show_online_status) 
+            {
+                if($this->isOnline()) 
+                {
+                    $shortInfo .= BSHtml::tag('strong', array('style' => 'text-align: center;'), Yum::t('User is Online!')) . '<br>';
+                }
+            }
+        }
+        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('Username').': ') . $this->username . '</br>';
+        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('First visit').': ') . date(UserModule::$dateFormat, $this->createtime) . '</br>';
+        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('Last visit').': ') . date(UserModule::$dateFormat, $this->lastvisit) . '</br>';
+
+        if(Yum::hasModule('message'))
+        {
+            $shortInfo .=  BSHtml::link(Yum::t('Write a message'), array(
+                                    '//message/message/compose', 'to_user_id' => $this->id)) . '<br />';
+        }
+
+        if(Yum::hasModule('profile'))
+        {
+            $shortInfo .=  BSHtml::link(Yum::t('Visit profile'), array(
+                                    '//profile/profile/view', 'id' => $this->id));
+        }
+        
+        return $shortInfo;
+    }
 
     /**
      * Returns CActiveDataProvider of user friends.
@@ -828,8 +885,8 @@ class YumUser extends YumActiveRecord {
         return new CActiveDataProvider('YumUser', array(
             'criteria' => $criteria));
     }
-    
-     /**
+
+    /**
      * Returns comments data provider.
      * @return \CActiveDataProvider
      */
@@ -838,6 +895,19 @@ class YumUser extends YumActiveRecord {
         $criteria->compare('profile_id', $this->profile->id);
 
         return new CActiveDataProvider('Comments', array(
+            'criteria' => $criteria));
+    }
+    
+    /**
+     * Returns CActiveDataProvider of user friendship requests.
+     * @return CActiveDataProvider
+     */
+    public function getFriendshipsDataProvider() {
+        $criteria = new CDbCriteria;
+        $criteria->condition = 't.inviter_id = :uid OR t.friend_id = :uid';
+        $criteria->params = array(':uid' => $this->id);
+
+        return new CActiveDataProvider('YumFriendship', array(
             'criteria' => $criteria));
     }
 

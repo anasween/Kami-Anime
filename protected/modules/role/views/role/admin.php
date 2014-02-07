@@ -5,8 +5,10 @@ $this->breadcrumbs = array(
             Yum::t('Manage'),
         );
 ?>
-
-<?php $this->widget('bootstrap.widgets.BsGridView', array(
+<div class="well">
+<?php 
+echo BSHtml::pageHeader(Yum::t('Manage Roles'));
+$this->widget('bootstrap.widgets.BsGridView', array(
     'dataProvider'=>$dataProvider,
     'columns'=>array(
         array(
@@ -22,3 +24,5 @@ $this->breadcrumbs = array(
         ),
     ),
 ));
+?>
+</div>

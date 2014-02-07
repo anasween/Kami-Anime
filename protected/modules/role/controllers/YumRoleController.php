@@ -5,111 +5,110 @@ Yii::import('application.modules.user.models.*');
 Yii::import('application.modules.role.models.*');
 
 class YumRoleController extends YumController {
-	public function accessRules() {
-		return array(
-				array('allow',
-					'actions'=>array('index', 'admin','delete','create','update', 'view'),
-					'expression' => 'Yii::app()->user->isAdmin()'
-					),
-				array('deny',  // deny all other users
-						'users'=>array('*'),
-						),
-				);
-	}
 
-	public function actionView() {
-		$this->layout = Yum::module()->adminLayout;
-		$model = $this->loadModel();
+    public function accessRules() {
+        return array(
+            array('allow',
+                'actions' => array('index', 'admin', 'delete', 'create', 'update', 'view'),
+                'expression' => 'Yii::app()->user->isAdmin()'
+            ),
+            array('deny', // deny all other users
+                'users' => array('*'),
+            ),
+        );
+    }
 
-		$assignedUsers = new CActiveDataProvider('YumUser', array(
-					'criteria' => array(
-						'condition' => "role_id = {$model->id}",
-						'join' => 'left join '.Yum::module('role')->userRoleTable.' on t.id = user_id')));
+    public function actionView() {
+        $this->layout = Yum::module()->adminLayout;
+        $model = $this->loadModel();
 
-		$activeMemberships = false;
-		if(Yum::hasModule('membership')) {
-			Yii::import('application.modules.membership.models.*');
-			$activeMemberships= new CActiveDataProvider('YumMembership', array(
-						'criteria' => array(
-							'condition' => "membership_id = {$model->id}")));
-}
+        $assignedUsers = new CActiveDataProvider('YumUser', array(
+            'criteria' => array(
+                'condition' => "role_id = {$model->id}",
+                'join' => 'left join ' . Yum::module('role')->userRoleTable . ' on t.id = user_id')));
 
-		$this->render('view',array(
-					'assignedUsers' => $assignedUsers,
-					'activeMemberships' => $activeMemberships,
-					'model'=>$model));
-	}
+        $activeMemberships = false;
+        if (Yum::hasModule('membership')) {
+            Yii::import('application.modules.membership.models.*');
+            $activeMemberships = new CActiveDataProvider('YumMembership', array(
+                'criteria' => array(
+                    'condition' => "membership_id = {$model->id}")));
+        }
 
-	public function actionCreate() {
-		$this->layout = Yum::module()->adminLayout;
+        $this->render('view', array(
+            'assignedUsers' => $assignedUsers,
+            'activeMemberships' => $activeMemberships,
+            'model' => $model));
+    }
 
-		$model = new YumRole();
+    public function actionCreate() {
+        $this->layout = Yum::module()->adminLayout;
 
-		$this->performAjaxValidation($model, 'yum-role-form');
+        $model = new YumRole();
 
-		if(isset($_POST['YumRole'])) {
-			$model->attributes = $_POST['YumRole'];
+        $this->performAjaxValidation($model, 'yum-role-form');
 
-			if($model->save()) {
-				if(Yum::module()->enableLogging == true) {
-					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-					Yum::log(Yum::t('The role {role} has been created by {username}', array(
-									'{role}' =>  $model->title,
-									'{username}' => Yii::app()->user->data()->username)));
-				}
-				$this->redirect(array('admin'));
-			}
-		}
-		$this->render('create', array('model' => $model));
-	}
+        if (isset($_POST['YumRole'])) {
+            $model->attributes = $_POST['YumRole'];
 
-	public function actionUpdate() {
-		$this->layout = Yum::module()->adminLayout;
-		$model = $this->loadModel();
+            if ($model->save()) {
+                if (Yum::module()->enableLogging == true) {
+                    $user = YumUser::model()->findbyPK(Yii::app()->user->id);
+                    Yum::log(Yum::t('The role {role} has been created by {username}', array(
+                                '{role}' => $model->title,
+                                '{username}' => Yii::app()->user->data()->username)));
+                }
+                $this->redirect(array('admin'));
+            }
+        }
+        $this->render('create', array('model' => $model));
+    }
 
-		$this->performAjaxValidation($model, 'yum-role-form');
+    public function actionUpdate() {
+        $this->layout = Yum::module()->adminLayout;
+        $model = $this->loadModel();
 
-		if(isset($_POST['YumRole'])) {
-			$model->attributes = $_POST['YumRole'];
+        $this->performAjaxValidation($model, 'yum-role-form');
 
-			if ($model->validate() && $model->save()) 
-				$this->redirect(array('view', 'id' => $model->id));
-		}
-	
+        if (isset($_POST['YumRole'])) {
+            $model->attributes = $_POST['YumRole'];
 
-		$this->render('update', array(
-			'model' => $model,
-		));
-	}
+            if ($model->validate() && $model->save())
+                $this->redirect(array('view', 'id' => $model->id));
+        }
 
-	public function actionAdmin() {
-		$this->layout = Yum::module()->adminLayout;
-		$dataProvider = new CActiveDataProvider('YumRole', array(
-					'pagination' => array(
-						'pageSize' => Yum::module()->pageSize,
-					),
-				));
 
-		$this->render('admin', array(
-			'dataProvider' => $dataProvider,
-		));
-	}
+        $this->render('update', array(
+            'model' => $model,
+        ));
+    }
 
-	public function actionDelete() {
-		$this->layout = Yum::module()->adminLayout;
-		if (Yii::app()->request->isPostRequest) {
-			$this->loadModel()->delete();
+    public function actionAdmin() {
+        $this->layout = Yum::module()->adminLayout;
+        $dataProvider = new CActiveDataProvider('YumRole', array(
+            'pagination' => array(
+                'pageSize' => Yum::module()->pageSize,
+            ),
+        ));
 
-			if (!isset($_POST['ajax']))
-				$this->redirect(array('index'));
-		}
-		else
-			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-	}
+        $this->render('admin', array(
+            'dataProvider' => $dataProvider,
+        ));
+    }
 
-	public function actionIndex() {
-		$this->actionAdmin();
-	}
+    public function actionDelete() {
+        $this->layout = Yum::module()->adminLayout;
+        if (Yii::app()->request->isPostRequest) {
+            $this->loadModel()->delete();
 
+            if (!isset($_POST['ajax']))
+                $this->redirect(array('index'));
+        } else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+    }
+
+    public function actionIndex() {
+        $this->actionAdmin();
+    }
 
 }

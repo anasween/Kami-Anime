@@ -6,9 +6,8 @@ $this->breadcrumbs = array(
             Yum::t('Sent messages')
         );
 ?>
-<h2><?php echo Yum::t('Sent messages'); ?></h2>
 <?php
-echo '<div class="item">';
+echo '<div class="well">';
 
 echo BSHtml::pills(array(
     array(
@@ -27,6 +26,8 @@ echo BSHtml::pills(array(
 ), array(
     'justified' => true
 ));
+
+echo BSHtml::pageHeader(Yum::t('Sent messages'));
 
 $this->widget('bootstrap.widgets.BsGridView', array(
         'id'=>'yum-sent-message-grid',

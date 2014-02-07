@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base form model class
  * @author tomasz.suchanek
@@ -6,8 +7,8 @@
  * @package Yum.core
  *
  */
-abstract class YumFormModel extends CFormModel
-{
-	
+abstract class YumFormModel extends CFormModel {
+    
 }
+
 ?>

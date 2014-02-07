@@ -2,11 +2,14 @@
 $this->breadcrumbs = array(
             Yum::t('Actions'),
         );
-?>
 
-<h1><?php echo Yum::t('Actions'); ?></h1>
+echo '<div class="well">';
 
-<?php $this->widget('bootstrap.widgets.BsListView', array(
+echo BSHtml::pageHeader(Yum::t('Actions'));
+
+$this->widget('bootstrap.widgets.BsListView', array(
     'dataProvider'=>$dataProvider,
     'itemView'=>'_view',
 ));
+
+echo '</div>';

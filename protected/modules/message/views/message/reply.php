@@ -23,7 +23,27 @@ echo Yum::t('This message will be sent to {username}', array(
 
 <?php echo $form->textFieldControlGroup($model,'title',array('size'=>45,'maxlength'=>45)); ?>
 
-<?php echo $form->textAreaControlGroup($model,'message',array('rows'=>6, 'cols'=>50)); ?>
+    <?php 
+    echo $form->LabelEx($model, 'message');
+    $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
+            'model' => $model,
+            'attribute' => 'message',
+            'options' => array(
+                'lang' => 'ru',
+                'toolbar' => true,
+                'iframe' => true,
+                'css' => 'wym.css',
+                'buttons' => array(
+                    'html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
+                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                    'image', 'video', 'link', '|', '|', 'alignment', '|', 'horizontalrule'
+                ),
+            ),
+            'htmlOptions' => array(
+                'rows' => 20,
+            ),
+        ));
+?>
 
 <?php
     echo BSHtml::submitButton(Yum::t('Reply'), array(

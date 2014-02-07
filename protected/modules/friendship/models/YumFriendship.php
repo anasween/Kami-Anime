@@ -1,209 +1,204 @@
 <?php
 
 class YumFriendship extends YumActiveRecord {
-	const FRIENDSHIP_NONE = 0; 
-	const FRIENDSHIP_REQUEST = 1;
-	const FRIENDSHIP_ACCEPTED = 2;
-	const FRIENDSHIP_REJECTED = 3;
 
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+    const FRIENDSHIP_NONE = 0;
+    const FRIENDSHIP_REQUEST = 1;
+    const FRIENDSHIP_ACCEPTED = 2;
+    const FRIENDSHIP_REJECTED = 3;
 
-	public function requestFriendship($inviter, $invited, $message = null) {
-		if(!is_object($inviter))
-			$inviter = YumUser::model()->findByPk($inviter);
+    public static function model($className = __CLASS__) {
+        return parent::model($className);
+    }
 
-		if(!is_object($invited))
-			$invited = YumUser::model()->findByPk($invited);
+    public function requestFriendship($inviter, $invited, $message = null) {
+        if (!is_object($inviter)) {
+            $inviter = YumUser::model()->findByPk($inviter);
+        }
 
-		if($inviter->id == $invited->id)
-			return false;
+        if (!is_object($invited)) {
+            $invited = YumUser::model()->findByPk($invited);
+        }
 
-		$friendship_status = $inviter->isFriendOf($invited);
+        if ($inviter->id == $invited->id) {
+            return false;
+        }
 
-		if($friendship_status !== false)  {
-			if($friendship_status == 1)
-				$this->addError('invited_id', Yum::t('Friendship request already sent'));
-			if($friendship_status == 2)
-				$this->addError('invited_id', Yum::t('Users already are friends'));
-			if($friendship_status == 3)
-				$this->addError('invited_id', Yum::t('Friendship request has been rejected '));
+        $friendship_status = $inviter->isFriendOf($invited);
 
-			return false;
-		}
+        if ($friendship_status !== false) {
+            if ($friendship_status == 1) {
+                $this->addError('invited_id', Yum::t('Friendship request already sent'));
+            }
+            if ($friendship_status == 2) {
+                $this->addError('invited_id', Yum::t('Users already are friends'));
+            }
+            if ($friendship_status == 3) {
+                $this->addError('invited_id', Yum::t('Friendship request has been rejected'));
+            }
 
-		$this->inviter_id = $inviter->id;
-		$this->friend_id = $invited->id;
-		$this->acknowledgetime = 0;
-		$this->requesttime = time();
-		$this->updatetime = time();
+            return false;
+        }
 
-		if($message !== null)
-			$this->message = $message;
-		$this->status = 1;
-		return $this->save();
-	} 
+        $this->inviter_id = $inviter->id;
+        $this->friend_id = $invited->id;
+        $this->acknowledgetime = 0;
+        $this->requesttime = time();
+        $this->updatetime = time();
 
-	// How many friendship requests have been made in month $month of year $year?
-	public static function countRequest($month = null, $year = null) {
-		$timestamp = mktime(0, 0, 0, $month, 1, $year);
-		$timestamp2 = mktime(0, 0, 0, $month + 1, 1, $year);
-		if($month === null) {
-			$timestamp = 0;
-			$timestamp2 = time();
-		}
+        if ($message !== null) {
+            $this->message = $message;
+        }
+        $this->status = 1;
+        return $this->save();
+    }
+
+    // How many friendship requests have been made in month $month of year $year?
+    public static function countRequest($month = null, $year = null) {
+        $timestamp = mktime(0, 0, 0, $month, 1, $year);
+        $timestamp2 = mktime(0, 0, 0, $month + 1, 1, $year);
+        if ($month === null) {
+            $timestamp = 0;
+            $timestamp2 = time();
+        }
 
 
-		$sql = "select count(*) from friendship where requesttime > {$timestamp} and requesttime < {$timestamp2}";
-		$result = Yii::app()->db->createCommand($sql)->queryAll();
-		return $result[0]['count(*)'];
-	}
+        $sql = "select count(*) from friendship where requesttime > {$timestamp} and requesttime < {$timestamp2}";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        return $result[0]['count(*)'];
+    }
 
-	public function acceptFriendship() {
-		$this->acknowledgetime = time();
-		$this->status = 2;
-		if(Yum::hasModule('message') 
-				&& isset($this->inviter->privacy) 
-				&& $this->inviter->privacy->message_new_friendship) {
-			Yii::import('application.modules.message.models.YumMessage');
-			YumMessage::write($this->inviter, $this->invited,
-					Yum::t('Your friendship request has been accepted'),
-					strtr(
-						'Your friendship request to {username} has been accepted', array(
-							'{username}' => $this->inviter->username))); 
-		}
-		$this->save(false, array('acknowledgetime', 'status'));
+    public function acceptFriendship() {
+        $this->acknowledgetime = time();
+        $this->status = 2;
+        if (Yum::hasModule('message') && isset($this->inviter->privacy) && $this->inviter->privacy->message_new_friendship) {
+            Yii::import('application.modules.message.models.YumMessage');
+            YumMessage::write($this->inviter, $this->invited, Yum::t('Your friendship request has been accepted'), strtr(
+                            'Your friendship request to {username} has been accepted', array(
+                '{username}' => $this->inviter->username)));
+        }
+        $this->save(false, array('acknowledgetime', 'status'));
+    }
 
-	} 
+    public function getFriend() {
+        if ($this->friend_id == Yii::app()->user->id) {
+            return $this->inviter->username;
+        } else {
+            return $this->invited->username;
+        }
+    }
 
-	public function getFriend() {
-		if($this->friend_id == Yii::app()->user->id)
-			return $this->inviter->username;
-		else
-			return $this->invited->username;
-	}
+    public function getStatus() {
+        switch ($this->status) {
+            case '0':
+                return Yum::t('No friendship requested');
+            case '1':
+                return Yum::t('Confirmation pending');
+            case '2':
+                return Yum::t('Friendship confirmed');
+            case '3':
+                return Yum::t('Friendship rejected');
+        }
+    }
 
-	public function getStatus() {
-		switch($this->status) {
-			case '0':
-				return Yum::t('No friendship requested');
-			case '1':
-				return Yum::t('Confirmation pending');
-			case '2':
-				return Yum::t('Friendship confirmed');
-			case '3':
-				return Yum::t('Friendship rejected');
+    public function rejectFriendship() {
+        $this->acknowledgetime = time();
+        $this->status = 3;
+        return($this->save());
+    }
 
-		}
-	}
+    public function ignoreFriendship() {
+        $this->acknowledgetime = time();
+        $this->status = 0;
+        return($this->save());
+    }
 
-	public function rejectFriendship() {
-		$this->acknowledgetime = time();
-		$this->status = 3;
-		return($this->save());
-	} 
+    public function tableName() {
+        $this->_tableName = Yum::module('friendship')->friendshipTable;
 
-	public function ignoreFriendship() {
-		$this->acknowledgetime = time();
-		$this->status = 0;
-		return($this->save());
-	} 
+        return $this->_tableName;
+    }
 
-	public function tableName()
-	{
-		$this->_tableName = Yum::module('friendship')->friendshipTable;
+    public function rules() {
+        return array(
+            array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'required'),
+            array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'numerical', 'integerOnly' => true),
+            array('message', 'length', 'max' => 255),
+            array('inviter_id, friend_id, status, message, requesttime, acknowledgetime, updatetime', 'safe', 'on' => 'search'),
+        );
+    }
 
-		return $this->_tableName;
-	}
+    public function relations() {
+        return array(
+            'inviter' => array(self::BELONGS_TO, 'YumUser', 'inviter_id'),
+            'invited' => array(self::BELONGS_TO, 'YumUser', 'friend_id'),
+        );
+    }
 
-	public function rules()
-	{
-		return array(
-				array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'required'),
-				array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'numerical', 'integerOnly'=>true),
-				array('message', 'length', 'max'=>255),
-				array('inviter_id, friend_id, status, message, requesttime, acknowledgetime, updatetime', 'safe', 'on'=>'search'),
-				);
-	}
+    public function attributeLabels() {
+        return array(
+            'inviter_id' => Yum::t('Inviter'),
+            'friend_id' => Yum::t('Friend'),
+            'status' => Yum::t('Status'),
+            'message' => Yum::t('Message'),
+            'requesttime' => Yum::t('Requesttime'),
+            'acknowledgetime' => Yum::t('Acknowledgetime'),
+            'updatetime' => Yum::t('Updatetime'),
+        );
+    }
 
-	public function relations()
-	{
-            return array(
-                'inviter' => array(self::BELONGS_TO, 'YumUser', 'inviter_id'),
-                'invited' => array(self::BELONGS_TO, 'YumUser', 'friend_id'),
-            );
-	}
+    public function beforeSave() {
+        $this->updatetime = time();
 
-	public function attributeLabels()
-	{
-		return array(
-                    'inviter_id' => Yum::t('Inviter'),
-                    'friend_id' => Yum::t('Friend'),
-                    'status' => Yum::t('Status'),
-                    'message' => Yum::t('Message'),
-                    'requesttime' => Yum::t('Requesttime'),
-                    'acknowledgetime' => Yum::t('Acknowledgetime'),
-                    'updatetime' => Yum::t('Updatetime'),
-                );
-	}
+        // If the user has activated email receiving, send a email
+        if ($this->isNewRecord) {
+            if ($user = YumUser::model()->findByPk($this->friend_id)) {
+                if (Yum::hasModule('message') && $user->privacy && $user->privacy->message_new_friendship) {
+                    Yii::import('application.modules.message.models.YumMessage');
+                    YumMessage::write($user, $this->inviter, Yum::t('New friendship request from {username}', array(
+                                '{username}' => $this->inviter->username)), strtr(
+                                    'A new friendship request from {username} has been made: {message} <a href="{link_friends}">Manage my friends</a><br /><a href="{link_profile}">To the profile</a>', array(
+                        '{username}' => $this->inviter->username,
+                        '{link_friends}' => Yii::app()->controller->createUrl('//friendship/friendship/index'),
+                        '{link_profile}' => Yii::app()->controller->createUrl('//profile/profile/view'),
+                        '{message}' => $this->message)));
+                }
+            }
+        }
+        return parent::beforeSave();
+    }
 
-	public function beforeSave() {
-		$this->updatetime = time();
+    public function search() {
+        $criteria = new CDbCriteria;
 
-		// If the user has activated email receiving, send a email
-		if($this->isNewRecord)
-			if($user = YumUser::model()->findByPk($this->friend_id))  {
-				if(Yum::hasModule('message')
-						&& $user->privacy 
-						&& $user->privacy->message_new_friendship) {
-					Yii::import('application.modules.message.models.YumMessage');
-					YumMessage::write($user, $this->inviter,
-							Yum::t('New friendship request from {username}', array(
-									'{username}' => $this->inviter->username)),
-							strtr(
-								'A new friendship request from {username} has been made: {message} <a href="{link_friends}">Manage my friends</a><br /><a href="{link_profile}">To the profile</a>', array(
-									'{username}' => $this->inviter->username,
-									'{link_friends}' => Yii::app()->controller->createUrl('//friendship/friendship/index'),
-									'{link_profile}' => Yii::app()->controller->createUrl('//profile/profile/view'),
-									'{message}' => $this->message)));
-				}
-			}
-		return parent::beforeSave();
-	}
+        $criteria->together = true;
+        $criteria->with = array('inviter');
+        $criteria->compare('inviter.username', $this->inviter_id, true);
+        $criteria->compare('invited.username', $this->friend_id, true);
+        $criteria->compare('t.status', $this->status, true);
+        $criteria->compare('t.message', $this->message, true);
+        $criteria->compare('t.requesttime', $this->requesttime, true);
+        $criteria->compare('t.acknowledgetime', $this->acknowledgetime, true);
+        $criteria->compare('t.updatetime', $this->updatetime, true);
 
-	public function search()
-	{
-		$criteria=new CDbCriteria;
+        return new CActiveDataProvider(get_class($this), array(
+            'criteria' => $criteria,
+        ));
+    }
 
-                $criteria->together = true; //without this you wont be able to search the second table's data
-                $criteria->with = array('inviter');
-//                $criteria->with = array('invited');
-		$criteria->compare('inviter.username', $this->inviter_id,true);
-		$criteria->compare('invited.username', $this->friend_id,true);
-		$criteria->compare('t.status', $this->status,true);
-		$criteria->compare('t.message', $this->message, true);
-		$criteria->compare('t.requesttime', $this->requesttime,true);
-		$criteria->compare('t.acknowledgetime', $this->acknowledgetime,true);
-		$criteria->compare('t.updatetime', $this->updatetime,true);
+    public static function areFriends($uid1, $uid2) {
+        if (is_numeric($uid1) && is_numeric($uid2)) {
+            $friendship = YumFriendship::model()->find('status = 2 and ((inviter_id = ' . $uid1 . ' and friend_id = ' . $uid2 . ') or (inviter_id = ' . $uid2 . ' and friend_id = ' . $uid1 . '))');
+            if ($friendship) {
+                return true;
+            }
 
-		return new CActiveDataProvider(get_class($this), array(
-					'criteria'=>$criteria,
-					));
-	}
+//            $friendship = YumFriendship::model()->find('status = 2 and inviter_id = ' . $uid2 . ' and friend_id = ' . $uid1);
+//            if ($friendship) {
+//                return true;
+//            }
+        }
+        return false;
+    }
 
-	public static function areFriends($uid1, $uid2) {
-		if(is_numeric($uid1) && is_numeric($uid2)) {
-			$friendship = YumFriendship::model()->find('status = 2 and inviter_id = '.$uid1 . ' and friend_id = '.$uid2);
-			if($friendship)
-				return true;
-
-			$friendship = YumFriendship::model()->find('status = 2 and inviter_id = '.$uid2 . ' and friend_id = '.$uid1);
-			if($friendship)
-				return true;
-		} 
-		return false;
-
-	}
 }

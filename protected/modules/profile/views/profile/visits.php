@@ -6,6 +6,8 @@ $this->breadcrumbs = array(
             Yum::t('Profile visits')
         );
 
+echo '<div class="well">';
+
 $this->widget('bootstrap.widgets.BsGridView', array(
         'dataProvider'=>$model->search(),
         'columns'=>array(
@@ -38,4 +40,6 @@ $this->widget('bootstrap.widgets.BsGridView', array(
             'num_of_visits',
         )  
     )
-); 
+);
+
+echo '</div>';

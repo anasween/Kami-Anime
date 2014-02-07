@@ -45,7 +45,7 @@ Yii::app()->clientScript->registerScript('search',
                     'value'=>'$data->autor->username',
                 ),
                 'text',
-                'createTime',
+                'createtime',
                 'news_id',
                 array(
                     'class'=>'bootstrap.widgets.BsButtonColumn',

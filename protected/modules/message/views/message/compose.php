@@ -13,9 +13,9 @@ if(!$to_user_id)
 ?>
 
 <?php
-echo '<div class="item">';
 if(!$to_user_id) 
 {
+    echo '<div class="well">';
     echo BSHtml::pills(array(
         array(
             'label' => Yum::t('Admin inbox'), 
@@ -66,19 +66,41 @@ if($to_user_id)
 } 
 else 
 {
-    echo $form->dropDownListControlGroup(
-            $model, 
-            'to_user_id',
-            CHtml::listData(Yii::app()->user->data()->getFriends(), 'id', 'username'),
-            array(
-                'hint' => Yum::t('Only your friends are shown here')
-            )
-    );
+    echo $form->LabelEx($model, 'to_user_id');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'to_user_id',
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(Yii::app()->user->data()->getFriends(), 'id', 'username'),
+    )); 
 }
 ?>
 <?php echo $form->textFieldControlGroup($model,'title',array('size'=>45,'maxlength'=>45)); ?>
 
-<?php echo $form->textAreaControlGroup($model,'message',array('rows'=>6, 'cols'=>50)); ?>
+<?php 
+    echo $form->LabelEx($model, 'message');
+    $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
+            'model' => $model,
+            'attribute' => 'message',
+            'options' => array(
+                'lang' => 'ru',
+                'toolbar' => true,
+                'iframe' => true,
+                'css' => 'wym.css',
+                'buttons' => array(
+                    'html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
+                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                    'image', 'video', 'link', '|', '|', 'alignment', '|', 'horizontalrule'
+                ),
+            ),
+            'htmlOptions' => array(
+                'rows' => 20,
+            ),
+        ));
+?>
 
 <?php
     echo BSHtml::submitButton($model->isNewRecord ? Yum::t('Send') : Yum::t('Save'), array(
@@ -90,4 +112,7 @@ else
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-</div>
+<?php 
+if(!$to_user_id) {
+    echo '</div>';
+}

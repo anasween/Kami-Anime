@@ -14,6 +14,7 @@ $this->breadcrumbs = array(
         <?php
         if (Yii::app()->user->can("comment", "create"))
         {
+            echo '<div class="well">';
             echo BSHtml::Button(Yum::t('Write a comment'), array(
                 'color' => BSHtml::BUTTON_COLOR_PRIMARY,
                 'icon' =>  BSHtml::GLYPHICON_COMMENT,
@@ -24,6 +25,7 @@ $this->breadcrumbs = array(
                 'id' => 'comment-add-form',
                 'style' => 'overflow: hidden; display: block;',
             ), $this->renderPartial('//comments/_form', array('model'=>$commentModel), true, true));
+            echo '</div>';
         }
         ?>
         <?php

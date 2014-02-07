@@ -5,15 +5,10 @@ $this->breadcrumbs = array(
             $model->title 
         );
 ?>
-
-<h2> 
-    <?php 
-    echo Yum::t('Message from') .  ' <em>' . $model->from_user->username . '</em>';
-    echo ': ' . $model->title; 
-    ?> 
-</h2>
-
-<hr />
+<div class="well">
+<?php 
+echo BSHtml::pageHeader(Yum::t('Message from') . ' ' . $model->from_user->username. ': ', $model->title);
+?>
 
 <div class="message">
 <?php echo $model->message; ?>
@@ -38,7 +33,7 @@ echo BSHtml::buttonGroup(array(
     ));
 if(Yii::app()->user->id != $model->from_user_id) 
 {
-    echo '<div class="reply" style="display: none;">';
+    echo '<div class="reply">';
     $reply = new YumMessage;
 
     if(substr($model->title, 0, 3) != 'Re:')
@@ -56,3 +51,9 @@ if(Yii::app()->user->id != $model->from_user_id)
                     'model' => $reply));
     echo '</div>';
 }
+?>
+</div>
+<?php
+    Yii::app()->clientScript->registerScript('replyscript',"
+        $('.reply').toggle(500);
+    ",CClientScript::POS_READY);

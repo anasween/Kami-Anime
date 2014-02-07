@@ -18,12 +18,19 @@
     <?php echo Yum::requiredFieldNote(); ?>
 
     <?php echo $form->errorSummary($model); ?>
-    <?php echo $form->dropDownListControlGroup($model,'autor_id',
-            CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
-            array(
-                'val' => Yii::app()->user->id,
-            )
-    ); ?>
+    <?php
+    echo $form->LabelEx($model, 'autor_id');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'autor_id',
+        'value' => Yii::app()->user->id,
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
+    )); 
+    ?>
     <?php echo $form->textFieldControlGroup($model,'title',array('maxlength'=>100))?>
     <?php 
         $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
@@ -41,7 +48,6 @@
                 ),
             ),
             'htmlOptions' => array(
-                'class' => 'span10',
                 'rows' => 20,
             ),
         ));

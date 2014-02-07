@@ -1,4 +1,4 @@
-<div class="row comment">
+<div class="row comment well">
     <div class="col-md-2 info">
         <?php 
             echo '<h3>' . $data->autor->username . '</h3>';

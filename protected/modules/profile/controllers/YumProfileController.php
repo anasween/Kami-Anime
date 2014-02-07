@@ -93,10 +93,9 @@ class YumProfileController extends YumController {
 
     public function actionView($id = null) {
         if (!Yum::module('profile')->profilesViewableByGuests && Yii::app()->user->isGuest) {
-            throw new CHttpException(403);
+            throw new CHttpException(403, Yum::t('Access denied.'));
         }
 
-        // If no profile id is provided, take myself
         if (!$id) {
             $id = Yii::app()->user->id;
         }
@@ -105,7 +104,7 @@ class YumProfileController extends YumController {
 
         $this->loadModel($id);
         $this->updateVisitor(Yii::app()->user->id, $id);
-        
+
         $commentModel = new Comments;
         $commentModel->profile_id = $id;
 
@@ -158,30 +157,6 @@ class YumProfileController extends YumController {
     }
 
     public function actionIndex() {
-        if (Yii::app()->user->isAdmin()) {
-            $this->actionAdmin();
-        } else {
-            $this->redirect('view');
-        }
+        $this->redirect('view');
     }
-
-    public function actionAdmin() {
-        $this->layout = Yum::module('profile')->adminLayout;
-        $model = new YumProfile;
-
-        $dataProvider = new CActiveDataProvider('YumProfile', array(
-            'pagination' => array(
-                'pageSize' => Yum::module()->pageSize,
-            ),
-            'sort' => array(
-                'defaultOrder' => 'id',
-            ),
-        ));
-
-        $this->render('admin', array(
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-        ));
-    }
-
 }

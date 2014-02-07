@@ -1,6 +1,5 @@
 <?php
-$this->title = Yum::t('{role}', array(
-			'role' => $model->title));
+$this->title = Yum::t($model->title);
 
 $this->breadcrumbs = array(
             Yum::t('Roles')=>array('index'),
@@ -8,10 +7,10 @@ $this->breadcrumbs = array(
             $model->title
         );
 
-echo $model->description;
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Role'), $model->title);
+echo BSHtml::tag('p', array(), $model->description);
 ?>
-
-<br />
 <?php echo Yum::p('These users have been assigned to this role'); ?> 
 
 <?php 
@@ -63,10 +62,11 @@ if(Yum::hasModule('membership') && $model->membership_priority)
 
 if(Yii::app()->user->isAdmin())
 {
-    echo BSHtml::button(Yum::t('Update role'), array(
+    echo BSHtml::linkbutton(Yum::t('Update role'), array(
             'color' => BSHtml::BUTTON_COLOR_PRIMARY,
             'icon' =>  BSHtml::GLYPHICON_THUMBS_UP,
-            'url' => array('role/update', 'id' => $model->id),
+            'url' => Yii::app()->createUrl('/role/role/update', array('id' => $model->id)),
             'type' => BSHtml::BUTTON_TYPE_LINK
         ));
 }
+echo '</div>';

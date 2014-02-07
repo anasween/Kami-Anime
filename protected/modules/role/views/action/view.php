@@ -3,11 +3,10 @@ $this->breadcrumbs = array(
             Yum::t('Actions')=>array('index'),
             $model->title,
         );
-?>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Action'), $model->title);
 
-<h1> <?php echo $model->title; ?></h1>
-
-<?php $this->widget('bootstrap.widgets.BsDetailView', array(
+$this->widget('bootstrap.widgets.BsDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
@@ -16,3 +15,5 @@ $this->breadcrumbs = array(
 		'subject',
 	),
 ));
+
+echo '</div>';

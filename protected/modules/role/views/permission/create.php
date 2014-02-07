@@ -23,18 +23,32 @@ echo $form->radioButtonList($model, 'type', array(
 ?>
 
 <div id="assignment_user">
-    <?php echo $form->dropDownListControlGroup($model,'principal_id',
-            CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
-            array(
-                'val' => Yii::app()->user->id,
-            )
-    ); ?>
-    <?php echo $form->dropDownListControlGroup($model,'subordinate_id',
-            CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
-            array(
-                'val' => Yii::app()->user->id,
-            )
-    ); ?>
+    <?php
+    echo $form->LabelEx($model, 'principal_id');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'principal_id',
+        'value' => Yii::app()->user->id,
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
+    )); 
+    ?>
+    <?php
+    echo $form->LabelEx($model, 'subordinate_id');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'subordinate_id',
+        'value' => Yii::app()->user->id,
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(YumUser::model()->findAll(), 'id', 'username'),
+    )); 
+    ?>
     <?php echo $form->dropDownListControlGroup($model,'template', array(
                             '0' => Yum::t('No'),
                             '1' => Yum::t('Yes'),
@@ -43,28 +57,58 @@ echo $form->radioButtonList($model, 'type', array(
 </div>
 
 <div id="assignment_role" style="display: none;">
-    <?php echo $form->dropDownListControlGroup($model,'principal_id',
-            CHtml::listData(YumRole::model()->findAll(), 'id', 'title'),
-            array(
-            )
-    ); ?>
-    <?php echo $form->dropDownListControlGroup($model,'subordinate_id',
-            CHtml::listData(YumRole::model()->findAll(), 'id', 'title'),
-            array(
-            )
-    ); ?>
+    <?php
+    echo $form->LabelEx($model, 'principal_id');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'principal_id',
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(YumRole::model()->findAll(), 'id', 'title'),
+    )); 
+    ?>
+    <?php
+    echo $form->LabelEx($model, 'subordinate_id');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'subordinate_id',
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(YumRole::model()->findAll(), 'id', 'title'),
+    )); 
+    ?>
 </div>
 
-<?php echo $form->dropDownListControlGroup($model,'action',
-            CHtml::listData(YumAction::model()->findAll(), 'id', 'title'),
-            array(
-            )
-    ); ?>
-<?php echo $form->dropDownListControlGroup($model,'subaction',
-            CHtml::listData(YumAction::model()->findAll(), 'id', 'title'),
-            array(
-            )
-    ); ?>
+<?php
+    echo $form->LabelEx($model, 'action');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'action',
+        'value' => Yii::app()->user->id,
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(YumAction::model()->findAll(), 'id', 'title'),
+    )); 
+    ?>
+    <?php
+    echo $form->LabelEx($model, 'subaction');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'subaction',
+        'value' => Yii::app()->user->id,
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(YumAction::model()->findAll(), 'id', 'title'),
+    )); 
+?>
 
 <?php echo $form->textAreaControlGroup($model,'comment'); ?>
 
@@ -88,5 +132,3 @@ $('#assignment_role').show();
 $('#assignment_user').hide();});
 
 ");
-?>
-

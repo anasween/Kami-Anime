@@ -15,11 +15,11 @@ Yum::renderFlash();
 ?>
 
 <div>
-    
+<div class="well">
 <?php
-if(!Yii::app()->user->isGuest && Yii::app()->user->id == $model->id) 
-{
-    echo BSHtml::buttonGroup(array(
+$buttons = array();
+if(!Yii::app()->user->isGuest && Yii::app()->user->id == $model->id) {
+    array_push($buttons, 
         array(
             'label' => Yum::t('Edit profile'), 
             'url' => array('//profile/profile/update'), 
@@ -33,10 +33,52 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->id == $model->id)
             'color' => BSHtml::BUTTON_COLOR_INFO,
             'icon' =>  BSHtml::GLYPHICON_UPLOAD,
             'type' => BSHtml::BUTTON_TYPE_LINK
-        )
-    ));
-} ?>
-<div class="item">
+        ));
+}
+if (Yum::hasModule('friendship') 
+        && !Yii::app()->user->isGuest
+        && Yii::app()->user->id != $model->id) {
+    $friendStatus = $model->isFriendOf(Yii::app()->user->id);
+    if (!$friendStatus) {
+        Yii::import('application.modules.friendship.controllers.YumFriendshipController');
+        array_push($buttons, 
+            array(
+                'label' => Yum::t('Add as a friend'), 
+                'url' => YumFriendshipController::invitationLink(Yii::app()->user->id, $model->id),
+                'color' => BSHtml::BUTTON_COLOR_SUCCESS,
+                'icon' =>  BSHtml::GLYPHICON_PLUS,
+                'type' => BSHtml::BUTTON_TYPE_LINK
+            ));
+    } elseif ($friendStatus == 1) {
+        array_push($buttons, 
+            array(
+                'label' => Yum::t('Request already send'), 
+                'color' => BSHtml::BUTTON_COLOR_INFO,
+                'icon' =>  BSHtml::GLYPHICON_SEND,
+                'disabled' => true
+            ));
+    } elseif ($friendStatus == 2) {
+        array_push($buttons, 
+            array(
+                'label' => Yum::t('You already are friends'), 
+                'color' => BSHtml::BUTTON_COLOR_SUCCESS,
+                'icon' =>  BSHtml::GLYPHICON_USER,
+                'disabled' => true
+            ));
+    } elseif ($friendStatus == 3) {
+        array_push($buttons, 
+            array(
+                'label' => Yum::t('Friendship request has been rejected'), 
+                'color' => BSHtml::BUTTON_COLOR_DANGER,
+                'icon' =>  BSHtml::GLYPHICON_MINUS,
+                'disabled' => true
+            ));
+    }
+}
+if (count($buttons) > 0) {
+    echo BSHtml::buttonGroup($buttons);
+}
+?>
     <div style="margin: 5px;">
         <?php echo $model->getAvatar(); ?>
     </div>
@@ -45,14 +87,17 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->id == $model->id)
 <?php
 if(Yum::hasModule('friendship'))
 {
-$this->renderPartial(
-    'application.modules.friendship.views.friendship.friends', 
-    array(
-        'model' => $model
-    )
-); 
+    echo '<div class="well">';
+    $this->renderPartial(
+        'application.modules.friendship.views.friendship.friends', 
+        array(
+            'model' => $model
+        )
+    );
+    echo '</div>';
 } 
 ?>
+<div class="well">
 <h3><?php echo Yum::t('Messages'); ?></h3>
 <?php
 $this->widget('bootstrap.widgets.BsListView', array(
@@ -60,10 +105,12 @@ $this->widget('bootstrap.widgets.BsListView', array(
     'itemView' => '_message', 
 )); 
 ?>
+</div>
 
 <?php 
 if (Yii::app()->user->can("comment", "create"))
 {
+    echo '<div class="well">';
     echo BSHtml::Button(Yum::t('Write a comment'), array(
         'color' => BSHtml::BUTTON_COLOR_PRIMARY,
         'icon' =>  BSHtml::GLYPHICON_COMMENT,
@@ -74,6 +121,7 @@ if (Yii::app()->user->can("comment", "create"))
         'id' => 'comment-add-form',
         'style' => 'overflow: hidden; display: block;',
     ), $this->renderPartial('_message_form', array('model' => $commentModel),true,true));
+    echo '</div>';
 }
 ?>
 <?php

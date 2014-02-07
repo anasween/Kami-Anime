@@ -1,15 +1,14 @@
 <?php
 $this->title = Yum::t('Request friendship for user {username}', array(
 			'{username}' => $invited->username));
-$this->widget(
-    'bootstrap.widgets.TbBreadcrumbs',
-    array(
-        'links' => array(
+$this->breadcrumbs = array(
             Yum::t('Friendship'),
             Yum::t('Invitation'), $invited->username
-        ),
-    )
-);
+        );
+
+echo '<div class="well">';
+
+echo BSHtml::pageHeader(Yum::t('Invitation'), $invited->username);
 
 $friendship_status = $invited->isFriendOf(Yii::app()->user->id);
 if($friendship_status !== false)  
@@ -39,17 +38,27 @@ else
         echo CHtml::beginForm(array('friendship/invite'));
         echo CHtml::hiddenField('user_id', $invited->id);
         echo CHtml::label(Yum::t('Please enter a request Message up to 255 characters'), 'message');
-        echo '<br />';
-        echo CHtml::textArea('message', '', array('cols' =>60, 'rows' => 10));
-        echo '<br />';
-        $this->widget(
-            'bootstrap.widgets.TbButton',
-            array(
-                'buttonType' => 'submit', 
-                'label' => Yum::t('Send invitation'),
-                'type' => 'primary',
-                'icon' => 'thumbs-up',
-            )
-        );
+        $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
+            'name' => 'message',
+            'options' => array(
+                'lang' => 'ru',
+                'toolbar' => true,
+                'iframe' => true,
+                'css' => 'wym.css',
+                'buttons' => array(
+                    'html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
+                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                    'image', 'video', 'link', '|', '|', 'alignment', '|', 'horizontalrule'
+                ),
+            ),
+            'htmlOptions' => array(
+                'rows' => 20,
+            ),
+        ));
+        echo BSHtml::submitButton(Yum::t('Send invitation'), array(
+                    'color' => BSHtml::BUTTON_COLOR_PRIMARY,
+                    'icon' =>  BSHtml::GLYPHICON_THUMBS_UP,
+                ));
         echo CHtml::endForm();
 }
+echo '</div>';

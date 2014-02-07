@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper class
  * @author tomasz.suchanek@gmail.com
@@ -7,164 +8,160 @@
  * @package Yum.core
  *
  */
-class Yum
-{ 
-	/** Register an asset file of Yum */
-	public static function register($file)
-	{
-		$url = Yii::app()->getAssetManager()->publish(
-				Yii::getPathOfAlias('application.modules.user.assets'));
+class Yum {
 
-		$path = $url . '/' . $file;
-		if(strpos($file, 'js') !== false)
-			return Yii::app()->clientScript->registerScriptFile($path);
-		else if(strpos($file, 'css') !== false)
-			return Yii::app()->clientScript->registerCssFile($path);
+    /** Register an asset file of Yum */
+    public static function register($file) {
+        $url = Yii::app()->getAssetManager()->publish(
+                Yii::getPathOfAlias('application.modules.user.assets'));
 
-		return $path;
-	}
+        $path = $url . '/' . $file;
+        if (strpos($file, 'js') !== false)
+            return Yii::app()->clientScript->registerScriptFile($path);
+        else if (strpos($file, 'css') !== false)
+            return Yii::app()->clientScript->registerCssFile($path);
 
-	public static function hint($message) 
-	{
-		return '<div class="hint">' . Yum::t($message) . '</div>'; 
-	}
+        return $path;
+    }
 
-	public static function getAvailableLanguages () {
-		$cache_id = 'yum_available_languages';
+    public static function hint($message) {
+        return '<div class="hint">' . Yum::t($message) . '</div>';
+    }
 
-		$languages = false;
-		if(Yii::app()->cache)
-			$languages = Yii::app()->cache->get($cache_id);
+    public static function getAvailableLanguages() {
+        $cache_id = 'yum_available_languages';
 
-		if($languages===false) {
-			$translationTable = Yum::module()->translationTable;
-			$sql = "select language from {$translationTable} group by language";
+        $languages = false;
+        if (Yii::app()->cache)
+            $languages = Yii::app()->cache->get($cache_id);
 
-			$command=Yii::app()->db->createCommand($sql);
+        if ($languages === false) {
+            $translationTable = Yum::module()->translationTable;
+            $sql = "select language from {$translationTable} group by language";
 
-			$languages=array();
-			foreach($command->queryAll() as $row)
-				$languages[$row['language']]=$row['language'];
+            $command = Yii::app()->db->createCommand($sql);
 
-			if(Yii::app()->cache)
-				Yii::app()->cache->set($cache_id, $languages);
-		}
+            $languages = array();
+            foreach ($command->queryAll() as $row)
+                $languages[$row['language']] = $row['language'];
 
-		return $languages;
-	}
-	/* set a flash message to display after the request is done */
-	public static function setFlash($message, $delay = 5000) 
-	{
-		$_SESSION['yum_message'] = Yum::t($message);
-		$_SESSION['yum_delay'] = $delay;
-	}
+            if (Yii::app()->cache)
+                Yii::app()->cache->set($cache_id, $languages);
+        }
 
-	public static function hasFlash() 
-	{
-		return isset($_SESSION['yum_message']);
-	}
+        return $languages;
+    }
 
-	/* retrieve the flash message again */
-	public static function getFlash() {
-		if(Yum::hasFlash()) {
-			$message = @$_SESSION['yum_message'];
-			unset($_SESSION['yum_message']);
-			return $message;
-		}
-	}
+    /* set a flash message to display after the request is done */
 
-	/* A wrapper for the Yii::log function. If no category is given, we
-	 * use the YumController as a fallback value.
-	 * In addition to that, the message is being translated by Yum::t() */
-	public static function log($message,
-			$level = 'info',
-			$category = 'application.modules.user.controllers.YumController') {
-		if(Yum::module()->enableLogging)
-			return Yii::log(Yum::t($message), $level, $category);
-	}
+    public static function setFlash($message, $delay = 5000) {
+        $_SESSION['yum_message'] = Yum::t($message);
+        $_SESSION['yum_delay'] = $delay;
+    }
 
-	public static function renderFlash()
-	{
-		if(Yum::hasFlash()) {
-			echo '<div class="alert in alert-block alert-success">';
-			echo Yum::getFlash();
-			echo '</div>';
-			Yii::app()->clientScript->registerScript('fade',"
+    public static function hasFlash() {
+        return isset($_SESSION['yum_message']);
+    }
+
+    /* retrieve the flash message again */
+
+    public static function getFlash() {
+        if (Yum::hasFlash()) {
+            $message = @$_SESSION['yum_message'];
+            unset($_SESSION['yum_message']);
+            return $message;
+        }
+    }
+
+    /* A wrapper for the Yii::log function. If no category is given, we
+     * use the YumController as a fallback value.
+     * In addition to that, the message is being translated by Yum::t() */
+
+    public static function log($message, $level = 'info', $category = 'application.modules.user.controllers.YumController') {
+        if (Yum::module()->enableLogging)
+            return Yii::log(Yum::t($message), $level, $category);
+    }
+
+    public static function renderFlash() {
+        if (Yum::hasFlash()) {
+            echo '<div class="alert in alert-block alert-success">';
+            echo Yum::getFlash();
+            echo '</div>';
+            Yii::app()->clientScript->registerScript('fade', "
 					setTimeout(function() { $('.alert-success').fadeOut('slow'); },
 						{$_SESSION['yum_delay']});	
-					"); 
-		}
-	}
+					");
+        }
+    }
 
-	public static function p($string, $params = array()) {
-		return '<p>' . Yum::t($string, $params) . '</p>';
-	}
+    public static function p($string, $params = array()) {
+        return '<p>' . Yum::t($string, $params) . '</p>';
+    }
 
-	/** Fetch the translation string from db and cache when necessary */
-	public static function t($string, $params = array(), $category = 'yum')
-	{
-		$language = Yii::app()->language;
+    /** Fetch the translation string from db and cache when necessary */
+    public static function t($string, $params = array(), $category = 'yum') {
+        $language = Yii::app()->language;
 
-		$cache_id = sprintf('yum_translations_%s_%s', $language, $category);
+        $cache_id = sprintf('yum_translations_%s_%s', $language, $category);
 
-		$messages = false;
-		if(Yii::app()->cache)
-			$messages = Yii::app()->cache->get($cache_id);
+        $messages = false;
+        if (Yii::app()->cache)
+            $messages = Yii::app()->cache->get($cache_id);
 
-		if($messages===false) {
-			if(Yum::module()->avoidSql) {
-				$translations = YumTranslation::model()->findAll(
-						'category = :category and language = :language', array(
-							'category' =>  $category,
-							'language' =>  $language,
-							));
-				$messages=array();
-				foreach($translations as $row)
-					$messages[$row['message']]=$row->translation;
-			} else {
-				$translationTable = Yum::module()->translationTable;
-				$sql = "select message, translation from {$translationTable} where language = :language and category = :category";
+        if ($messages === false) {
+            if (Yum::module()->avoidSql) {
+                $translations = YumTranslation::model()->findAll(
+                        'category = :category and language = :language', array(
+                    'category' => $category,
+                    'language' => $language,
+                ));
+                $messages = array();
+                foreach ($translations as $row)
+                    $messages[$row['message']] = $row->translation;
+            } else {
+                $translationTable = Yum::module()->translationTable;
+                $sql = "select message, translation from {$translationTable} where language = :language and category = :category";
 
-				$command=Yii::app()->db->createCommand($sql);
-				$command->bindValue(':category',$category);
-				$command->bindValue(':language',$language); 
+                $command = Yii::app()->db->createCommand($sql);
+                $command->bindValue(':category', $category);
+                $command->bindValue(':language', $language);
 
-				$messages=array();
-				foreach($command->queryAll() as $row)
-					$messages[$row['message']]=$row['translation'];
-			}
+                $messages = array();
+                foreach ($command->queryAll() as $row)
+                    $messages[$row['message']] = $row['translation'];
+            }
 
-			if(Yii::app()->cache)
-				Yii::app()->cache->set($cache_id, $messages);
-		}
+            if (Yii::app()->cache)
+                Yii::app()->cache->set($cache_id, $messages);
+        }
 
-		if(isset($messages[$string]))
-			return strtr($messages[$string], $params);
-		else 
-			return strtr($string, $params);
-	}
+        if (isset($messages[$string]))
+            return strtr($messages[$string], $params);
+        else
+            return strtr($string, $params);
+    }
 
-	// returns the Yii User Management module. Frequently used for accessing 
-	// options by calling Yum::module()->option
-	public static function module($module = 'user') {
-		return Yii::app()->getModule($module);
-	}
+    // returns the Yii User Management module. Frequently used for accessing 
+    // options by calling Yum::module()->option
+    public static function module($module = 'user') {
+        return Yii::app()->getModule($module);
+    }
 
-	public static function hasModule($module) {
-		return array_key_exists($module, Yii::app()->modules);
-	}
+    public static function hasModule($module) {
+        return array_key_exists($module, Yii::app()->modules);
+    }
 
-	/**
-	 * Produces note: "Field with * are required"
-	 * @since 0.6
-	 * @return string 
-	 */
-	public static function requiredFieldNote()
-	{
-		return CHtml::tag('p',array('class'=>'note'),Yum::t(
-					'Fields with <span class="required">*</span> are required.'
-					),true);		
-	}
+    /**
+     * Produces note: "Field with * are required"
+     * @since 0.6
+     * @return string 
+     */
+    public static function requiredFieldNote() {
+        return CHtml::tag('p', array('class' => 'note'), Yum::t(
+                                'Fields with <span class="required">*</span> are required.'
+                        ), true);
+    }
 
 }
+
 ?>

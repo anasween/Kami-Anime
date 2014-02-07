@@ -1,7 +1,7 @@
 <?php 
 $model = YumUser::model()->findByPk(Yii::app()->user->id);
 ?>
-<div class="bs-sidebar hidden-xs hidden-sm affix profile">
+<div class="bs-sidebar hidden-xs hidden-sm affix profile well">
     <?php echo $model->getAvatar(true); ?>
     <div class="shortinfo">
         <a href=""><?php echo $model->username; ?></a>

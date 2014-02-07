@@ -1,12 +1,13 @@
 <?php
-Yii::setPathOfAlias('FriendshipModule' , dirname(__FILE__));
+
+Yii::setPathOfAlias('FriendshipModule', dirname(__FILE__));
 
 class FriendshipModule extends CWebModule {
-	public $friendshipTable = '{{friendship}}';
 
-	public $controllerMap=array(
-			'friendship'=>array(
-				'class'=>'FriendshipModule.controllers.YumFriendshipController'),
-			);
+    public $friendshipTable = '{{friendship}}';
+    public $controllerMap = array(
+        'friendship' => array(
+            'class' => 'FriendshipModule.controllers.YumFriendshipController'),
+    );
 
 }

@@ -3,10 +3,9 @@ $this->breadcrumbs = array(
             Yum::t('Actions')=>array('index'),
             Yum::t('Manage'),
         );
-?>
-<h1> <?php echo Yum::t('Manage Actions'); ?></h1>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Manage Actions'));
 
-<?php
 echo BSHtml::linkButton(Yum::t('Create new action'), array(
     'color' => BSHtml::BUTTON_COLOR_SUCCESS,
     'icon' =>  BSHtml::GLYPHICON_PLUS,
@@ -27,3 +26,5 @@ $this->widget('bootstrap.widgets.BsGridView', array(
         ),
     ),
 )); 
+
+echo '</div>';

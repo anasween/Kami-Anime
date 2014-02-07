@@ -4,8 +4,7 @@ $this->breadcrumbs = array(
             $model->title=>array('view','id'=>$model->id),
             Yum::t('Update'),
         );
-?>
-
-<h1><?php echo Yum::t('Update Action') . $model->id; ?></h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); 
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Update'), Yum::t('Action'));
+echo $this->renderPartial('_form', array('model'=>$model)); 
+echo '</div>';

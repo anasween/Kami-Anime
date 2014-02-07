@@ -1,4 +1,5 @@
 <?php
+echo '<div class="item">';
 if(isset($actions))
 {
     foreach($actions as $action) 
@@ -30,3 +31,4 @@ else
 {
     echo Yum::t('No user has permission');
 }
+echo '</div>';

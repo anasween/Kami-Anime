@@ -1,8 +1,8 @@
 <?php
 $this->breadcrumbs = array(
-            Yum::t('Privacysettings')=>array('index'),
+            Yum::t('Privacysettings')=>array('//profile/profile/index'),
             $model->user->username=>array('//user/user/view','id'=>$model->user_id),
-            Yum::t( 'Update'),
+            Yum::t('Update'),
         );
 
 $this->title = Yum::t('Privacy settings for {username}', array(

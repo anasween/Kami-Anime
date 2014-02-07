@@ -11,31 +11,24 @@ Yii::import('application.modules.user.models.*');
 Yii::import('application.modules.profile.models.*');
 Yii::import('application.modules.registration.models.*');
 
-class YumRegistrationController extends YumController 
-{
-    public $defaultAction = 'registration';
+class YumRegistrationController extends YumController {
 
+    public $defaultAction = 'registration';
     // override this with a custom text or function that retrieves a custom text
-    public $textActivationSubject =  
-            'Please activate your account for {username}';
-    public $textActivationBody =  
-            'Hello, {username}. Please activate your account with this url: {activation_url}';
+    public $textActivationSubject = 'Please activate your account for {username}';
+    public $textActivationBody = 'Hello, {username}. Please activate your account with this url: {activation_url}';
 
     // Only allow the registration if the user is not already logged in and
     // the function is activated in the Module Configuration
-    public function beforeAction($action) 
-    {
-        if(!Yum::hasModule('registration'))
-        {
+    public function beforeAction($action) {
+        if (!Yum::hasModule('registration')) {
             throw new CHttpException(401, 'Please activate the registration submodule in your config/main.php. See the installation instructions or registration/RegistrationModule.php for details');
         }
-        if(!Yum::hasModule('profile'))
-        {
+        if (!Yum::hasModule('profile')) {
             throw new CHttpException(401, 'The Registration submodule depends on the profile submodule. Please see the installation instructions or registration/RegistrationModule.php for details');
         }
-        
-        if(!Yii::app()->user->isGuest) 
-        {
+
+        if (!Yii::app()->user->isGuest) {
             $this->redirect(Yii::app()->user->returnUrl);
         }
 
@@ -43,31 +36,29 @@ class YumRegistrationController extends YumController
         return parent::beforeAction($action);
     }
 
-    public function accessRules() 
-    {
+    public function accessRules() {
         return array(
             array('allow',
-                    'actions' => array('index', 'registration', 'recovery', 'activation', 'resendactivation'),
-                    'users' => array('*'),
-                    ),
+                'actions' => array('index', 'registration', 'recovery', 'activation', 'resendactivation'),
+                'users' => array('*'),
+            ),
             array('allow',
-                    'actions' => array('captcha'),
-                    'users' => array('*'),
-                    ),
+                'actions' => array('captcha'),
+                'users' => array('*'),
+            ),
             array('deny', // deny all other users
-                    'users' => array('*'),
-                    ),
+                'users' => array('*'),
+            ),
         );
     }
 
-    public function actions() 
-    {
+    public function actions() {
         return array(
             'captcha' => array(
-                    'class' => 'CCaptchaAction',
-                    'backColor' => 0xFFFFFF,
-                ),
-            );
+                'class' => 'CCaptchaAction',
+                'backColor' => 0xFFFFFF,
+            ),
+        );
     }
 
     /*
@@ -77,11 +68,10 @@ class YumRegistrationController extends YumController
      * extend from this class and implement your own registration logic in
      * user/docs/registration.txt
      */
-    public function actionRegistration() 
-    {
+
+    public function actionRegistration() {
         // When we override the registrationUrl, this one is not valid anymore!
-        if(Yum::module('registration')->registrationUrl != array('//registration/registration/registration'))
-        {
+        if (Yum::module('registration')->registrationUrl != array('//registration/registration/registration')) {
             throw new CHttpException(403);
         }
 
@@ -91,16 +81,14 @@ class YumRegistrationController extends YumController
 
         $this->performAjaxValidation('YumRegistrationForm', $form);
 
-        if (isset($_POST['YumRegistrationForm'])) 
-        { 
+        if (isset($_POST['YumRegistrationForm'])) {
             $form->attributes = $_POST['YumRegistrationForm'];
             $profile->attributes = $_POST['YumProfile'];
 
             $form->validate();
             $profile->validate();
 
-            if(!$form->hasErrors() && !$profile->hasErrors()) 
-            {
+            if (!$form->hasErrors() && !$profile->hasErrors()) {
                 $user = new YumUser;
                 $user->register($form->username, $form->password, $profile);
                 $user->profile = $profile;
@@ -109,35 +97,33 @@ class YumRegistrationController extends YumController
                 Yum::setFlash('Thank you for your registration. Please check your email.');
                 $this->redirect(Yum::module()->loginUrl);
             }
-        } 
+        }
 
         $this->render(Yum::module()->registrationView, array(
-                                'form' => $form,
-                                'profile' => $profile,
-                            )
-                        );  
+            'form' => $form,
+            'profile' => $profile,
+                )
+        );
     }
 
     // Send the Email to the given user object. 
     // $user->profile->email needs to be set.
-    public function sendRegistrationEmail($user) 
-    {
-        if (!isset($user->profile->email)) 
-        {
+    public function sendRegistrationEmail($user) {
+        if (!isset($user->profile->email)) {
             throw new CException(Yum::t('Email is not set when trying to send Registration Email'));
         }
 
         $activation_url = $user->getActivationUrl();
 
         $body = strtr($this->textActivationBody, array(
-                                '{username}' => $user->username,
-                                '{activation_url}' => $activation_url));
+            '{username}' => $user->username,
+            '{activation_url}' => $activation_url));
 
         $mail = array(
             'from' => Yum::module('registration')->registrationEmail,
             'to' => $user->profile->email,
             'subject' => strtr($this->textActivationSubject, array(
-                            '{username}' => $user->username)),
+                '{username}' => $user->username)),
             'body' => $body,
         );
         $sent = YumMailer::send($mail);
@@ -152,11 +138,9 @@ class YumRegistrationController extends YumController
      * can see, which accounts have been activated, but not yet logged in 
      * (more than once)
      */
-    public function actionActivation($email, $key) 
-    {
+    public function actionActivation($email, $key) {
         // If already logged in, we dont activate anymore
-        if (!Yii::app()->user->isGuest) 
-        {
+        if (!Yii::app()->user->isGuest) {
             Yum::setFlash('You are already logged in, please log out to activate your account');
             $this->redirect(Yii::app()->user->returnUrl);
         }
@@ -165,21 +149,17 @@ class YumRegistrationController extends YumController
         // and do the Activation
         $status = YumUser::activate($email, $key);
 
-        if($status instanceof YumUser) 
-        {
-            if(Yum::module('registration')->loginAfterSuccessfulActivation) 
-            {
-                $login = new YumUserIdentity($status->username, false); 
+        if ($status instanceof YumUser) {
+            if (Yum::module('registration')->loginAfterSuccessfulActivation) {
+                $login = new YumUserIdentity($status->username, false);
                 $login->authenticate(true);
-                Yii::app()->user->login($login);	
-            } 
+                Yii::app()->user->login($login);
+            }
 
             $this->render(Yum::module('registration')->activationSuccessView);
-        }
-        else
-        {
+        } else {
             $this->render(Yum::module('registration')->activationFailureView, array(
-                                    'error' => $status));
+                'error' => $status));
         }
     }
 
@@ -188,106 +168,85 @@ class YumRegistrationController extends YumController
      * activation link. If clicked, he will be prompted to enter his new
      * password.
      */
-    public function actionRecovery($email = null, $key = null) 
-    {
+    public function actionRecovery($email = null, $key = null) {
         $form = new YumPasswordRecoveryForm;
 
-        if ($email != null && $key != null) 
-        {
-            if($profile = YumProfile::model()->find('email = :email', array(
-                                            'email' =>  $email))) 
-            {
+        if ($email != null && $key != null) {
+            if ($profile = YumProfile::model()->find('email = :email', array(
+                'email' => $email))) {
                 $user = $profile->user;
-                if($user->status <= 0)
-                {
+                if ($user->status <= 0) {
                     throw new CHttpException(403, 'User is not active');
-                }
-                elseif($user->activationKey == $key) 
-                {
+                } elseif ($user->activationKey == $key) {
                     $passwordform = new YumUserChangePassword;
-                    if (isset($_POST['YumUserChangePassword'])) 
-                    {
+                    if (isset($_POST['YumUserChangePassword'])) {
                         $passwordform->attributes = $_POST['YumUserChangePassword'];
-                        if ($passwordform->validate()) 
-                        {
+                        if ($passwordform->validate()) {
                             $user->setPassword($passwordform->password);
                             $user->activationKey = CPasswordHelper::hashPassword(
-                                            microtime() . $passwordform->password,
-                                            Yum::module()->passwordHashCost);
+                                            microtime() . $passwordform->password, Yum::module()->passwordHashCost);
                             $user->save();
                             Yum::setFlash('Your new password has been saved.');
-                            if(Yum::module('registration')->loginAfterSuccessfulRecovery) 
-                            {
-                                $login = new YumUserIdentity($user->username, false); 
+                            if (Yum::module('registration')->loginAfterSuccessfulRecovery) {
+                                $login = new YumUserIdentity($user->username, false);
                                 $login->authenticate(true);
                                 Yii::app()->user->login($login);
                                 $this->redirect(Yii::app()->homeUrl);
-                            }
-                            else 
-                            {
+                            } else {
                                 $this->redirect(Yum::module()->loginUrl);
                             }
                         }
                     }
                     $this->render(Yum::module('registration')->changePasswordView, array(
-                                            'form' => $passwordform));
+                        'form' => $passwordform));
                     Yii::app()->end();
-                } 
-                else 
-                {
+                } else {
                     $form->addError('login_or_email', Yum::t('Invalid recovery key'));
                     Yum::log(Yum::t('Someone tried to recover a password, but entered a wrong recovery key. Email is {email}, associated user is {username} (id: {uid})', array(
-                                                    '{email}' => $email,
-                                                    '{uid}' => $user->id,
-                                                    '{username}' => $user->username)));
+                                '{email}' => $email,
+                                '{uid}' => $user->id,
+                                '{username}' => $user->username)));
                 }
             }
-        } 
-        else 
-        {
-            if (isset($_POST['YumPasswordRecoveryForm'])) 
-            {
+        } else {
+            if (isset($_POST['YumPasswordRecoveryForm'])) {
                 $form->attributes = $_POST['YumPasswordRecoveryForm'];
 
-                if ($form->validate()) 
-                {
-                    if($form->user instanceof YumUser) 
-                    {
-                        if($form->user->status <= 0)	
-                        {
+                if ($form->validate()) {
+                    if ($form->user instanceof YumUser) {
+                        if ($form->user->status <= 0) {
                             throw new CHttpException(403, 'User is not active');
                         }
                         $form->user->generateActivationKey();
                         $recovery_url = $this->createAbsoluteUrl(
-                                        Yum::module('registration')->recoveryUrl[0], array(
-                                                'key' => $form->user->activationKey,
-                                                'email' => $form->user->profile->email));
+                                Yum::module('registration')->recoveryUrl[0], array(
+                            'key' => $form->user->activationKey,
+                            'email' => $form->user->profile->email));
 
                         Yum::log(Yum::t('{username} successfully requested a new password in the password recovery form. A email with the password recovery url {recovery_url} has been sent to {email}', array(
-                                                        '{email}' => $form->user->profile->email,
-                                                        '{recovery_url}' => $recovery_url,
-                                                        '{username}' => $form->user->username)));
+                                    '{email}' => $form->user->profile->email,
+                                    '{recovery_url}' => $recovery_url,
+                                    '{username}' => $form->user->username)));
 
                         $mail = array('from' => Yii::app()->params['adminEmail'],
-                                        'to' => $form->user->profile->email,
-                                        'subject' => 'You requested a new password',
-                                        'body' => strtr(
-                                                'You have requested a new password. Please use this URL to continue: {recovery_url}', array(
-                                                        '{recovery_url}' => $recovery_url)),
-                                    );
+                            'to' => $form->user->profile->email,
+                            'subject' => 'You requested a new password',
+                            'body' => strtr(
+                                    'You have requested a new password. Please use this URL to continue: {recovery_url}', array(
+                                '{recovery_url}' => $recovery_url)),
+                        );
                         $sent = YumMailer::send($mail);
                         Yum::setFlash('Instructions have been sent to you. Please check your email.');
-                    } 
-                    else
-                    {
+                    } else {
                         Yum::log(Yum::t('A password has been requested, but no associated user was found in the database. Requested user/email is: {username}', array(
-                                                            '{username}' => $form->login_or_email)));
+                                    '{username}' => $form->login_or_email)));
                     }
                     $this->redirect(Yum::module()->loginUrl);
                 }
             }
         }
         $this->render(Yum::module('registration')->recoverPasswordView, array(
-                                'form' => $form));
+            'form' => $form));
     }
+
 }

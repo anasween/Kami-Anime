@@ -1,4 +1,4 @@
-<div class="form">
+<div class="form well">
 <?php
 $this->title = Yum::t('Upload avatar');
 
@@ -6,21 +6,24 @@ $this->breadcrumbs = array(
             Yum::t('Profile') => array('//profile/profile/view'),
             Yum::t('Upload avatar')
         );
-
+$header = '';
 if(Yii::app()->user->isAdmin())
 {
-	echo Yum::t('Set Avatar for user ') . $model->username;
+	$header = Yum::t('Set Avatar for user ') . $model->username;
 }
 elseif($model->avatar) 
 {
-    echo '<h2>';
-    echo Yum::t('Your Avatar image');
-    echo '</h2>';
-    echo $model->getAvatar();
+    $header = Yum::t('Your Avatar image');   
 }
 else
 {
-    echo Yum::t('You do not have set an avatar image yet');
+    $header = Yum::t('You do not have set an avatar image yet');
+}
+
+echo BSHtml::pageHeader($header);
+if($model->avatar) 
+{
+    echo $model->getAvatar();
 }
 
 echo '<br />';
