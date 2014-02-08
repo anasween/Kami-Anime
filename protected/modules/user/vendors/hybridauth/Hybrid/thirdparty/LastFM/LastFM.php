@@ -1,4 +1,5 @@
 <?php
+
 // https://raw.github.com/fsobczak/PHP-LastFm-Minimal-API/master/LastFM.php
 // modified 
 
@@ -10,7 +11,7 @@
  * - authentication flow
  * - api calls wrapper
  * - error wrapper
- */ 
+ */
 
 /**
  * Thrown when an API call returns an exception.
@@ -63,14 +64,16 @@ class LastFMException extends Exception {
             $str .= $this->code . ': ';
         }
         return $str . $this->message;
-    } 
+    }
 
 }
-    
+
 class LastFMInvalidSessionException extends LastFMException {
+
     public function __construct($result) {
-        parent::__construct($result); 
+        parent::__construct($result);
     }
+
 }
 
 /**
@@ -79,6 +82,7 @@ class LastFMInvalidSessionException extends LastFMException {
  * @author Filip Sobczak <f@digitalinvaders.pl>
  */
 class LastFM {
+
     const VERSION = '0.9';
 
     /**
@@ -90,14 +94,17 @@ class LastFM {
         CURLOPT_TIMEOUT => 60,
         CURLOPT_USERAGENT => 'lastfm-php-0.9',
     );
+
     /**
      * The Application API Secret.
      */
     protected $apiSecret;
+
     /**
      * The Application API Key.
      */
     protected $apiKey;
+
     /**
      * The active user session key, if one is available.
      */
@@ -124,8 +131,8 @@ class LastFM {
      * variations of letter sizes, and we need to 
      * find these values fast, so strtolower is executed on method name.
      */
-    public static $METHOD_TYPE =
-            array(
+
+    public static $METHOD_TYPE = array(
         'auth.getmobilesession' => self::method_get_auth,
         'auth.getsession' => self::method_get_auth,
         'auth.gettoken' => self::method_get_auth,
@@ -226,7 +233,7 @@ class LastFM {
      * @param Array $callback override default redirect
      * @return String the URL for the login flow
      */
-    public function getLoginUrl($callback=array()) {
+    public function getLoginUrl($callback = array()) {
         $params = array('api_key' => $this->getApiKey());
         if ($callback)
             $params['cb'] = $callback;
@@ -247,7 +254,7 @@ class LastFM {
         $name = $result['session']['name'];
         $sessionKey = $result['session']['key'];
         $this->setSessionKey($sessionKey);
-        
+
         return array('name' => $name, 'sk' => $sessionKey);
     }
 
@@ -317,17 +324,17 @@ class LastFM {
         $opts[CURLOPT_URL] = $url;
 
         curl_setopt_array($ch, $opts);
-		
-		// mod:by:me
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		
+
+        // mod:by:me
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
         $result = curl_exec($ch);
 
         if ($result === false) {
             $e = new LastFMException(array(
-                        'error' => curl_errno($ch),
-                        'message' => curl_error($ch),
-                    ));
+                'error' => curl_errno($ch),
+                'message' => curl_error($ch),
+            ));
             curl_close($ch);
             throw $e;
         }
@@ -344,7 +351,7 @@ class LastFM {
      * @param $params Array optional query parameters
      * @return String the URL for the given parameters
      */
-    protected function getUrl($name, $path='', $params=array()) {
+    protected function getUrl($name, $path = '', $params = array()) {
         $url = self::$DOMAIN_MAP[$name];
         if ($path) {
             if ($path[0] === '/') {

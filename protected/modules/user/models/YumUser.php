@@ -802,71 +802,62 @@ class YumUser extends YumActiveRecord {
             return $return;
         }
     }
-    
+
     public function getUserAvatarWithInfo() {
-        
+
         $returnCode = '';
         $online = '';
-        
-        if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) 
-        {
-            if($this->privacy && $this->privacy->show_online_status) 
-            {
-                if($this->isOnline()) 
-                {
+
+        if (Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) {
+            if ($this->privacy && $this->privacy->show_online_status) {
+                if ($this->isOnline()) {
                     $online = ' online';
                 }
             }
         }
         $divContent = $this->getAvatar(true);
-        $divContent .= BSHtml::tag('p',array(),$this->username);
+        $divContent .= BSHtml::tag('p', array(), $this->username);
 
-        $returnCode .= BSHtml::tag('div',array(
+        $returnCode .= BSHtml::tag('div', array(
                     'class' => 'view_user' . $online,
                     'id' => 'user_' . $this->id,
                     'data-content' => $this->getUserShortInfo(),
                     'data-toggle' => 'popover'
-                ),
-                $divContent);
-        
+                        ), $divContent);
+
         return $returnCode;
     }
-    
+
     /**
      * Returns user short info in HTML.
      * @param string $user
      * @return string
      */
     public function getUserShortInfo() {
-        
+
         $shortInfo = '';
-        
-        if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) 
-        {
-            if($this->privacy && $this->privacy->show_online_status) 
-            {
-                if($this->isOnline()) 
-                {
+
+        if (Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) {
+            if ($this->privacy && $this->privacy->show_online_status) {
+                if ($this->isOnline()) {
                     $shortInfo .= BSHtml::tag('strong', array('style' => 'text-align: center;'), Yum::t('User is Online!')) . '<br>';
                 }
             }
         }
-        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('Username').': ') . $this->username . '</br>';
-        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('First visit').': ') . date(UserModule::$dateFormat, $this->createtime) . '</br>';
-        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('Last visit').': ') . date(UserModule::$dateFormat, $this->lastvisit) . '</br>';
+        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('Username') . ': ') . $this->username . '</br>';
+        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('First visit') . ': ') . date(UserModule::$dateFormat, $this->createtime) . '</br>';
+        $shortInfo .= BSHtml::tag('strong', array(), Yum::t('Last visit') . ': ') . date(UserModule::$dateFormat, $this->lastvisit) . '</br>';
 
-        if(Yum::hasModule('message'))
-        {
-            $shortInfo .=  BSHtml::link(Yum::t('Write a message'), array(
-                                    '//message/message/compose', 'to_user_id' => $this->id)) . '<br />';
+        if (Yum::hasModule('message')) {
+            $shortInfo .= BSHtml::link(Yum::t('Write a message'), array(
+                        '//message/message/compose', 'to_user_id' => $this->id)) . '<br />';
         }
 
-        if(Yum::hasModule('profile'))
-        {
-            $shortInfo .=  BSHtml::link(Yum::t('Visit profile'), array(
-                                    '//profile/profile/view', 'id' => $this->id));
+        if (Yum::hasModule('profile')) {
+            $shortInfo .= BSHtml::link(Yum::t('Visit profile'), array(
+                        '//profile/profile/view', 'id' => $this->id));
         }
-        
+
         return $shortInfo;
     }
 
@@ -897,7 +888,7 @@ class YumUser extends YumActiveRecord {
         return new CActiveDataProvider('Comments', array(
             'criteria' => $criteria));
     }
-    
+
     /**
      * Returns CActiveDataProvider of user friendship requests.
      * @return CActiveDataProvider

@@ -20,8 +20,9 @@ class YumEncrypt {
      * @return hex encoded hash string.
      */
     public static function encrypt($string, $salt = null) {
-        if (!$salt)
+        if (!$salt) {
             $salt = YumEncrypt::generateSalt();
+        }
         return YumEncrypt::pbkdf2($string, $salt);
     }
 
@@ -30,10 +31,11 @@ class YumEncrypt {
      * @return base64_encoded hash string.
      */
     public static function generateSalt() {
-        if (function_exists('mcrypt_create_iv'))
+        if (function_exists('mcrypt_create_iv')) {
             $sHash = base64_encode(mcrypt_create_iv(64, MCRYPT_DEV_URANDOM));
-        else
+        } else {
             $sHash = hash('sha256', mt_rand() . uniqid());
+        }
 
         return $sHash;
     }
@@ -74,10 +76,12 @@ class YumEncrypt {
 
     private static function pbkdf2($password, $salt, $algorithm = 'sha256', $count = 1000, $key_length = 64, $raw_output = false) {
         $algorithm = strtolower($algorithm);
-        if (!in_array($algorithm, hash_algos(), true))
+        if (!in_array($algorithm, hash_algos(), true)) {
             die('PBKDF2 ERROR: Invalid hash algorithm.');
-        if ($count <= 0 || $key_length <= 0)
+        }
+        if ($count <= 0 || $key_length <= 0) {
             die('PBKDF2 ERROR: Invalid parameters.');
+        }
 
         $hash_length = strlen(hash($algorithm, "", true));
         $block_count = ceil($key_length / $hash_length);
@@ -95,12 +99,11 @@ class YumEncrypt {
             $output .= $xorsum;
         }
 
-        if ($raw_output)
+        if ($raw_output) {
             return substr($output, 0, $key_length);
-        else
+        } else {
             return bin2hex(substr($output, 0, $key_length));
+        }
     }
 
 }
-
-?>

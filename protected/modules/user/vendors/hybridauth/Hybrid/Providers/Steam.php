@@ -1,55 +1,56 @@
-<?php 
-/*!
-* HybridAuth
-* http://hybridauth.sourceforge.net | http://github.com/hybridauth/hybridauth
-* (c) 2009-2012, HybridAuth authors | http://hybridauth.sourceforge.net/licenses.html 
-*/
+<?php
+
+/* !
+ * HybridAuth
+ * http://hybridauth.sourceforge.net | http://github.com/hybridauth/hybridauth
+ * (c) 2009-2012, HybridAuth authors | http://hybridauth.sourceforge.net/licenses.html 
+ */
 
 /**
  * Hybrid_Providers_Steam provider adapter based on OpenID protocol
  * 
  * http://hybridauth.sourceforge.net/userguide/IDProvider_info_Steam.html
  */
-class Hybrid_Providers_Steam extends Hybrid_Provider_Model_OpenID
-{
-	var $openidIdentifier = "http://steamcommunity.com/openid";
+class Hybrid_Providers_Steam extends Hybrid_Provider_Model_OpenID {
 
-	/**
-	* finish login step 
-	*/
-	function loginFinish()
-	{
-		parent::loginFinish();
+    var $openidIdentifier = "http://steamcommunity.com/openid";
 
-		$uid = str_replace( "http://steamcommunity.com/openid/id/", "", $this->user->profile->identifier );
+    /**
+     * finish login step 
+     */
+    function loginFinish() {
+        parent::loginFinish();
 
-		if( $uid ){
-			$data = @ file_get_contents( "http://steamcommunity.com/profiles/$uid/?xml=1" ); 
+        $uid = str_replace("http://steamcommunity.com/openid/id/", "", $this->user->profile->identifier);
 
-			$data = @ new SimpleXMLElement( $data );
+        if ($uid) {
+            $data = @ file_get_contents("http://steamcommunity.com/profiles/$uid/?xml=1");
 
-			if ( ! is_object( $data ) ){
-				return false;
-			}
+            $data = @ new SimpleXMLElement($data);
 
-			$this->user->profile->displayName  = (string) $data->{'steamID'};
-			$this->user->profile->photoURL     = (string) $data->{'avatarMedium'};
-			$this->user->profile->description  = (string) $data->{'summary'};
-			
-			$realname = (string) $data->{'realname'}; 
+            if (!is_object($data)) {
+                return false;
+            }
 
-			if( $realname ){
-				$this->user->profile->displayName = $realname;
-			}
-			
-			$customURL = (string) $data->{'customURL'};
+            $this->user->profile->displayName = (string) $data->{'steamID'};
+            $this->user->profile->photoURL = (string) $data->{'avatarMedium'};
+            $this->user->profile->description = (string) $data->{'summary'};
 
-			if( $customURL ){
-				$this->user->profile->profileURL = "http://steamcommunity.com/id/$customURL/";
-			}
+            $realname = (string) $data->{'realname'};
 
-			// restore the user profile
-			Hybrid_Auth::storage()->set( "hauth_session.{$this->providerId}.user", $this->user );
-		}
-	}
+            if ($realname) {
+                $this->user->profile->displayName = $realname;
+            }
+
+            $customURL = (string) $data->{'customURL'};
+
+            if ($customURL) {
+                $this->user->profile->profileURL = "http://steamcommunity.com/id/$customURL/";
+            }
+
+            // restore the user profile
+            Hybrid_Auth::storage()->set("hauth_session.{$this->providerId}.user", $this->user);
+        }
+    }
+
 }

@@ -1,7 +1,7 @@
 <?php
+
 // http://dev.viadeo.com/documentation/tools-and-samples/php-sdk/
 // modi:ssl ver
-
 // ============================================================================
 // Viadeo Graph API - PHP Software Development Kit
 //
@@ -26,13 +26,33 @@ $VIADEOAPI_VERSION = "0.2.2";
 
 // == VIADEO API EXCEPTIONS ===================================================
 
-class ViadeoException extends Exception { }
-class ViadeoSDKException extends ViadeoException { }
-class ViadeoInvalidConfigurationException extends ViadeoException { }
-class ViadeoOAuth2Exception extends ViadeoException { }
-class ViadeoAuthenticationException extends ViadeoException { }
-class ViadeoAPIException extends ViadeoException { }
-class ViadeoConnectionException extends ViadeoException { }
+class ViadeoException extends Exception {
+    
+}
+
+class ViadeoSDKException extends ViadeoException {
+    
+}
+
+class ViadeoInvalidConfigurationException extends ViadeoException {
+    
+}
+
+class ViadeoOAuth2Exception extends ViadeoException {
+    
+}
+
+class ViadeoAuthenticationException extends ViadeoException {
+    
+}
+
+class ViadeoAPIException extends ViadeoException {
+    
+}
+
+class ViadeoConnectionException extends ViadeoException {
+    
+}
 
 // == THE VIADEO API REQUEST CLASS ============================================
 //
@@ -98,12 +118,12 @@ class ViadeoConnectionException extends ViadeoException { }
 class ViadeoRequest {
 
     private $api;      // Used to store the ViadeoAPI linked instance
-
     private $path;     // The API path ('/me', '/status', '/<user>/contacts', )
     private $params;   // The parameters of the request
     private $method;   // The HTTP method to be used
 
     // -- Initialization ------------------------------------------------------
+
     function __construct($api, $path, $method = "GET") {
         $this->reset();
         $this->api = $api;
@@ -177,7 +197,7 @@ class ViadeoRequest {
     public function getParams($extras = array(), $json = false) {
         $params = "";
         if ((count($this->params) > 0) || (count($extras) > 0)) {
-            if ( ! $json ) {
+            if (!$json) {
                 $params = http_build_query(array_merge($this->params, $extras), null, '&');
             } else {
                 $params = json_encode(array_merge($this->params, $extras));
@@ -404,20 +424,18 @@ class ViadeoAPI {
     private $redirect_uri;        // OAuth 2.0 - The redirection URI
     private $access_token;        // OAuth 2.0 - The Access Token for API calls
     private $config;              // The Viadeo API configuration
-
     // -- Static URIs ---------------------------------------------------------
-    public static $api_base      = "https://api.viadeo.com";
+    public static $api_base = "https://api.viadeo.com";
     public static $authorize_url = "https://secure.viadeo.com/oauth-provider/authorize2";
-    public static $token_url     = "https://secure.viadeo.com/oauth-provider/access_token2";
-
+    public static $token_url = "https://secure.viadeo.com/oauth-provider/access_token2";
     // -- Default CURL options ------------------------------------------------
     private $curl_opts = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => TRUE,
-        CURLOPT_HEADER         => TRUE,
-        CURLOPT_TIMEOUT        => 60,
-        CURLOPT_USERAGENT      => "viadeo-api-php-sdk-agent", // FIXME: add version
-        CURLOPT_HTTPHEADER     => array("Accept: application/json; charset=UTF-8")
+        CURLOPT_HEADER => TRUE,
+        CURLOPT_TIMEOUT => 60,
+        CURLOPT_USERAGENT => "viadeo-api-php-sdk-agent", // FIXME: add version
+        CURLOPT_HTTPHEADER => array("Accept: application/json; charset=UTF-8")
     );
 
     // == Initialization / Configuration ======================================
@@ -430,7 +448,7 @@ class ViadeoAPI {
         $this->config = $config;
         return $this;
     }
- 
+
     public function setOption($name, $value) {
         $this->config[$name] = $value;
     }
@@ -440,7 +458,7 @@ class ViadeoAPI {
             return $this->config[$key];
         } else if ($mandatory) {
             throw new ViadeoInvalidConfigurationException(
-                "Configuration key '".$key."' is missing");
+            "Configuration key '" . $key . "' is missing");
         } else {
             return null;
         }
@@ -460,7 +478,6 @@ class ViadeoAPI {
 
     // == OAuth2 Authentication layer =========================================
     // ========================================================================
-
     // -- Access Token mgt ----------------------------------------------------
     public function isAuthenticated() {
         return ($this->getAccessToken() != null);
@@ -478,8 +495,7 @@ class ViadeoAPI {
     public function setAccessToken($access_token) {
         $this->access_token = $access_token;
         if ($this->getConfigKey('store') === true) {
-            setrawcookie($this->getCookieName(), 
-                         '"access_token='.$access_token.'"', time() + 3600);
+            setrawcookie($this->getCookieName(), '"access_token=' . $access_token . '"', time() + 3600);
         }
         return $this;
     }
@@ -489,11 +505,9 @@ class ViadeoAPI {
 
         if (isset($this->access_token)) {
             $token = $this->access_token;
-
         } else if ($this->getConfigKey('access_token') != null) {
             $this->access_token = $this->getConfigKey('access_token');
             $token = $this->access_token;
-
         } else if ($this->getConfigKey('store') === true) {
             if (isset($_COOKIE[$this->getCookieName()])) {
                 $cookVal = $_COOKIE[$this->getCookieName()];
@@ -519,11 +533,9 @@ class ViadeoAPI {
 
         if (isset($this->authorization_code)) {
             $code = $this->authorization_code;
-
         } else if (isset($_REQUEST["code"])) {
             $this->authorization_code = $_REQUEST["code"];
             $code = $this->authorization_code;
-
         } else if (isset($_REQUEST["error"])) {
             throw new ViadeoOAuth2Exception($_REQUEST["error"]);
         }
@@ -548,11 +560,11 @@ class ViadeoAPI {
     // -- OAuth2.0 step 1 -- get authorization code ---------------------------
     public function getAuthorizationURL($extras = array()) {
         $params = array_merge(array(
-                'response_type'   =>    'code',
-                'client_id'       =>    self::getConfigKey('client_id', true),
-                'redirect_uri'    =>    self::getRedirectURI()
-              ), $extras);
-        $url = self::$authorize_url . "?" . http_build_query($params, null, '&');        
+            'response_type' => 'code',
+            'client_id' => self::getConfigKey('client_id', true),
+            'redirect_uri' => self::getRedirectURI()
+                ), $extras);
+        $url = self::$authorize_url . "?" . http_build_query($params, null, '&');
         return $url;
     }
 
@@ -569,11 +581,11 @@ class ViadeoAPI {
     public function setAccessTokenFromCode($extras = array()) {
         $curl_opts = $this->curl_opts;
         $params = array_merge(array(
-                'grant_type'     => 'authorization_code',
-                'client_id'      => $this->getConfigKey('client_id', true),
-                'client_secret'  => $this->getConfigKey('client_secret', true),
-                'redirect_uri'   => $this->getRedirectURI(),
-                'code'           => $this->getAuthorizationCode()), $extras);
+            'grant_type' => 'authorization_code',
+            'client_id' => $this->getConfigKey('client_id', true),
+            'client_secret' => $this->getConfigKey('client_secret', true),
+            'redirect_uri' => $this->getRedirectURI(),
+            'code' => $this->getAuthorizationCode()), $extras);
 
         $curl_opts[CURLOPT_URL] = self::$token_url;
         $curl_opts[CURLOPT_POSTFIELDS] = http_build_query($params, null, '&');
@@ -581,8 +593,8 @@ class ViadeoAPI {
         $ch = curl_init(self::$token_url);
         curl_setopt_array($ch, $curl_opts);
 
-		// mod:btw:dont yell at me
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // mod:btw:dont yell at me
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $result = curl_exec($ch);
 
@@ -664,7 +676,7 @@ class ViadeoAPI {
         if ($request->getMethod() != "GET") {
             # post method dynamically overriden by Tianji adaptation scripts
             $post_method = "application/x-www-form-urlencoded; charset=UTF-8";
-            $headers[] = 'Content-Type: '.$post_method;
+            $headers[] = 'Content-Type: ' . $post_method;
             $json = (strpos($post_method, 'json') == FALSE) ? false : true;
             $curl_opts[CURLOPT_POSTFIELDS] = $request->getParams(array(), $json);
             $curl_opts[CURLOPT_CUSTOMREQUEST] = $request->getMethod();
@@ -679,8 +691,8 @@ class ViadeoAPI {
         $ch = curl_init($url);
         curl_setopt_array($ch, $curl_opts);
 
-		// mod:btw:dont yell at me
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // mod:btw:dont yell at me
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $result = curl_exec($ch);
 
@@ -704,24 +716,28 @@ class ViadeoAPI {
     public function object($data) {
         return new ViadeoGraphObject($this, $data);
     }
+
 }
 
 class ViadeoHelper {
+
     // == Helper tools ========================================================
     // ========================================================================
-
     // Retrieve the current page URL ------------------------------------------
     public static function getCurrentURL() {
         $pageURL = 'http';
-        if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on")) {$pageURL .= "s";}
+        if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on")) {
+            $pageURL .= "s";
+        }
         $pageURL .= "://";
 
         $pageURL .= $_SERVER["SERVER_NAME"];
         if ($_SERVER["SERVER_PORT"] != "80") {
-            $pageURL .= ":".$_SERVER["SERVER_PORT"];
+            $pageURL .= ":" . $_SERVER["SERVER_PORT"];
         }
         $pageURL .= $_SERVER["SCRIPT_NAME"];
 
         return $pageURL;
     }
+
 }

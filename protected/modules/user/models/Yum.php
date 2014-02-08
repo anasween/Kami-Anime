@@ -16,10 +16,11 @@ class Yum {
                 Yii::getPathOfAlias('application.modules.user.assets'));
 
         $path = $url . '/' . $file;
-        if (strpos($file, 'js') !== false)
+        if (strpos($file, 'js') !== false) {
             return Yii::app()->clientScript->registerScriptFile($path);
-        else if (strpos($file, 'css') !== false)
+        } else if (strpos($file, 'css') !== false) {
             return Yii::app()->clientScript->registerCssFile($path);
+        }
 
         return $path;
     }
@@ -42,11 +43,13 @@ class Yum {
             $command = Yii::app()->db->createCommand($sql);
 
             $languages = array();
-            foreach ($command->queryAll() as $row)
+            foreach ($command->queryAll() as $row) {
                 $languages[$row['language']] = $row['language'];
+            }
 
-            if (Yii::app()->cache)
+            if (Yii::app()->cache) {
                 Yii::app()->cache->set($cache_id, $languages);
+            }
         }
 
         return $languages;
@@ -78,8 +81,9 @@ class Yum {
      * In addition to that, the message is being translated by Yum::t() */
 
     public static function log($message, $level = 'info', $category = 'application.modules.user.controllers.YumController') {
-        if (Yum::module()->enableLogging)
+        if (Yum::module()->enableLogging) {
             return Yii::log(Yum::t($message), $level, $category);
+        }
     }
 
     public static function renderFlash() {
@@ -105,8 +109,9 @@ class Yum {
         $cache_id = sprintf('yum_translations_%s_%s', $language, $category);
 
         $messages = false;
-        if (Yii::app()->cache)
+        if (Yii::app()->cache) {
             $messages = Yii::app()->cache->get($cache_id);
+        }
 
         if ($messages === false) {
             if (Yum::module()->avoidSql) {
@@ -116,8 +121,9 @@ class Yum {
                     'language' => $language,
                 ));
                 $messages = array();
-                foreach ($translations as $row)
+                foreach ($translations as $row) {
                     $messages[$row['message']] = $row->translation;
+                }
             } else {
                 $translationTable = Yum::module()->translationTable;
                 $sql = "select message, translation from {$translationTable} where language = :language and category = :category";
@@ -127,18 +133,21 @@ class Yum {
                 $command->bindValue(':language', $language);
 
                 $messages = array();
-                foreach ($command->queryAll() as $row)
+                foreach ($command->queryAll() as $row) {
                     $messages[$row['message']] = $row['translation'];
+                }
             }
 
-            if (Yii::app()->cache)
+            if (Yii::app()->cache) {
                 Yii::app()->cache->set($cache_id, $messages);
+            }
         }
 
-        if (isset($messages[$string]))
+        if (isset($messages[$string])) {
             return strtr($messages[$string], $params);
-        else
+        } else {
             return strtr($string, $params);
+        }
     }
 
     // returns the Yii User Management module. Frequently used for accessing 
@@ -163,5 +172,3 @@ class Yum {
     }
 
 }
-
-?>

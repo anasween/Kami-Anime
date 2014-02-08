@@ -7,7 +7,7 @@ $this->breadcrumbs = array(
 
 <h1><?php echo Yum::t('Manage Translations'); ?> </h1>
 
-<div class="item">
+<div class="well">
 
 <?php $this->widget('bootstrap.widgets.BsGridView', array(
         'id'=>'category-grid',

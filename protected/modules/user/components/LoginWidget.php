@@ -1,21 +1,21 @@
 <?php
+
 Yii::import('zii.widgets.CPortlet');
 
-class LoginWidget extends CPortlet
-{
-	public $view = 'quicklogin';
-	public $title = null;
+class LoginWidget extends CPortlet {
 
-	public function init()
-	{
-		if($this->title === NULL)
-			$this->title=Yum::t('Login');
-		parent::init();
-	}
+    public $view = 'quicklogin';
+    public $title = null;
 
-	protected function renderContent()
-	{
-		$this->render($this->view, array('model' => new YumUserLogin()));
-	}
-} 
-?>
+    public function init() {
+        if ($this->title === NULL) {
+            $this->title = Yum::t('Login');
+        }
+        parent::init();
+    }
+
+    protected function renderContent() {
+        $this->render($this->view, array('model' => new YumUserLogin()));
+    }
+
+}

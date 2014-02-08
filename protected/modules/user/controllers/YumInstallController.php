@@ -1,94 +1,91 @@
 <?php
 
-class YumInstallController extends YumController
-{
-	public $layout = 'install';
-	public $defaultAction = 'install';
+class YumInstallController extends YumController {
 
-	public function accessRules()
-	{
-		return array(
-			array('allow',
-			      'actions' => array(
-				      'index, start, installer, installation, install, index'),
-			      'users' => array('@')),
-		);
-	}
+    public $layout = 'install';
+    public $defaultAction = 'install';
 
-	public function actionStart()
-	{
-		$this->actionInstall();
-	}
+    public function accessRules() {
+        return array(
+            array('allow',
+                'actions' => array(
+                    'index, start, installer, installation, install, index'),
+                'users' => array('@')),
+        );
+    }
 
-	public function actionInstaller()
-	{
-		$this->actionInstall();
-	}
+    public function actionStart() {
+        $this->actionInstall();
+    }
 
-	public function actionInstallation()
-	{
-		$this->actionInstall();
-	}
+    public function actionInstaller() {
+        $this->actionInstall();
+    }
 
-	public function actionInstall()
-	{
-		if ($this->module->debug === true) {
-		
-			if(!Yii::app()->user instanceof YumWebUser)
-				throw new CHttpException(500, Yum::t('Please make sure that Yii uses the YumWebUser component instead of CWebUser in your config/main.php components section. Please see the installation instructions.'));
+    public function actionInstallation() {
+        $this->actionInstall();
+    }
 
-			if(!isset(Yii::app()->cache))
-				throw new CHttpException(500, 'Please enable a caching component for yii-user-management to work.');
+    public function actionInstall() {
+        if ($this->module->debug === true) {
 
-			if(!isset(Yii::app()->db->tablePrefix))
-				throw new CHttpException(500, 'Please set a table prefix, at least \'\', to your db configuration for yii-user-management to work.');
+            if (!Yii::app()->user instanceof YumWebUser) {
+                throw new CHttpException(500, Yum::t('Please make sure that Yii uses the YumWebUser component instead of CWebUser in your config/main.php components section. Please see the installation instructions.'));
+            }
 
-			if(!version_compare(Yii::getVersion(), '1.1.14', '>='))
-				throw new CHttpException(500, 'Please make sure to use at least Yii version 1.1.14.'); 
+            if (!isset(Yii::app()->cache)) {
+                throw new CHttpException(500, 'Please enable a caching component for yii-user-management to work.');
+            }
 
-						if (Yii::app()->request->isPostRequest) {
-				// A associative array containing the tables to be created.
-				$createdTables = array();
-				if ($db = Yii::app()->db) {
-					$sql = 'set FOREIGN_KEY_CHECKS = 0;';
-					$db->createCommand($sql)->execute();
+            if (!isset(Yii::app()->db->tablePrefix)) {
+                throw new CHttpException(500, 'Please set a table prefix, at least \'\', to your db configuration for yii-user-management to work.');
+            }
 
-					$transaction = $db->beginTransaction();
+            if (!version_compare(Yii::getVersion(), '1.1.14', '>=')) {
+                throw new CHttpException(500, 'Please make sure to use at least Yii version 1.1.14.');
+            }
 
-					$tables = array(
-						'userTable',
-						'privacySettingTable',
-						'profileTable',
-						'profileCommentTable',
-						'profileVisitTable',
-						'membershipTable',
-						'paymentTable',
-						'messageTable',
-						'roleTable',
-						'userRoleTable',
-						'permissionTable',
-						'friendshipTable',
-						'actionTable',
-						'usergroupTable',
-						'usergroupMessageTable',
-						'translationTable');
+            if (Yii::app()->request->isPostRequest) {
+                // A associative array containing the tables to be created.
+                $createdTables = array();
+                if ($db = Yii::app()->db) {
+                    $sql = 'set FOREIGN_KEY_CHECKS = 0;';
+                    $db->createCommand($sql)->execute();
 
-					/*
-					 * Hey, we're dropping your tables. Did anyone said 'backups'?
-					 */
-					foreach ($tables as $table) {
-						if (isset($_POST[$table])) {
-							${$table} = $_POST[$table];
+                    $transaction = $db->beginTransaction();
 
-							// Clean up existing Installation table-by-table
-							$db->createCommand(sprintf('DROP TABLE IF EXISTS %s',
-							                           ${$table}))->execute();
+                    $tables = array(
+                        'userTable',
+                        'privacySettingTable',
+                        'profileTable',
+                        'profileCommentTable',
+                        'profileVisitTable',
+                        'membershipTable',
+                        'paymentTable',
+                        'messageTable',
+                        'roleTable',
+                        'userRoleTable',
+                        'permissionTable',
+                        'friendshipTable',
+                        'actionTable',
+                        'usergroupTable',
+                        'usergroupMessageTable',
+                        'translationTable');
 
-						}
-					}
+                    /*
+                     * Hey, we're dropping your tables. Did anyone said 'backups'?
+                     */
+                    foreach ($tables as $table) {
+                        if (isset($_POST[$table])) {
+                            ${$table} = $_POST[$table];
 
-					// Create User Table
-					$sql = "CREATE TABLE IF NOT EXISTS `" . $userTable . "` (
+                            // Clean up existing Installation table-by-table
+                            $db->createCommand(sprintf('DROP TABLE IF EXISTS %s', ${$table}))->execute();
+                        }
+                    }
+
+                    // Create User Table
+                    $sql = "CREATE TABLE IF NOT EXISTS `" . $userTable . "` (
 						`id` int unsigned NOT NULL auto_increment,
 						`username` varchar(255) NOT NULL,
 						`password` char(64) CHARACTER SET latin1 NOT NULL,
@@ -108,11 +105,11 @@ class YumInstallController extends YumController
 						KEY `superuser` (`superuser`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
-					$db->createCommand($sql)->execute();
-					$createdTables['user']['userTable'] = $userTable;
+                    $db->createCommand($sql)->execute();
+                    $createdTables['user']['userTable'] = $userTable;
 
-					// Create messages translation table
-					$sql = "CREATE TABLE IF NOT EXISTS `{$translationTable}` (
+                    // Create messages translation table
+                    $sql = "CREATE TABLE IF NOT EXISTS `{$translationTable}` (
 						`message` varbinary(255) NOT NULL,
 						`translation` varchar(255) NOT NULL,
 						`language` varchar(5) NOT NULL,
@@ -120,18 +117,18 @@ class YumInstallController extends YumController
 						PRIMARY KEY (`message`,`language`,`category`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-					$db->createCommand($sql)->execute();
-					$createdTables['user']['translationTable'] = $translationTable;
+                    $db->createCommand($sql)->execute();
+                    $createdTables['user']['translationTable'] = $translationTable;
 
-					// Insert the translation strings that come with yum
-					$sql = file_get_contents(Yii::getPathOfAlias(
-								'application.modules.user.docs') . '/yum_translation.sql');
+                    // Insert the translation strings that come with yum
+                    $sql = file_get_contents(Yii::getPathOfAlias(
+                                    'application.modules.user.docs') . '/yum_translation.sql');
 
-					$db->createCommand($sql)->execute();
+                    $db->createCommand($sql)->execute();
 
-					// Install Usergroups submodule
-					if (isset($_POST['installUsergroup'])) {
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $usergroupTable . "` (
+                    // Install Usergroups submodule
+                    if (isset($_POST['installUsergroup'])) {
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $usergroupTable . "` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`owner_id` int(11) NOT NULL,
 							`participants` text NULL,
@@ -140,10 +137,10 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['usergroup']['usergroupTable'] = $usergroupTable;
+                        $db->createCommand($sql)->execute();
+                        $createdTables['usergroup']['usergroupTable'] = $usergroupTable;
 
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $usergroupMessageTable . "` (
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $usergroupMessageTable . "` (
 							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 							`author_id` int(11) unsigned NOT NULL,
 							`group_id` int(11) unsigned NOT NULL,
@@ -153,13 +150,13 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['usergroup']['usergroupMessageTable'] = $usergroupMessageTable;
-					}
+                        $db->createCommand($sql)->execute();
+                        $createdTables['usergroup']['usergroupMessageTable'] = $usergroupMessageTable;
+                    }
 
-					// Install Membership Management submodule
-					if (isset($_POST['installMembership'])) {
-						$sql = "CREATE TABLE IF NOT EXISTS `{$membershipTable}` (
+                    // Install Membership Management submodule
+                    if (isset($_POST['installMembership'])) {
+                        $sql = "CREATE TABLE IF NOT EXISTS `{$membershipTable}` (
 							`id` int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 							`membership_id` int(11) NOT NULL,
 							`user_id` int(11) NOT NULL,
@@ -174,22 +171,22 @@ class YumInstallController extends YumController
 							`subscribed` tinyint(1) NOT NULL 
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['membership']['membershipTable'] = $membershipTable;
+                        $db->createCommand($sql)->execute();
+                        $createdTables['membership']['membershipTable'] = $membershipTable;
 
-						$sql = " CREATE TABLE IF NOT EXISTS `{$paymentTable}` (
+                        $sql = " CREATE TABLE IF NOT EXISTS `{$paymentTable}` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`title` varchar(255) NOT NULL,
 							`text` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
-						$db->createCommand($sql)->execute();
-						$createdTables['membership']['paymentTable'] = $paymentTable;
-					}
+                        $db->createCommand($sql)->execute();
+                        $createdTables['membership']['paymentTable'] = $paymentTable;
+                    }
 
-					// Install Friendship submodule
-					if (isset($_POST['installFriendship'])) {
-						$sql = "CREATE TABLE  `" . $friendshipTable . "` (
+                    // Install Friendship submodule
+                    if (isset($_POST['installFriendship'])) {
+                        $sql = "CREATE TABLE  `" . $friendshipTable . "` (
 							`inviter_id` int(11) NOT NULL,
 							`friend_id` int(11) NOT NULL,
 							`status` int(11) NOT NULL,
@@ -200,13 +197,13 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`inviter_id`, `friend_id`)
 						) ENGINE = INNODB;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['friendship']['friendshipTable'] = $friendshipTable;
-					}
+                        $db->createCommand($sql)->execute();
+                        $createdTables['friendship']['friendshipTable'] = $friendshipTable;
+                    }
 
-					// Install Profiles submodule
-					if (isset($_POST['installProfiles'])) {
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $privacySettingTable . "` (
+                    // Install Profiles submodule
+                    if (isset($_POST['installProfiles'])) {
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $privacySettingTable . "` (
 							`user_id` int unsigned NOT NULL,
 							`message_new_friendship` tinyint(1) NOT NULL DEFAULT 1,
 							`message_new_message` tinyint(1) NOT NULL DEFAULT 1,
@@ -219,11 +216,11 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`user_id`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['profile']['privacySettingTable'] = $privacySettingTable;
+                        $db->createCommand($sql)->execute();
+                        $createdTables['profile']['privacySettingTable'] = $privacySettingTable;
 
-						// Create Profiles Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
+                        // Create Profiles Table
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
 							`id` int unsigned NOT NULL auto_increment,
 							`user_id` int unsigned NOT NULL,
 							`lastname` varchar(50) NOT NULL default '',
@@ -235,10 +232,10 @@ class YumInstallController extends YumController
 							PRIMARY KEY  (`id`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['profile']['profileTable'] = $profileTable;
+                        $db->createCommand($sql)->execute();
+                        $createdTables['profile']['profileTable'] = $profileTable;
 
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileCommentTable . "` (
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $profileCommentTable . "` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`user_id` int(11) NOT NULL,
 							`profile_id` int(11) NOT NULL,
@@ -247,10 +244,10 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`id`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['profile']['profileCommentTable'] = $profileCommentTable;
+                        $db->createCommand($sql)->execute();
+                        $createdTables['profile']['profileCommentTable'] = $profileCommentTable;
 
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileVisitTable . "` (
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $profileVisitTable . "` (
 							`visitor_id` int(11) NOT NULL,
 							`visited_id` int(11) NOT NULL,
 							`timestamp_first_visit` int(11) NOT NULL,
@@ -259,14 +256,14 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`visitor_id`,`visited_id`)
 						) ENGINE=InnoDB;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['profile']['profileVisitTable'] = $profileVisitTable;
-					}
+                        $db->createCommand($sql)->execute();
+                        $createdTables['profile']['profileVisitTable'] = $profileVisitTable;
+                    }
 
-					// Install Role Management submodule
-					if (isset($_POST['installRole'])) {
-						// Create Roles Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $roleTable . "` (
+                    // Install Role Management submodule
+                    if (isset($_POST['installRole'])) {
+                        // Create Roles Table
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $roleTable . "` (
 							`id` INT unsigned NOT NULL AUTO_INCREMENT ,
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL,
@@ -276,32 +273,32 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`id`)
 						) ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['role']['roleTable'] = $roleTable;
+                        $db->createCommand($sql)->execute();
+                        $createdTables['role']['roleTable'] = $roleTable;
 
-						// Create User_has_role Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $userRoleTable . "` (
+                        // Create User_has_role Table
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $userRoleTable . "` (
 							`user_id` int unsigned NOT NULL,
 							`role_id` int unsigned NOT NULL,
 							PRIMARY KEY (`user_id`, `role_id`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['role']['userRoleTable'] = $userRoleTable;
+                        $db->createCommand($sql)->execute();
+                        $createdTables['role']['userRoleTable'] = $userRoleTable;
 
-						// Install permission support (submodule anytime?)
-						if (isset($_POST['installPermission'])) {
-							$sql = "CREATE TABLE IF NOT EXISTS `" . $actionTable . "` (
+                        // Install permission support (submodule anytime?)
+                        if (isset($_POST['installPermission'])) {
+                            $sql = "CREATE TABLE IF NOT EXISTS `" . $actionTable . "` (
 							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 							`title` varchar(255) NOT NULL,
 							`comment` text,
 							`subject` varchar(255) DEFAULT NULL,
 							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
-							$db->createCommand($sql)->execute();
-							$createdTables['role']['actionTable'] = $actionTable;
+                            $db->createCommand($sql)->execute();
+                            $createdTables['role']['actionTable'] = $actionTable;
 
-							$sql = "CREATE TABLE IF NOT EXISTS `" . $permissionTable . "` (
+                            $sql = "CREATE TABLE IF NOT EXISTS `" . $permissionTable . "` (
 							`principal_id` int(11) NOT NULL,
 							`subordinate_id` int(11) NULL,
 							`type` enum('user','role') NOT NULL,
@@ -312,15 +309,15 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`principal_id`,`subordinate_id`,`type`,`action`, `subaction`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8; ";
 
-							$db->createCommand($sql)->execute();
-							$createdTables['role']['permissionTable'] = $permissionTable;
-						}
-					}
+                            $db->createCommand($sql)->execute();
+                            $createdTables['role']['permissionTable'] = $permissionTable;
+                        }
+                    }
 
-					// Install Messages submodule
-					if (isset($_POST['installMessages'])) {
-						// Create Messages Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $messageTable . "` (
+                    // Install Messages submodule
+                    if (isset($_POST['installMessages'])) {
+                        // Create Messages Table
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $messageTable . "` (
 							`id` int unsigned NOT NULL auto_increment,
 							`timestamp` int unsigned NOT NULL,
 							`from_user_id` int unsigned NOT NULL,
@@ -333,106 +330,103 @@ class YumInstallController extends YumController
 							PRIMARY KEY  (`id`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
-						$db->createCommand($sql)->execute();
-						$createdTables['message']['messageTable'] = $messageTable;
-					}
+                        $db->createCommand($sql)->execute();
+                        $createdTables['message']['messageTable'] = $messageTable;
+                    }
 
-					// Generate demo data
-					$sql = "INSERT INTO `" . $userTable
-					   ."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES "
-					   ."(1, 'admin', '" . CPasswordHelper::hashPassword('admin', Yum::module()->passwordHashCost) . "', '', " . time() . ", 0, 1, 1),"
-					   ."(2, 'demo', '" . CPasswordHelper::hashPassword('demo', Yum::module()->passwordHashCost) . "', '', " . time() . ", 0, 0, 1)";
-					$db->createCommand($sql)->execute();
+                    // Generate demo data
+                    $sql = "INSERT INTO `" . $userTable
+                            . "` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES "
+                            . "(1, 'admin', '" . CPasswordHelper::hashPassword('admin', Yum::module()->passwordHashCost) . "', '', " . time() . ", 0, 1, 1),"
+                            . "(2, 'demo', '" . CPasswordHelper::hashPassword('demo', Yum::module()->passwordHashCost) . "', '', " . time() . ", 0, 0, 1)";
+                    $db->createCommand($sql)->execute();
 
-					if (isset($_POST['installMembership'])) {
-						$sql = "INSERT INTO `{$paymentTable}` (`title`) VALUES ('Prepayment'), ('Paypal')";
+                    if (isset($_POST['installMembership'])) {
+                        $sql = "INSERT INTO `{$paymentTable}` (`title`) VALUES ('Prepayment'), ('Paypal')";
 
-						$db->createCommand($sql)->execute();
-					}
+                        $db->createCommand($sql)->execute();
+                    }
 
-					if (isset($_POST['installRole']) && isset($_POST['installPermission'])) {
-						$sql = "INSERT INTO `" . $actionTable . "` (`title`) VALUES "
-							."('create'),"
-							."('read'),"
-							."('update'),"
-							."('delete'),"
-							."('message'),"
-							."('user')";
+                    if (isset($_POST['installRole']) && isset($_POST['installPermission'])) {
+                        $sql = "INSERT INTO `" . $actionTable . "` (`title`) VALUES "
+                                . "('create'),"
+                                . "('read'),"
+                                . "('update'),"
+                                . "('delete'),"
+                                . "('message'),"
+                                . "('user')";
 
-						$db->createCommand($sql)->execute();
+                        $db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `subaction`, `template`, `comment`) VALUES "
-							."(2, 0, 'role', 5, 1, 0, 'Demo role can write messages'),"
-							."(2, 0, 'role', 5, 2, 0, 'Demo role can read messages'),"
-							."(1, 0, 'role', 6, 2, 0, 'User Manager can read other users');";
+                        $sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `subaction`, `template`, `comment`) VALUES "
+                                . "(2, 0, 'role', 5, 1, 0, 'Demo role can write messages'),"
+                                . "(2, 0, 'role', 5, 2, 0, 'Demo role can read messages'),"
+                                . "(1, 0, 'role', 6, 2, 0, 'User Manager can read other users');";
 
-						$db->createCommand($sql)->execute();
+                        $db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `" . $roleTable . "` (`title`,`description`, `membership_priority`, `price`, `duration`) VALUES "
-							."('UserManager', 'These users can manage Users', 0, 0, 0),"
-							."('Demo', 'Users having the demo role', 0, 0, 0),"
-							."('Business', 'Example Business account', 1, 9.99, 7),"
-							."('Premium', 'Example Premium account', 2, 19.99, 28) ";
-						$db->createCommand($sql)->execute();
+                        $sql = "INSERT INTO `" . $roleTable . "` (`title`,`description`, `membership_priority`, `price`, `duration`) VALUES "
+                                . "('UserManager', 'These users can manage Users', 0, 0, 0),"
+                                . "('Demo', 'Users having the demo role', 0, 0, 0),"
+                                . "('Business', 'Example Business account', 1, 9.99, 7),"
+                                . "('Premium', 'Example Premium account', 2, 19.99, 28) ";
+                        $db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `" . $userRoleTable . "` (`user_id`, `role_id`) VALUES (2, 3)";
+                        $sql = "INSERT INTO `" . $userRoleTable . "` (`user_id`, `role_id`) VALUES (2, 3)";
 
-						$db->createCommand($sql)->execute();
-					}
+                        $db->createCommand($sql)->execute();
+                    }
 
-					if (isset($_POST['installProfiles'])) {
-						$sql = "INSERT INTO `" . $privacySettingTable . "` (`user_id`) values (2)";
-						$db->createCommand($sql)->execute();
+                    if (isset($_POST['installProfiles'])) {
+                        $sql = "INSERT INTO `" . $privacySettingTable . "` (`user_id`) values (2)";
+                        $db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `" . $profileTable . "` (`id`, `user_id`, `lastname`, `firstname`, `email`) VALUES "
-							."(1, 1, 'admin','admin','webmaster@example.com'),"
-							."(2, 2, 'demo','demo','demo@example.com')";
-						$db->createCommand($sql)->execute();
+                        $sql = "INSERT INTO `" . $profileTable . "` (`id`, `user_id`, `lastname`, `firstname`, `email`) VALUES "
+                                . "(1, 1, 'admin','admin','webmaster@example.com'),"
+                                . "(2, 2, 'demo','demo','demo@example.com')";
+                        $db->createCommand($sql)->execute();
+                    }
 
-					}
+                    // Do it
+                    $transaction->commit();
 
-					// Do it
-					$transaction->commit();
+                    // Victory
+                    $this->render('success', array('modules' => $createdTables));
+                } else {
+                    throw new CException(Yum::t('Database connection is not working'));
+                }
+            } else {
+                if (Yii::app()->db->getSchema()->getTable('user')) {
+                    throw new CHttpException(403, Yum::t(
+                            'Yii-user-management is already installed. Please remove it manually to continue'));
+                }
 
-					// Victory
-					$this->render('success', array('modules' => $createdTables));
-				}
-				else
-				{
-					throw new CException(Yum::t('Database connection is not working'));
-				}
-			}
-			else {
-				if(Yii::app()->db->getSchema()->getTable('user'))
-					throw new CHttpException(403, Yum::t(
-								'Yii-user-management is already installed. Please remove it manually to continue'));
+                $this->render('start', array(
+                    'userTable' => 'user',
+                    'roleTable' => 'role',
+                    'privacySettingTable' => 'privacysetting',
+                    'translationTable' => 'translation',
+                    'membershipTable' => 'membership',
+                    'paymentTable' => 'payment',
+                    'messageTable' => 'message',
+                    'profileTable' => 'profile',
+                    'profileCommentTable' => 'profile_comment',
+                    'profileVisitTable' => 'profile_visit',
+                    'userRoleTable' => 'user_role',
+                    'usergroupTable' => 'usergroup',
+                    'usergroupMessageTable' => 'user_group_message',
+                    'permissionTable' => 'permission',
+                    'friendshipTable' => 'friendship',
+                    'actionTable' => 'action',
+                ));
+            }
+        } else {
+            throw new CException(Yum::t('User management module is not in Debug Mode'));
+        }
+    }
 
-				$this->render('start', array(
-					'userTable' => 'user',
-					'roleTable' => 'role',
-					'privacySettingTable' => 'privacysetting',
-					'translationTable' => 'translation',
-					'membershipTable' => 'membership',
-					'paymentTable' => 'payment',
-					'messageTable' => 'message',
-					'profileTable' => 'profile',
-					'profileCommentTable' => 'profile_comment',
-					'profileVisitTable' => 'profile_visit',
-					'userRoleTable' => 'user_role',
-					'usergroupTable' => 'usergroup',
-					'usergroupMessageTable' => 'user_group_message',
-					'permissionTable' => 'permission',
-					'friendshipTable' => 'friendship',
-					'actionTable' => 'action',
-				));
-			}
-		} else {
-			throw new CException(Yum::t('User management module is not in Debug Mode'));
-		}
-	}
+    public function actionIndex() {
+        $this->actionInstall();
+    }
 
-	public function actionIndex()
-	{
-		$this->actionInstall();
-	}
 }

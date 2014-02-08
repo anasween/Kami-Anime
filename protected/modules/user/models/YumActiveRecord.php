@@ -18,10 +18,11 @@ abstract class YumActiveRecord extends CActiveRecord {
      */
     public function behaviors() {
         $behaviors = array('CAdvancedArBehavior');
-        if (Yum::module()->enableAuditTrail)
+        if (Yum::module()->enableAuditTrail) {
             $behaviors = array_merge($behaviors, array(
                 'LoggableBehavior' => 'application.modules.auditTrail.behaviors.LoggableBehavior')
             );
+        }
 
         return $behaviors;
     }

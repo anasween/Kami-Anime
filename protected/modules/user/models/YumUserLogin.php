@@ -17,10 +17,10 @@ class YumUserLogin extends YumFormModel {
      * The rules state that username and password are required,
      * and password needs to be authenticated.
      */
-
     public function rules() {
-        if (!isset($this->scenario))
+        if (!isset($this->scenario)) {
             $this->scenario = 'login';
+        }
 
         $rules = array(
             array('username, password', 'required', 'on' => 'login'),
