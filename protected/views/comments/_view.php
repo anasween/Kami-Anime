@@ -32,7 +32,8 @@
                                 ),
                             ),
                             array(
-                                'color' => BSHtml::BUTTON_COLOR_PRIMARY
+                                'color' => BSHtml::BUTTON_COLOR_PRIMARY,
+                                'size' => BSHtml::BUTTON_SIZE_MINI
                             )
                         );
                 }

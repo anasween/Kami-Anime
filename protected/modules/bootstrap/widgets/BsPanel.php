@@ -65,7 +65,7 @@ class BsPanel extends CWidget {
         if ($this->footer !== '') {
             $content .= BSHtml::tag('div', array('class' => 'panel-footer'), $this->footer);
         }
-        BSHtml::addCssClass('panel panel-default', $this->htmlOptions);               
+        BSHtml::addCssClass('panel panel-' . $this->color, $this->htmlOptions);               
         echo BSHtml::tag('div', $this->htmlOptions, $content);
     }
     

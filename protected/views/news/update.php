@@ -8,9 +8,7 @@ $this->breadcrumbs = array(
             Yum::t('Upadate'),   
         );
 
-?><h1><?php echo Yum::t('Update new') . $model->title; ?></h1>
-<div class="row">
-    <div class="col-md-12">
-	<?php $this->renderPartial('_form', array('model'=>$model)); ?>	
-    </div>
-</div>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Update new'), $model->title);
+$this->renderPartial('_form', array('model'=>$model));
+echo '</div>';

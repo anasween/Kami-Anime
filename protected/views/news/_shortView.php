@@ -1,13 +1,8 @@
-<div class="row well post">
-    <div class="col-md-12">
-        <h1>
-            <a href="<?php echo $this->createUrl('news/view',array('id'=>$data->id)); ?>">
-                <?php echo $data->title ?>
-            </a>
-            <?php
-            if (Yii::app()->user->can('news'))
-            {
-                echo BSHtml::buttonGroup(array(
+<?php
+$header = BSHtml::link($data->title, $this->createUrl('news/view',array('id'=>$data->id)));
+if (Yii::app()->user->can('news'))
+{
+    $content = BSHtml::buttonGroup(array(
                     array(
                         'icon' => BSHtml::GLYPHICON_PLUS_SIGN, 
                         'url' => array('news/create'),
@@ -31,18 +26,11 @@
                 ), array(
                     'size' => BSHtml::BUTTON_SIZE_MINI
                 ));
-            }
-            ?>
-        </h1>
-    </div>
-    <div class="row post_body">
-        <div class="col-md-12">
-            <?php echo $data->text; ?>
-        </div>
-    </div>
-    <div class="post_description">
-        <?php 
-        echo BSHtml::icon(BSHtml::GLYPHICON_EYE_OPEN) . ' '
+    if ($content !== '') {
+        $header .= BSHtml::tag('div', array('class' => 'pull-right'), $content);
+    }
+}
+$footer = BSHtml::icon(BSHtml::GLYPHICON_EYE_OPEN) . ' '
                 . $data->views . ' | '
                 . '<a href="' . $this->createUrl('user/admin/view',array('id'=>$data->autor->id)) . '">'
                 . BSHtml::icon(BSHtml::GLYPHICON_USER) . ' '
@@ -51,6 +39,13 @@
                 . BSHtml::icon(BSHtml::GLYPHICON_CALENDAR) . ' '
                 . Yii::app()->dateFormatter->format('d MMMM yyyy HH:mm:ss', $data->create_Date) . ' | '
                 . BSHtml::icon(BSHtml::GLYPHICON_COMMENT) . ' '
-                . count($data->comments); ?>
-    </div>
-</div>
+                . count($data->comments);
+
+$footer .= BSHtml::tag('div', array('class' => 'pull-right'), BSHtml::link(BSHtml::icon(BSHtml::GLYPHICON_CLOUD) . ' ' . Yum::t('More'), $this->createUrl('news/view',array('id'=>$data->id))));
+
+$this->widget('bootstrap.widgets.BsPanel',array(
+    'header' => $header,
+    'body' => $data->text,
+    'title' => true,
+    'footer' => $footer
+)); 

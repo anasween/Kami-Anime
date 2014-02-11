@@ -9,7 +9,7 @@ $this->breadcrumbs = array(
 <div class="row">
     <div class="col-md-12">
         <?php
-            $this->renderPartial('_shortView', array('model'=>$model));
+            $this->renderPartial('_shortView', array('data'=>$model));
         ?>
         <?php
         if (Yii::app()->user->can("comment", "create"))
@@ -30,9 +30,10 @@ $this->breadcrumbs = array(
         ?>
         <?php
             $this->widget('bootstrap.widgets.BsListView', array(
-                'dataProvider'=>$comments,
-                'itemView'=>'_comment', 
-                'template'=>"{items}\n{pager}"
+                'dataProvider' => $comments,
+                'itemView' => '_comment', 
+                'template' => "{items}\n{pager}",
+                'emptyText' => ''
             )); 
         ?>
     </div>

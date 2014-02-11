@@ -10,7 +10,7 @@ $this->breadcrumbs=array(
 );
 
 $header = $model->name_ru . '/' . $model->name_en . ' [' . $model->year . ']';
-if (Yii::app()->user->can('news'))
+if (Yii::app()->user->can('anime'))
 {
     $content = BSHtml::buttonGroup(array(
         array(

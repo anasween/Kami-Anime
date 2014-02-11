@@ -3,7 +3,7 @@
 /* @var $data Anime */
 
 $header = BSHtml::link($data->name_ru . '/' . $data->name_en . ' [' . $data->year . ']', array('anime/view', 'id' => $data->id));
-if (Yii::app()->user->can('news'))
+if (Yii::app()->user->can('anime'))
 {
     $content = BSHtml::buttonGroup(array(
         array(
