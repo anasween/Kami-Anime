@@ -3,9 +3,11 @@ $this->title = Yum::t('Users');
 $this->breadcrumbs = array(
             Yum::t("Users")
         );
-?>
 
-<?php $this->widget('bootstrap.widgets.BsGridView', array(
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t("Users"));
+
+$this->widget('bootstrap.widgets.BsGridView', array(
                 'dataProvider'=>$dataProvider,
                 'columns'=>array(
 		array(
@@ -25,4 +27,4 @@ $this->breadcrumbs = array(
 	),
 ));
 
-
+echo '</div>';

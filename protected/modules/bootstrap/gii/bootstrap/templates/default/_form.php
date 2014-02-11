@@ -34,10 +34,10 @@
         ?>
         <?php echo "<?php echo " . $this->generateActiveControlGroup($this->modelClass, $column) . "; ?>\n"; ?>
 
-    <?php
+        <?php
     }
     ?>
-        <?php echo "<?php echo BSHtml::formActions(array(
+    <?php echo "<?php echo BSHtml::formActions(array(
     BSHtml::submitButton('Submit', array('color' => BSHtml::BUTTON_COLOR_PRIMARY)),
 )); ?>\n"; ?>
 

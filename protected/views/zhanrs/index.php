@@ -7,9 +7,10 @@
 $this->breadcrumbs=array(
 	Yum::t('Zhanrs'),
 );
-?>
-<?php echo BSHtml::pageHeader(Yum::t('Zhanrs')) ?>
-<?php $this->widget('bootstrap.widgets.BsListView',array(
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Zhanrs')); 
+$this->widget('bootstrap.widgets.BsListView',array(
     'dataProvider'=>$dataProvider,
     'itemView'=>'_view',
-)); ?>
+));
+echo '</div>';

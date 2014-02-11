@@ -4,8 +4,9 @@ $this->breadcrumbs = array(
             $model->title,
         );
 ?>
-<h3> <?php echo $model->title;  ?> </h3>
-<div class="item">
+<div class="well">
+<div class="well">
+    <h3> <?php echo $model->title;  ?> </h3>
     <?php 
     echo BSHtml::bold(Yum::t('Description') . ':');
     echo BSHtml::tag('p',array(),$model->description);
@@ -18,17 +19,18 @@ $this->breadcrumbs = array(
     }
     ?>
 </div>
-<h3><?php echo Yum::t('Participants'); ?></h3>
-<div class="item">
+<div class="well">
+    <h3><?php echo Yum::t('Participants'); ?></h3>
     <?php
     $this->widget('bootstrap.widgets.BsListView', array(
         'dataProvider' => $model->getParticipantDataProvider(),
-        'itemView' => '_participant', 
+        'itemView' => 'application.modules.user.views.user._view', 
         'template' => '{items}{pager}'
     )); 
     ?>
 </div>
 <div class="clearfix"></div>
+<div class="well">
 <h3><?php echo Yum::t('Messages'); ?></h3>
 <?php
 $this->widget('bootstrap.widgets.BsListView', array(
@@ -36,6 +38,7 @@ $this->widget('bootstrap.widgets.BsListView', array(
     'itemView' => '_message', 
 )); 
 ?>
+</div>
 
 <?php 
 if (Yii::app()->user->can("comment", "create") 
@@ -54,6 +57,7 @@ if (Yii::app()->user->can("comment", "create")
     ), $this->renderPartial('_message_form', array('model' => $commentModel),true,true));
 }
 ?>
+</div>
 <?php
     Yii::app()->clientScript->registerScript('helloscript',"
         $('#comment-add-form').toggle(500);

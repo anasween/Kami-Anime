@@ -15,7 +15,6 @@ echo "\$this->breadcrumbs=array(
 	'$label'=>array('index'),
 	'Manage',
 );\n";
-
 ?>
 
 $this->menu=array(
@@ -24,17 +23,17 @@ array('icon' => 'glyphicon glyphicon-plus-sign','label'=>'Create <?php echo $thi
 );
 
 Yii::app()->clientScript->registerScript('search',
-    "
-    $('.search-button').click(function(){
-        $('.search-form').toggle();
-            return false;
-        });
-        $('.search-form form').submit(function(){
-            $('#<?php echo $this->class2id($this->modelClass); ?>-grid').yiiGridView('update', {
-            data: $(this).serialize()
-        });
-        return false;
-    });"
+"
+$('.search-button').click(function(){
+$('.search-form').toggle();
+return false;
+});
+$('.search-form form').submit(function(){
+$('#<?php echo $this->class2id($this->modelClass); ?>-grid').yiiGridView('update', {
+data: $(this).serialize()
+});
+return false;
+});"
 );
 ?>
 <?php echo "<?php echo BSHtml::pageHeader('Manage','$label') ?>\n"; ?>

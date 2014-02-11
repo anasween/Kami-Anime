@@ -1,4 +1,4 @@
-<div class="item view">
+<div class="well view">
 
     <h3> <?php echo CHtml::encode($data->title); ?> </h3> 
     <b><?php echo CHtml::encode($data->getAttributeLabel('owner_id')); ?>:</b>

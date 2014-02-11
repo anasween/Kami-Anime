@@ -8,19 +8,14 @@ $this->breadcrumbs=array(
 	Yum::t('Zhanrs')=>array('index'),
 	$model->title,
 );
-
-$this->menu=array(
-);
-?>
-
-<?php echo BSHtml::pageHeader(Yum::t('View'),Yum::t('Zhanrs').' '.$model->id) ?>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('View'),Yum::t('Zhanrs').' '.$model->id) ?>
 <div class="moder-panel">
 <?php 
 if (Yii::app()->user->can('zhanrs'))
 {
     echo BSHtml::buttonDropdown(Yum::t('Actions'), 
             array(
-                BSHtml::dropDownHeader(Yum::t('Actions')),
                 array(
                     'label' => Yum::t('Create'), 
                     'url' => array('zhanrs/create'),
@@ -48,7 +43,7 @@ if (Yii::app()->user->can('zhanrs'))
 } ?>
 </div>
 <?php
-$this->widget('zii.widgets.CDetailView',array(
+$this->widget('bootstrap.widgets.BsDetailView',array(
     'htmlOptions' => array(
         'class' => 'table table-striped table-condensed table-hover',
     ),
@@ -57,4 +52,5 @@ $this->widget('zii.widgets.CDetailView',array(
         'id',
         'title',
     ),
-)); 
+));
+echo '</div>';

@@ -1,17 +1,8 @@
 <?php
 /* @var $this ZhanrsController */
 /* @var $data Zhanrs */
-?>
 
-<div class="view">
-
-    	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
-	<?php echo CHtml::encode($data->title); ?>
-	<br />
-
-
-</div>
+$this->widget('bootstrap.widgets.BsPanel',array(
+    'header' => '<b>' . CHtml::encode($data->getAttributeLabel('id')) . ': </b>' . CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)),
+    'body' => '<b>' . CHtml::encode($data->getAttributeLabel('title')) . ': </b>' . CHtml::encode($data->title),
+)); 

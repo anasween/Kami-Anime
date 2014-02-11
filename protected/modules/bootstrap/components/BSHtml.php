@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User: Pascal Brewing
  * Date: 11.09.13
@@ -6,8 +7,8 @@
  * @package bootstrap/components
  * Class BSHtml
  */
-class BSHtml extends CHtml
-{
+class BSHtml extends CHtml {
+
     //
     // TYPOGRAPHY
     // --------------------------------------------------
@@ -25,8 +26,6 @@ class BSHtml extends CHtml
     const TEXT_ABBR_INITIALISM = 'initialism';
     const HELP_TYPE_INLINE = 'inline';
     const HELP_TYPE_BLOCK = 'block';
-
-
     //
     // FORM
     // --------------------------------------------------
@@ -70,7 +69,6 @@ class BSHtml extends CHtml
     const INPUT_COLOR_ERROR = 'has-error';
     const INPUT_COLOR_INFO = 'has-info';
     const INPUT_COLOR_SUCCESS = 'has-success';
-
     //
     // BUTTONS
     // --------------------------------------------------
@@ -91,7 +89,6 @@ class BSHtml extends CHtml
     const BUTTON_COLOR_SUCCESS = 'success';
     const BUTTON_COLOR_WARNING = 'warning';
     const BUTTON_COLOR_DANGER = 'danger';
-
     const BUTTON_COLOR_LINK = 'link';
     const BUTTON_SIZE_MINI = 'xs';
     const BUTTON_SIZE_SMALL = 'sm';
@@ -99,7 +96,6 @@ class BSHtml extends CHtml
     const BUTTON_SIZE_LARGE = 'lg';
     const BUTTON_TOGGLE_CHECKBOX = 'checkbox';
     const BUTTON_TOGGLE_RADIO = 'radio';
-
     //
     // IMAGES
     // --------------------------------------------------
@@ -107,7 +103,6 @@ class BSHtml extends CHtml
     const IMAGE_TYPE_CIRCLE = 'circle';
     const IMAGE_TYPE_THUMBNAIL = 'thumbnail';
     const IMAGE_TYPE_RESPONSIVE = 'responsive';
-
     //
     // NAV
     // --------------------------------------------------
@@ -122,7 +117,6 @@ class BSHtml extends CHtml
     const TABS_PLACEMENT_RIGHT = 'right';
     const NAVBAR_NAV_PULL_RIGHT = 'right';
     const NAVBAR_NAV_PULL_LEFT = 'left';
-
     //
     // NAVBAR
     // --------------------------------------------------
@@ -132,7 +126,6 @@ class BSHtml extends CHtml
     const NAVBAR_POSITION_STATIC_TOP = 'static-top';
     const NAVBAR_COLOR = 'default';
     const NAVBAR_COLOR_INVERSE = 'inverse';
-
     //
     // PAGINATION
     // --------------------------------------------------
@@ -142,7 +135,6 @@ class BSHtml extends CHtml
     const PAGINATION_ALIGN_LEFT = 'left';
     const PAGINATION_ALIGN_CENTER = 'centered';
     const PAGINATION_ALIGN_RIGHT = 'right';
-
     //
     // LABELS AND BADGES
     // --------------------------------------------------
@@ -152,8 +144,6 @@ class BSHtml extends CHtml
     const LABEL_COLOR_IMPORTANT = 'important';
     const LABEL_COLOR_INFO = 'info';
     const LABEL_COLOR_DANGER = 'danger';
-
-
     //
     // TOOLTIPS AND POPOVERS
     // --------------------------------------------------
@@ -173,7 +163,6 @@ class BSHtml extends CHtml
     const POPOVER_TRIGGER_HOVER = 'hover';
     const POPOVER_TRIGGER_FOCUS = 'focus';
     const POPOVER_TRIGGER_MANUAL = 'manual';
-
     //
     // ALERT
     // --------------------------------------------------
@@ -183,7 +172,6 @@ class BSHtml extends CHtml
     const ALERT_COLOR_WARNING = 'warning';
     const ALERT_COLOR_ERROR = 'danger';
     const ALERT_COLOR_DANGER = 'danger';
-
     //
     // PROGRESS BARS
     // --------------------------------------------------
@@ -191,7 +179,6 @@ class BSHtml extends CHtml
     const PROGRESS_COLOR_SUCCESS = 'success';
     const PROGRESS_COLOR_WARNING = 'warning';
     const PROGRESS_COLOR_DANGER = 'danger';
-
     //
     // MISC
     // --------------------------------------------------
@@ -201,7 +188,6 @@ class BSHtml extends CHtml
     const PULL_RIGHT = 'right';
     const CLOSE_DISMISS_ALERT = 'alert';
     const CLOSE_DISMISS_MODAL = 'modal';
-
     //
     // DETAIL VIEW
     // --------------------------------------------------
@@ -209,7 +195,6 @@ class BSHtml extends CHtml
     const DETAIL_TYPE_BORDERED = 'bordered';
     const DETAIL_TYPE_CONDENSED = 'condensed';
     const DETAIL_TYPE_HOVER = 'hover';
-
     //
     // GRID VIEW
     // --------------------------------------------------
@@ -222,13 +207,11 @@ class BSHtml extends CHtml
     const GRID_TYPE_COLUMN_ACTIVE = 'active';
     const GRID_TYPE_COLUMN_WARNING = 'warning';
     const GRID_TYPE_COLUMN_DANGER = 'danger';
-
     //
     // AFFIX
     // --------------------------------------------------
     const AFFIX_POSITION_TOP = 'top';
     const AFFIX_POSITION_BOTTOM = 'bottom';
-
     //
     // ICON
     // --------------------------------------------------
@@ -434,6 +417,7 @@ class BSHtml extends CHtml
     const GLYPHICON_ZOOM_OUT = 'glyphicon-zoom-out';
     // Default close text.
     const CLOSE_TEXT = '&times;';
+
     /**
      * @var string the CSS class for displaying error summaries.
      */
@@ -442,7 +426,6 @@ class BSHtml extends CHtml
     //
     // BASE CSS
     // --------------------------------------------------
-
     // Typography
     // http://twitter.github.io/bootstrap/2.3.2/base-css.html#typography
     // --------------------------------------------------
@@ -453,8 +436,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated paragraph.
      */
-    public static function lead($text, $htmlOptions = array())
-    {
+    public static function lead($text, $htmlOptions = array()) {
         self::addCssClass('lead', $htmlOptions);
         return self::tag('p', $htmlOptions, $text);
     }
@@ -465,8 +447,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions the options.
      * @return array the options.
      */
-    public static function addCssClass($className, &$htmlOptions)
-    {
+    public static function addCssClass($className, &$htmlOptions) {
         if (is_array($className)) {
             $className = implode(' ', $className);
         }
@@ -488,8 +469,7 @@ class BSHtml extends CHtml
      * @param boolean $closeTag whether to generate the close tag.
      * @return string the generated HTML element tag.
      */
-    public static function tag($tag, $htmlOptions = array(), $content = false, $closeTag = true)
-    {
+    public static function tag($tag, $htmlOptions = array(), $content = false, $closeTag = true) {
         self::addSpanClass($htmlOptions);
         self::addPullClass($htmlOptions);
         self::addTextAlignClass($htmlOptions);
@@ -500,8 +480,7 @@ class BSHtml extends CHtml
      * Adds the grid span class to the given options is applicable.
      * @param array $htmlOptions the HTML attributes.
      */
-    protected static function addSpanClass($htmlOptions=array())
-    {
+    protected static function addSpanClass($htmlOptions = array()) {
         $span = \bootstrap\helpers\BSArray::popValue('span', $htmlOptions);
         if (!empty($span)) {
             self::addCssClass('span' . $span, $htmlOptions);
@@ -512,8 +491,7 @@ class BSHtml extends CHtml
      * Adds the pull class to the given options is applicable.
      * @param array $htmlOptions the HTML attributes.
      */
-    protected static function addPullClass(&$htmlOptions)
-    {
+    protected static function addPullClass(&$htmlOptions) {
         $pull = \bootstrap\helpers\BSArray::popValue('pull', $htmlOptions);
         if (!empty($pull)) {
             self::addCssClass('pull-' . $pull, $htmlOptions);
@@ -524,8 +502,7 @@ class BSHtml extends CHtml
      * Adds the text align class to the given options if applicable.
      * @param array $htmlOptions the HTML attributes.
      */
-    protected static function addTextAlignClass(&$htmlOptions)
-    {
+    protected static function addTextAlignClass(&$htmlOptions) {
         $align = \bootstrap\helpers\BSArray::popValue('textAlign', $htmlOptions);
         if (!empty($align)) {
             self::addCssClass('text-' . $align, $htmlOptions);
@@ -538,8 +515,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated text.
      */
-    public static function small($text, $htmlOptions = array())
-    {
+    public static function small($text, $htmlOptions = array()) {
         return self::tag('small', $htmlOptions, $text);
     }
 
@@ -549,8 +525,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated text.
      */
-    public static function bold($text, $htmlOptions = array())
-    {
+    public static function bold($text, $htmlOptions = array()) {
         return self::tag('strong', $htmlOptions, $text);
     }
 
@@ -560,8 +535,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated text.
      */
-    public static function italics($text, $htmlOptions = array())
-    {
+    public static function italics($text, $htmlOptions = array()) {
         return self::tag('em', $htmlOptions, $text);
     }
 
@@ -573,8 +547,7 @@ class BSHtml extends CHtml
      * @param string $tag the HTML tag.
      * @return string the generated text.
      */
-    public static function em($text, $htmlOptions = array(), $tag = 'p')
-    {
+    public static function em($text, $htmlOptions = array(), $tag = 'p') {
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         if (\bootstrap\helpers\BSArray::popValue('muted', $htmlOptions, false)) {
             self::addCssClass('muted', $htmlOptions);
@@ -593,8 +566,7 @@ class BSHtml extends CHtml
      * @param string $tag the HTML tag.
      * @return string the generated text block.
      */
-    public static function emphasis($text, $htmlOptions = array(), $tag = 'p')
-    {
+    public static function emphasis($text, $htmlOptions = array(), $tag = 'p') {
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         if (!empty($color)) {
             self::addCssClass('text-' . $color, $htmlOptions);
@@ -609,8 +581,7 @@ class BSHtml extends CHtml
      * @param string $tag the HTML tag.
      * @return string the generated span.
      */
-    public static function mutedSpan($text, $htmlOptions = array())
-    {
+    public static function mutedSpan($text, $htmlOptions = array()) {
 
         return self::textMuted($text, $htmlOptions, 'span');
     }
@@ -626,8 +597,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated abbreviation.
      */
-    public static function abbr($text, $word = '', $htmlOptions = array())
-    {
+    public static function abbr($text, $word = '', $htmlOptions = array()) {
         $htmlOptions['title'] = $word;
         $type = \bootstrap\helpers\BSArray::popValue('type', $htmlOptions, false);
         if (!empty($type) && $type === BSHtml::TEXT_ABBR_INITIALISM) {
@@ -642,8 +612,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
      */
-    public static function address($text, $htmlOptions = array())
-    {
+    public static function address($text, $htmlOptions = array()) {
         return self::tag('address', $htmlOptions, $text);
     }
 
@@ -653,8 +622,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated quote.
      */
-    public static function quote($text, $htmlOptions = array())
-    {
+    public static function quote($text, $htmlOptions = array()) {
         $paragraphOptions = \bootstrap\helpers\BSArray::popValue('paragraphOptions', $htmlOptions, array());
         $small = \bootstrap\helpers\BSArray::popValue('small', $htmlOptions);
         $smallOptions = \bootstrap\helpers\BSArray::popValue('smallOptions', $htmlOptions, array());
@@ -672,17 +640,14 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated code.
      */
-    public static function code($code, $htmlOptions = array())
-    {
+    public static function code($code, $htmlOptions = array()) {
         return self::tag('code', $htmlOptions, $code);
     }
 
     // Tables
     // http://twitter.github.io/bootstrap/2.3.2/base-css.html#forms
     // --------------------------------------------------
-
     // todo: create table methods here.
-
     // Forms
     // http://twitter.github.io/bootstrap/2.3.2/base-css.html#tables
     // --------------------------------------------------
@@ -693,8 +658,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
      */
-    public static function codeBlock($code, $htmlOptions = array())
-    {
+    public static function codeBlock($code, $htmlOptions = array()) {
         return self::tag('pre', $htmlOptions, $code);
     }
 
@@ -706,14 +670,10 @@ class BSHtml extends CHtml
      * @return string the generated form tag.
      */
     public static function statefulFormBs(
-        $layout = '',
-        $action = '',
-        $method = 'post',
-        $htmlOptions = array()
-    )
-    {
+    $layout = '', $action = '', $method = 'post', $htmlOptions = array()
+    ) {
         return self::formBs($layout, $action, $method, $htmlOptions)
-        . self::tag('div', array('style' => 'display: none'), parent::pageStateField(''));
+                . self::tag('div', array('style' => 'display: none'), parent::pageStateField(''));
     }
 
     /**
@@ -725,12 +685,8 @@ class BSHtml extends CHtml
      * @return string the generated tag.
      */
     public static function formBs(
-        $layout = '',
-        $action = '',
-        $method = 'post',
-        $htmlOptions = array()
-    )
-    {
+    $layout = '', $action = '', $method = 'post', $htmlOptions = array()
+    ) {
         return self::beginFormBs($layout, $action, $method, $htmlOptions);
     }
 
@@ -743,12 +699,8 @@ class BSHtml extends CHtml
      * @return string the generated tag.
      */
     public static function beginFormBs(
-        $layout = '',
-        $action = '',
-        $method = 'post',
-        $htmlOptions = array()
-    )
-    {
+    $layout = '', $action = '', $method = 'post', $htmlOptions = array()
+    ) {
         if (!empty($layout)) {
             self::addCssClass('form-' . $layout, $htmlOptions);
         }
@@ -763,8 +715,7 @@ class BSHtml extends CHtml
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function textFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function textFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_TEXT, $name, $value, $htmlOptions);
     }
 
@@ -777,8 +728,7 @@ class BSHtml extends CHtml
      * @param array $data data for multiple select inputs.
      * @return string the generated control group.
      */
-    public static function controlGroup($type, $name, $value = '', $htmlOptions = array(), $data = array())
-    {
+    public static function controlGroup($type, $name, $value = '', $htmlOptions = array(), $data = array()) {
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         $groupOptions = \bootstrap\helpers\BSArray::popValue('groupOptions', $htmlOptions, array());
         $controlOptions = \bootstrap\helpers\BSArray::popValue('controlOptions', $htmlOptions, array());
@@ -797,9 +747,7 @@ class BSHtml extends CHtml
             $help = self::inputHelp($help, $helpOptions);
         }
 
-        $input = isset($htmlOptions['input'])
-            ? $htmlOptions['input']
-            : self::createInput($type, $name, $value, $htmlOptions, $data);
+        $input = isset($htmlOptions['input']) ? $htmlOptions['input'] : self::createInput($type, $name, $value, $htmlOptions, $data);
 
         self::addCssClass('control-group', $groupOptions);
         if (!empty($color)) {
@@ -821,12 +769,9 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated help text.
      */
-    protected static function inputHelp($help, $htmlOptions)
-    {
+    protected static function inputHelp($help, $htmlOptions) {
         $type = \bootstrap\helpers\BSArray::popValue('type', $htmlOptions, self::HELP_TYPE_INLINE);
-        return $type === self::HELP_TYPE_INLINE
-            ? self::help($help, $htmlOptions)
-            : self::helpBlock($help, $htmlOptions);
+        return $type === self::HELP_TYPE_INLINE ? self::help($help, $htmlOptions) : self::helpBlock($help, $htmlOptions);
     }
 
     /**
@@ -835,8 +780,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
      */
-    public static function helpBlock($text, $htmlOptions = array())
-    {
+    public static function helpBlock($text, $htmlOptions = array()) {
         $htmlOptions['type'] = self::HELP_TYPE_BLOCK;
         return self::help($text, $htmlOptions);
     }
@@ -847,8 +791,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated text.
      */
-    public static function help($text, $htmlOptions = array())
-    {
+    public static function help($text, $htmlOptions = array()) {
         $type = \bootstrap\helpers\BSArray::popValue('type', $htmlOptions, self::HELP_TYPE_INLINE);
         self::addCssClass('help-' . $type, $htmlOptions);
         return self::tag($type === self::HELP_TYPE_INLINE ? 'span' : 'p', $htmlOptions, $text);
@@ -864,8 +807,7 @@ class BSHtml extends CHtml
      * @return string the input.
      * @throws CException if the input type is invalid.
      */
-    protected static function createInput($type, $name, $value, $htmlOptions = array(), $data = array())
-    {
+    protected static function createInput($type, $name, $value, $htmlOptions = array(), $data = array()) {
         switch ($type) {
             case self::INPUT_TYPE_TEXT:
                 return self::textField($name, $value, $htmlOptions);
@@ -920,8 +862,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function textField($name, $value = '', $htmlOptions = array())
-    {
+    public static function textField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('text', $name, $value, $htmlOptions);
     }
 
@@ -933,8 +874,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function passwordField($name, $value = '', $htmlOptions = array())
-    {
+    public static function passwordField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('password', $name, $value, $htmlOptions);
     }
 
@@ -947,8 +887,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated input tag.
      */
-    protected static function textInputField($type, $name, $value, $htmlOptions)
-    {
+    protected static function textInputField($type, $name, $value, $htmlOptions) {
         parent::clientChange('change', $htmlOptions);
 
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
@@ -985,8 +924,7 @@ class BSHtml extends CHtml
      * @param array $options the options.
      * @return array the normalized options.
      */
-    protected static function normalizeInputOptions($options)
-    {
+    protected static function normalizeInputOptions($options) {
         self::addSpanClass($options);
         self::addTextAlignClass($options);
         $size = \bootstrap\helpers\BSArray::popValue('size', $options);
@@ -1005,8 +943,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions the options.
      * @return string the classes.
      */
-    protected static function getAddOnClasses($htmlOptions)
-    {
+    protected static function getAddOnClasses($htmlOptions) {
         $classes = array();
         if (\bootstrap\helpers\BSArray::getValue('append', $htmlOptions)) {
             $classes[] = 'input-group';
@@ -1023,13 +960,11 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated add-on.
      */
-    protected static function inputAddOn($addOn, $htmlOptions)
-    {
+    protected static function inputAddOn($addOn, $htmlOptions) {
         $addOnOptions = \bootstrap\helpers\BSArray::popValue('addOnOptions', $htmlOptions, array());
         self::addCssClass('input-group-addon', $addOnOptions);
         return strpos($addOn, 'btn') === false // buttons should not be wrapped in a span
-            ? self::tag('span', $addOnOptions, $addOn)
-            : $addOn;
+                ? self::tag('span', $addOnOptions, $addOn) : $addOn;
     }
 
     /**
@@ -1038,8 +973,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions the element attributes.
      * @return string the generated HTML element tag.
      */
-    public static function openTag($tag, $htmlOptions = array())
-    {
+    public static function openTag($tag, $htmlOptions = array()) {
         return self::tag($tag, $htmlOptions, false, false);
     }
 
@@ -1051,8 +985,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function urlField($name, $value = '', $htmlOptions = array())
-    {
+    public static function urlField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('url', $name, $value, $htmlOptions);
     }
 
@@ -1064,8 +997,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function emailField($name, $value = '', $htmlOptions = array())
-    {
+    public static function emailField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('email', $name, $value, $htmlOptions);
     }
 
@@ -1077,8 +1009,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function numberField($name, $value = '', $htmlOptions = array())
-    {
+    public static function numberField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('number', $name, $value, $htmlOptions);
     }
 
@@ -1090,8 +1021,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function rangeField($name, $value = '', $htmlOptions = array())
-    {
+    public static function rangeField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('range', $name, $value, $htmlOptions);
     }
 
@@ -1103,8 +1033,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function dateField($name, $value = '', $htmlOptions = array())
-    {
+    public static function dateField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('date', $name, $value, $htmlOptions);
     }
 
@@ -1116,8 +1045,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see self::textInputField
      */
-    public static function telField($name, $value = '', $htmlOptions = array())
-    {
+    public static function telField($name, $value = '', $htmlOptions = array()) {
         return self::textInputField('tel', $name, $value, $htmlOptions);
     }
 
@@ -1128,8 +1056,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated text area.
      */
-    public static function textArea($name, $value = '', $htmlOptions = array())
-    {
+    public static function textArea($name, $value = '', $htmlOptions = array()) {
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         return parent::textArea($name, $value, $htmlOptions);
     }
@@ -1142,8 +1069,7 @@ class BSHtml extends CHtml
      * @return string the generated input field.
      * @see CHtml::fileField
      */
-    public static function fileField($name, $value = '', $htmlOptions = array())
-    {
+    public static function fileField($name, $value = '', $htmlOptions = array()) {
         return parent::fileField($name, $value, $htmlOptions);
     }
 
@@ -1155,8 +1081,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list box
      */
-    public static function listBox($name, $select, $data, $htmlOptions = array())
-    {
+    public static function listBox($name, $select, $data, $htmlOptions = array()) {
         if (isset($htmlOptions['multiple'])) {
             if (substr($name, -2) !== '[]') {
                 $name .= '[]';
@@ -1173,8 +1098,7 @@ class BSHtml extends CHtml
      * @param array $data data for generating the list options (value=>display).
      * @return string the generated drop down list.
      */
-    public static function dropDownList($name, $select, $data, $htmlOptions = array())
-    {
+    public static function dropDownList($name, $select, $data, $htmlOptions = array()) {
         $displaySize = \bootstrap\helpers\BSArray::popValue('displaySize', $htmlOptions, 4);
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         if (!empty($displaySize)) {
@@ -1191,8 +1115,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function inlineCheckBoxList($name, $select, $data, $htmlOptions = array())
-    {
+    public static function inlineCheckBoxList($name, $select, $data, $htmlOptions = array()) {
         $htmlOptions['inline'] = true;
         return self::checkBoxList($name, $select, $data, $htmlOptions);
     }
@@ -1205,8 +1128,7 @@ class BSHtml extends CHtml
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function checkBoxList($name, $select, $data, $htmlOptions = array())
-    {
+    public static function checkBoxList($name, $select, $data, $htmlOptions = array()) {
         $inline = \bootstrap\helpers\BSArray::popValue('inline', $htmlOptions, false);
         $separator = \bootstrap\helpers\BSArray::popValue('separator', $htmlOptions, ' ');
         $container = \bootstrap\helpers\BSArray::popValue('container', $htmlOptions, 'span');
@@ -1283,8 +1205,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated check box.
      */
-    public static function checkBox($name, $checked = false, $htmlOptions = array())
-    {
+    public static function checkBox($name, $checked = false, $htmlOptions = array()) {
         $label = \bootstrap\helpers\BSArray::popValue('label', $htmlOptions, false);
         $labelOptions = \bootstrap\helpers\BSArray::popValue('labelOptions', $htmlOptions, array());
         self::addCssClass('checkbox', $labelOptions);
@@ -1300,8 +1221,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function inlineRadioButtonList($name, $select, $data, $htmlOptions = array())
-    {
+    public static function inlineRadioButtonList($name, $select, $data, $htmlOptions = array()) {
         $htmlOptions['inline'] = true;
         return self::radioButtonList($name, $select, $data, $htmlOptions);
     }
@@ -1314,8 +1234,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function radioButtonList($name, $select, $data, $htmlOptions = array())
-    {
+    public static function radioButtonList($name, $select, $data, $htmlOptions = array()) {
         $inline = \bootstrap\helpers\BSArray::popValue('inline', $htmlOptions, false);
         $separator = \bootstrap\helpers\BSArray::popValue('separator', $htmlOptions, ' ');
         $container = \bootstrap\helpers\BSArray::popValue('container', $htmlOptions);
@@ -1353,8 +1272,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated radio button.
      */
-    public static function radioButton($name, $checked = false, $htmlOptions = array())
-    {
+    public static function radioButton($name, $checked = false, $htmlOptions = array()) {
         $label = \bootstrap\helpers\BSArray::popValue('label', $htmlOptions, false);
         $labelOptions = \bootstrap\helpers\BSArray::popValue('labelOptions', $htmlOptions, array());
         self::addCssClass('radio', $labelOptions);
@@ -1368,8 +1286,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated input.
      */
-    public static function uneditableField($value, $htmlOptions = array())
-    {
+    public static function uneditableField($value, $htmlOptions = array()) {
         self::addCssClass('uneditable-input', $htmlOptions);
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         return self::tag('span', $htmlOptions, $value);
@@ -1382,8 +1299,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated input.
      */
-    public static function searchQueryField($name, $value = '', $htmlOptions = array())
-    {
+    public static function searchQueryField($name, $value = '', $htmlOptions = array()) {
         self::addCssClass('search-query', $htmlOptions);
         return self::textField($name, $value, $htmlOptions);
     }
@@ -1394,8 +1310,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated controls.
      */
-    public static function controls($controls, $htmlOptions = array())
-    {
+    public static function controls($controls, $htmlOptions = array()) {
 
         if (\bootstrap\helpers\BSArray::popValue('row', $htmlOptions, false)) {
             self::addCssClass('form-group', $htmlOptions);
@@ -1417,8 +1332,7 @@ EOD;
      * @return string the generated control group.
      * @see self::textInputField
      */
-    public static function passwordFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function passwordFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_PASSWORD, $name, $value, $htmlOptions);
     }
 
@@ -1430,8 +1344,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function urlFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function urlFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_URL, $name, $value, $htmlOptions);
     }
 
@@ -1443,8 +1356,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function emailFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function emailFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_EMAIL, $name, $value, $htmlOptions);
     }
 
@@ -1456,8 +1368,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function telFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function telFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_TEL, $name, $value, $htmlOptions);
     }
 
@@ -1469,8 +1380,7 @@ EOD;
      * @return string the generated control group.
      * @see self::textInputField
      */
-    public static function numberFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function numberFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_NUMBER, $name, $value, $htmlOptions);
     }
 
@@ -1482,8 +1392,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function rangeFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function rangeFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_RANGE, $name, $value, $htmlOptions);
     }
 
@@ -1495,8 +1404,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function dateFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function dateFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_DATE, $name, $value, $htmlOptions);
     }
 
@@ -1508,8 +1416,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function textAreaControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function textAreaControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_TEXTAREA, $name, $value, $htmlOptions);
     }
 
@@ -1521,8 +1428,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function fileFieldControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function fileFieldControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_FILE, $name, $value, $htmlOptions);
     }
 
@@ -1534,8 +1440,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function radioButtonControlGroup($name, $checked = false, $htmlOptions = array())
-    {
+    public static function radioButtonControlGroup($name, $checked = false, $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_RADIOBUTTON, $name, $checked, $htmlOptions);
     }
 
@@ -1547,8 +1452,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function checkBoxControlGroup($name, $checked = false, $htmlOptions = array())
-    {
+    public static function checkBoxControlGroup($name, $checked = false, $htmlOptions = array()) {
         $type = self::INPUT_TYPE_CHECKBOX;
 
         $help = \bootstrap\helpers\BSArray::popValue('help', $htmlOptions, '');
@@ -1557,16 +1461,13 @@ EOD;
             $help = self::inputHelp($help, $helpOptions);
         }
 
-        $input = isset($htmlOptions['input'])
-            ? $htmlOptions['input']
-            : self::createInput($type, $name, $checked, $htmlOptions);
+        $input = isset($htmlOptions['input']) ? $htmlOptions['input'] : self::createInput($type, $name, $checked, $htmlOptions);
 
         $output = '<div class="form-group"><div class="col-lg-offset-2"><div class="checkbox"><label>';
         $output .= $input;
         $output .= $name;
         $output .= '</label></div></div></div>';
         return $output;
-
     }
 
     /**
@@ -1578,8 +1479,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function dropDownListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
-    {
+    public static function dropDownListControlGroup($name, $select = '', $data = array(), $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_DROPDOWNLIST, $name, $select, $htmlOptions, $data);
     }
 
@@ -1592,8 +1492,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function listBoxControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
-    {
+    public static function listBoxControlGroup($name, $select = '', $data = array(), $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_LISTBOX, $name, $select, $htmlOptions, $data);
     }
 
@@ -1606,8 +1505,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function radioButtonListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
-    {
+    public static function radioButtonListControlGroup($name, $select = '', $data = array(), $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_RADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
     }
 
@@ -1621,12 +1519,8 @@ EOD;
      * @see self::controlGroup
      */
     public static function inlineRadioButtonListControlGroup(
-        $name,
-        $select = '',
-        $data = array(),
-        $htmlOptions = array()
-    )
-    {
+    $name, $select = '', $data = array(), $htmlOptions = array()
+    ) {
         return self::controlGroup(self::INPUT_TYPE_INLINERADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
     }
 
@@ -1639,8 +1533,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function checkBoxListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
-    {
+    public static function checkBoxListControlGroup($name, $select = '', $data = array(), $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_CHECKBOXLIST, $name, $select, $htmlOptions, $data);
     }
 
@@ -1653,8 +1546,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function inlineCheckBoxListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
-    {
+    public static function inlineCheckBoxListControlGroup($name, $select = '', $data = array(), $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_INLINECHECKBOXLIST, $name, $select, $htmlOptions, $data);
     }
 
@@ -1665,8 +1557,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function uneditableFieldControlGroup($value = '', $htmlOptions = array())
-    {
+    public static function uneditableFieldControlGroup($value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_UNEDITABLE, '', $value, $htmlOptions);
     }
 
@@ -1678,8 +1569,7 @@ EOD;
      * @return string the generated control group.
      * @see self::controlGroup
      */
-    public static function searchQueryControlGroup($name, $value = '', $htmlOptions = array())
-    {
+    public static function searchQueryControlGroup($name, $value = '', $htmlOptions = array()) {
         return self::controlGroup(self::INPUT_TYPE_SEARCH, $name, $value, $htmlOptions);
     }
 
@@ -1690,8 +1580,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      */
-    public static function customControlGroup($input, $name, $htmlOptions = array())
-    {
+    public static function customControlGroup($input, $name, $htmlOptions = array()) {
         $htmlOptions['input'] = $input;
         return self::controlGroup(self::INPUT_TYPE_CUSTOM, $name, '', $htmlOptions);
     }
@@ -1704,8 +1593,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeTextFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeTextFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_TEXT, $model, $attribute, $htmlOptions);
     }
 
@@ -1718,8 +1606,7 @@ EOD;
      * @param array $data data for multiple select inputs.
      * @return string the generated control group.
      */
-    public static function activeControlGroup($type, $model, $attribute, $htmlOptions = array(), $data = array())
-    {
+    public static function activeControlGroup($type, $model, $attribute, $htmlOptions = array(), $data = array()) {
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         $groupOptions = \bootstrap\helpers\BSArray::popValue('groupOptions', $htmlOptions, array());
         $controlOptions = \bootstrap\helpers\BSArray::popValue('controlOptions', $htmlOptions, array());
@@ -1739,16 +1626,13 @@ EOD;
         }
         $error = \bootstrap\helpers\BSArray::popValue('error', $htmlOptions, '');
 
-        $input = isset($htmlOptions['input'])
-            ? $htmlOptions['input']
-            : self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
+        $input = isset($htmlOptions['input']) ? $htmlOptions['input'] : self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
         self::addCssClass('form-group', $groupOptions);
 
         if (!empty($layout)) {
             if ($layout === BSHtml::FORM_LAYOUT_HORIZONTAL) {
-                $controlClass = \bootstrap\helpers\BSArray::popValue('class',$controlOptions,BSHtml::FORM_LAYOUT_HORIZONTAL_CONTROL_CLASS);
+                $controlClass = \bootstrap\helpers\BSArray::popValue('class', $controlOptions, BSHtml::FORM_LAYOUT_HORIZONTAL_CONTROL_CLASS);
                 self::addCssClass($controlClass, $controlOptions);
-
             }
         }
 
@@ -1778,8 +1662,7 @@ EOD;
      * @return string the input.
      * @throws CException if the input type is invalid.
      */
-    protected static function createActiveInput($type, $model, $attribute, $htmlOptions = array(), $data = array())
-    {
+    protected static function createActiveInput($type, $model, $attribute, $htmlOptions = array(), $data = array()) {
         switch ($type) {
             case self::INPUT_TYPE_TEXT:
                 return self::activeTextField($model, $attribute, $htmlOptions);
@@ -1834,8 +1717,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activePasswordField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activePasswordField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('password', $model, $attribute, $htmlOptions);
     }
 
@@ -1848,8 +1730,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated input tag.
      */
-    protected static function activeTextInputField($type, $model, $attribute, $htmlOptions)
-    {
+    protected static function activeTextInputField($type, $model, $attribute, $htmlOptions) {
         parent::resolveNameID($model, $attribute, $htmlOptions);
         parent::clientChange('change', $htmlOptions);
 
@@ -1901,8 +1782,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activeUrlField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeUrlField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('url', $model, $attribute, $htmlOptions);
     }
 
@@ -1914,8 +1794,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activeEmailField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeEmailField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('email', $model, $attribute, $htmlOptions);
     }
 
@@ -1927,8 +1806,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activeTelField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeTelField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('tel', $model, $attribute, $htmlOptions);
     }
 
@@ -1940,8 +1818,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activeNumberField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeNumberField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('number', $model, $attribute, $htmlOptions);
     }
 
@@ -1953,8 +1830,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activeRangeField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeRangeField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('range', $model, $attribute, $htmlOptions);
     }
 
@@ -1966,8 +1842,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activeDateField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeDateField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('date', $model, $attribute, $htmlOptions);
     }
 
@@ -1978,13 +1853,12 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated text area.
      */
-    public static function activeTextArea($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeTextArea($model, $attribute, $htmlOptions = array()) {
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
-        if(!isset($htmlOptions['class']))
+        if (!isset($htmlOptions['class']))
             $htmlOptions['class'] = 'form-control';
 
-        if(!isset($htmlOptions['rows']))
+        if (!isset($htmlOptions['rows']))
             $htmlOptions['rows'] = '5';
 
         return parent::activeTextArea($model, $attribute, $htmlOptions);
@@ -1998,8 +1872,7 @@ EOD;
      * @return string the generated input field.
      * @see CHtml::activeFileField
      */
-    public static function activeFileField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeFileField($model, $attribute, $htmlOptions = array()) {
         return parent::activeFileField($model, $attribute, $htmlOptions);
     }
 
@@ -2010,8 +1883,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated radio button.
      */
-    public static function activeRadioButton($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeRadioButton($model, $attribute, $htmlOptions = array()) {
         $label = \bootstrap\helpers\BSArray::popValue('label', $htmlOptions, false);
         $labelOptions = \bootstrap\helpers\BSArray::popValue('labelOptions', $htmlOptions, array());
         $radioButton = parent::activeRadioButton($model, $attribute, $htmlOptions);
@@ -2026,8 +1898,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated check box.
      */
-    public static function activeCheckBox($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeCheckBox($model, $attribute, $htmlOptions = array()) {
         $label = \bootstrap\helpers\BSArray::popValue('label', $htmlOptions, false);
         $labelOptions = \bootstrap\helpers\BSArray::popValue('labelOptions', $htmlOptions, array());
         $checkBox = parent::activeCheckBox($model, $attribute, $htmlOptions);
@@ -2043,8 +1914,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list box
      */
-    public static function activeListBox($model, $attribute, $data, $htmlOptions = array())
-    {
+    public static function activeListBox($model, $attribute, $data, $htmlOptions = array()) {
         \bootstrap\helpers\BSArray::defaultValue('displaySize', 4, $htmlOptions);
         return self::activeDropDownList($model, $attribute, $data, $htmlOptions);
     }
@@ -2056,8 +1926,7 @@ EOD;
      * @param array $data data for generating the list options (value=>display).
      * @return string the generated drop down list.
      */
-    public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
-    {
+    public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array()) {
         //$displaySize = \bootstrap\helpers\BSArray::popValue('displaySize', $htmlOptions, 4);
         //$htmlOptions = self::normalizeInputOptions($htmlOptions);
 //        if (!empty($displaySize)) {
@@ -2074,8 +1943,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions = array())
-    {
+    public static function activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions = array()) {
         $htmlOptions['inline'] = true;
         return self::activeCheckBoxList($model, $attribute, $data, $htmlOptions);
     }
@@ -2088,8 +1956,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function activeCheckBoxList($model, $attribute, $data, $htmlOptions = array())
-    {
+    public static function activeCheckBoxList($model, $attribute, $data, $htmlOptions = array()) {
         parent::resolveNameID($model, $attribute, $htmlOptions);
         $selection = parent::resolveValue($model, $attribute);
         if ($model->hasErrors($attribute)) {
@@ -2110,8 +1977,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions = array())
-    {
+    public static function activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions = array()) {
         $htmlOptions['inline'] = true;
         return self::activeRadioButtonList($model, $attribute, $data, $htmlOptions);
     }
@@ -2124,8 +1990,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated list.
      */
-    public static function activeRadioButtonList($model, $attribute, $data, $htmlOptions = array())
-    {
+    public static function activeRadioButtonList($model, $attribute, $data, $htmlOptions = array()) {
         parent::resolveNameID($model, $attribute, $htmlOptions);
         $selection = parent::resolveValue($model, $attribute);
         $name = \bootstrap\helpers\BSArray::popValue('name', $htmlOptions);
@@ -2142,8 +2007,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated input.
      */
-    public static function activeUneditableField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeUneditableField($model, $attribute, $htmlOptions = array()) {
         parent::resolveNameID($model, $attribute, $htmlOptions);
         $value = parent::resolveValue($model, $attribute);
         \bootstrap\helpers\BSArray::removeValues(array('name', 'id'), $htmlOptions);
@@ -2157,8 +2021,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated input.
      */
-    public static function activeSearchQueryField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeSearchQueryField($model, $attribute, $htmlOptions = array()) {
         self::addCssClass('search-query', $htmlOptions);
         return self::activeTextField($model, $attribute, $htmlOptions);
     }
@@ -2171,8 +2034,7 @@ EOD;
      * @return string the generated input field.
      * @see self::activeTextInputField
      */
-    public static function activeTextField($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeTextField($model, $attribute, $htmlOptions = array()) {
         return self::activeTextInputField('text', $model, $attribute, $htmlOptions);
     }
 
@@ -2184,8 +2046,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activePasswordFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activePasswordFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_PASSWORD, $model, $attribute, $htmlOptions);
     }
 
@@ -2197,8 +2058,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeUrlFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeUrlFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_URL, $model, $attribute, $htmlOptions);
     }
 
@@ -2210,8 +2070,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeEmailFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeEmailFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_EMAIL, $model, $attribute, $htmlOptions);
     }
 
@@ -2223,8 +2082,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeTelFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeTelFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_TEL, $model, $attribute, $htmlOptions);
     }
 
@@ -2236,8 +2094,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeNumberFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeNumberFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_NUMBER, $model, $attribute, $htmlOptions);
     }
 
@@ -2249,8 +2106,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeRangeFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeRangeFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_RANGE, $model, $attribute, $htmlOptions);
     }
 
@@ -2262,8 +2118,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeDateFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeDateFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_DATE, $model, $attribute, $htmlOptions);
     }
 
@@ -2275,8 +2130,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeTextAreaControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeTextAreaControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_TEXTAREA, $model, $attribute, $htmlOptions);
     }
 
@@ -2288,8 +2142,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeFileFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeFileFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_FILE, $model, $attribute, $htmlOptions);
     }
 
@@ -2301,8 +2154,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeRadioButtonControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeRadioButtonControlGroup($model, $attribute, $htmlOptions = array()) {
         $type = self::INPUT_TYPE_RADIOBUTTON;
 
         $layout = \bootstrap\helpers\BSArray::popValue('formLayout', $htmlOptions, '');
@@ -2312,9 +2164,7 @@ EOD;
             $help = self::inputHelp($help, $helpOptions);
         }
 
-        $input = isset($htmlOptions['input'])
-            ? $htmlOptions['input']
-            : self::createActiveInput($type, $model, $attribute, $htmlOptions);
+        $input = isset($htmlOptions['input']) ? $htmlOptions['input'] : self::createActiveInput($type, $model, $attribute, $htmlOptions);
         $header = $layout === BSHtml::FORM_LAYOUT_HORIZONTAL ? '<div class="form-group"><div class="col-lg-offset-2"><div class="radio"><label>' : '<div class="radio"><label>';
         $output = $header;
         $output .= $input;
@@ -2333,8 +2183,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeCheckBoxControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeCheckBoxControlGroup($model, $attribute, $htmlOptions = array()) {
         $type = self::INPUT_TYPE_CHECKBOX;
         $layout = \bootstrap\helpers\BSArray::popValue('formLayout', $htmlOptions, '');
         $help = \bootstrap\helpers\BSArray::popValue('help', $htmlOptions, '');
@@ -2344,46 +2193,44 @@ EOD;
         $groupOptions = \bootstrap\helpers\BSArray::popValue('groupOptions', $htmlOptions, false);
         $controlOptions = \bootstrap\helpers\BSArray::popValue('controlOptions', $htmlOptions, false);
 
-        $output= '';
+        $output = '';
         $labelContent = '';
 
-        if($color){
-            if($layout === BSHtml::FORM_LAYOUT_HORIZONTAL)
-                self::addCssClass($color,$groupOptions);
+        if ($color) {
+            if ($layout === BSHtml::FORM_LAYOUT_HORIZONTAL)
+                self::addCssClass($color, $groupOptions);
             else
-                self::addCssClass($color,$controlOptions);
+                self::addCssClass($color, $controlOptions);
         }
 
-        if($layout === BSHtml::FORM_LAYOUT_HORIZONTAL){
-            self::addCssClass('form-group',$groupOptions);
-            $output .= parent::openTag('div',$groupOptions);
-            $output .= parent::openTag('div',array('class' => 'col-lg-offset-2'));
-            $output.= parent::openTag('div',array('class' => 'checkbox'));
-        }else{
-            self::addCssClass('checkbox',$controlOptions);
-            $output.= parent::openTag('div',$controlOptions);
+        if ($layout === BSHtml::FORM_LAYOUT_HORIZONTAL) {
+            self::addCssClass('form-group', $groupOptions);
+            $output .= parent::openTag('div', $groupOptions);
+            $output .= parent::openTag('div', array('class' => 'col-lg-offset-2'));
+            $output.= parent::openTag('div', array('class' => 'checkbox'));
+        } else {
+            self::addCssClass('checkbox', $controlOptions);
+            $output.= parent::openTag('div', $controlOptions);
         }
 
 
-        $input = isset($htmlOptions['input'])
-            ? $htmlOptions['input']
-            : self::createActiveInput($type, $model, $attribute, $htmlOptions);
+        $input = isset($htmlOptions['input']) ? $htmlOptions['input'] : self::createActiveInput($type, $model, $attribute, $htmlOptions);
 
         $labelContent .= $input;
         $labelContent .= $model->getAttributeLabel($attribute);
 
-        if($error)
+        if ($error)
             $labelContent .= $error;
 
         if (!empty($help) && !$error)
             $labelContent .= self::inputHelp($help, $helpOptions);
 
-        $output.= parent::tag('label',array(),$labelContent);
-        $output.= parent::closeTag('div');//close <div class="checkbox">
+        $output.= parent::tag('label', array(), $labelContent);
+        $output.= parent::closeTag('div'); //close <div class="checkbox">
 
-        if($layout === BSHtml::FORM_LAYOUT_HORIZONTAL){
-            $output.= parent::closeTag('div');//close <div class="col-lg-offset-2">
-            $output.= parent::closeTag('div');//close <div class="form-group">
+        if ($layout === BSHtml::FORM_LAYOUT_HORIZONTAL) {
+            $output.= parent::closeTag('div'); //close <div class="col-lg-offset-2">
+            $output.= parent::closeTag('div'); //close <div class="form-group">
         }
         return $output;
     }
@@ -2397,8 +2244,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeDropDownListControlGroup($model, $attribute, $data = array(), $htmlOptions = array())
-    {
+    public static function activeDropDownListControlGroup($model, $attribute, $data = array(), $htmlOptions = array()) {
         self::addCssClass('form-control', $htmlOptions);
         return self::activeControlGroup(self::INPUT_TYPE_DROPDOWNLIST, $model, $attribute, $htmlOptions, $data);
     }
@@ -2412,8 +2258,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeListBoxControlGroup($model, $attribute, $data = array(), $htmlOptions = array())
-    {
+    public static function activeListBoxControlGroup($model, $attribute, $data = array(), $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_LISTBOX, $model, $attribute, $htmlOptions, $data);
     }
 
@@ -2427,12 +2272,8 @@ EOD;
      * @see self::activeControlGroup
      */
     public static function activeRadioButtonListControlGroup(
-        $model,
-        $attribute,
-        $data = array(),
-        $htmlOptions = array()
-    )
-    {
+    $model, $attribute, $data = array(), $htmlOptions = array()
+    ) {
         return self::activeControlGroup(self::INPUT_TYPE_RADIOBUTTONLIST, $model, $attribute, $htmlOptions, $data);
     }
 
@@ -2446,18 +2287,10 @@ EOD;
      * @see self::activeControlGroup
      */
     public static function activeInlineRadioButtonListControlGroup(
-        $model,
-        $attribute,
-        $data = array(),
-        $htmlOptions = array()
-    )
-    {
+    $model, $attribute, $data = array(), $htmlOptions = array()
+    ) {
         return self::activeControlGroup(
-            self::INPUT_TYPE_INLINERADIOBUTTONLIST,
-            $model,
-            $attribute,
-            $htmlOptions,
-            $data
+                        self::INPUT_TYPE_INLINERADIOBUTTONLIST, $model, $attribute, $htmlOptions, $data
         );
     }
 
@@ -2470,8 +2303,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeCheckBoxListControlGroup($model, $attribute, $data = array(), $htmlOptions = array())
-    {
+    public static function activeCheckBoxListControlGroup($model, $attribute, $data = array(), $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_CHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
     }
 
@@ -2485,12 +2317,8 @@ EOD;
      * @see self::activeControlGroup
      */
     public static function activeInlineCheckBoxListControlGroup(
-        $model,
-        $attribute,
-        $data = array(),
-        $htmlOptions = array()
-    )
-    {
+    $model, $attribute, $data = array(), $htmlOptions = array()
+    ) {
         return self::activeControlGroup(self::INPUT_TYPE_INLINECHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
     }
 
@@ -2502,8 +2330,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeUneditableFieldControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeUneditableFieldControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_UNEDITABLE, $model, $attribute, $htmlOptions);
     }
 
@@ -2515,8 +2342,7 @@ EOD;
      * @return string the generated control group.
      * @see self::activeControlGroup
      */
-    public static function activeSearchQueryControlGroup($model, $attribute, $htmlOptions = array())
-    {
+    public static function activeSearchQueryControlGroup($model, $attribute, $htmlOptions = array()) {
         return self::activeControlGroup(self::INPUT_TYPE_SEARCH, $model, $attribute, $htmlOptions);
     }
 
@@ -2528,8 +2354,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      */
-    public static function customActiveControlGroup($input, $model, $attribute, $htmlOptions = array())
-    {
+    public static function customActiveControlGroup($input, $model, $attribute, $htmlOptions = array()) {
         $htmlOptions['input'] = $input;
         return self::activeControlGroup(self::INPUT_TYPE_CUSTOM, $model, $attribute, $htmlOptions);
     }
@@ -2542,8 +2367,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
      * @return string the error summary. Empty if no errors are found.
      */
-    public static function errorSummary($model, $header = null, $footer = null, $htmlOptions = array())
-    {
+    public static function errorSummary($model, $header = null, $footer = null, $htmlOptions = array()) {
         // kind of a quick fix but it will do for now.
         self::addCssClass(self::$errorSummaryCss, $htmlOptions);
         return parent::errorSummary($model, $header, $footer, $htmlOptions);
@@ -2560,8 +2384,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the rendered error. Empty if no errors are found.
      */
-    public static function error($model, $attribute, $htmlOptions = array())
-    {
+    public static function error($model, $attribute, $htmlOptions = array()) {
         parent::resolveName($model, $attribute); // turn [a][b]attr into attr
         $error = $model->getError($attribute);
         return !empty($error) ? self::help($error, $htmlOptions) : '';
@@ -2573,8 +2396,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated controls.
      */
-    public static function controlsRow($controls, $htmlOptions = array())
-    {
+    public static function controlsRow($controls, $htmlOptions = array()) {
         $htmlOptions['row'] = true;
         return self::controls($controls, $htmlOptions);
     }
@@ -2585,8 +2407,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated actions.
      */
-    public static function formActions($actions, $htmlOptions = array())
-    {
+    public static function formActions($actions, $htmlOptions = array()) {
         self::addCssClass('form-group', $htmlOptions);
         if (is_array($actions)) {
             $actions = implode(' ', $actions);
@@ -2603,8 +2424,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function submitButton($label = 'Submit', $htmlOptions = array())
-    {
+    public static function submitButton($label = 'Submit', $htmlOptions = array()) {
         return self::btn(self::BUTTON_TYPE_SUBMIT, $label, $htmlOptions);
     }
 
@@ -2615,8 +2435,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    protected static function btn($type, $label, $htmlOptions = array())
-    {
+    protected static function btn($type, $label, $htmlOptions = array()) {
         self::addCssClass('btn', $htmlOptions);
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         if (!empty($color)) {
@@ -2651,17 +2470,15 @@ EOD;
         }
 
         $navbarbtn = \bootstrap\helpers\BSArray::popValue('type', $htmlOptions, false);
-        if($navbarbtn === BSHtml::BUTTON_TYPE_NAVBARBUTTON){
-            self::addCssClass('navbar-btn',$htmlOptions);
+        if ($navbarbtn === BSHtml::BUTTON_TYPE_NAVBARBUTTON) {
+            self::addCssClass('navbar-btn', $htmlOptions);
         }
 
         $dropdownOptions = $htmlOptions;
         \bootstrap\helpers\BSArray::removeValues(array('groupOptions', 'menuOptions', 'dropup'), $htmlOptions);
         self::addSpanClass($htmlOptions); // must be called here as parent renders buttons
         self::addPullClass($htmlOptions); // must be called here as parent renders buttons
-        return isset($items)
-            ? self::btnDropdown($type, $label, $items, $dropdownOptions)
-            : self::createButton($type, $label, $htmlOptions);
+        return isset($items) ? self::btnDropdown($type, $label, $items, $dropdownOptions) : self::createButton($type, $label, $htmlOptions);
     }
 
     /**
@@ -2671,8 +2488,7 @@ EOD;
      * @param string $tagName the icon HTML tag.
      * @return string the generated icon.
      */
-    public static function icon($icon, $htmlOptions = array(), $tagName = 'span')
-    {
+    public static function icon($icon, $htmlOptions = array(), $tagName = 'span') {
         if (is_string($icon)) {
             if (strpos($icon, 'glyphicon') === false) {
                 $icon = 'glyphicon-' . implode(' glyphicon-', explode(' ', $icon));
@@ -2691,8 +2507,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    protected static function btnDropdown($type, $label, $items, $htmlOptions)
-    {
+    protected static function btnDropdown($type, $label, $items, $htmlOptions) {
         $menuOptions = \bootstrap\helpers\BSArray::popValue('menuOptions', $htmlOptions, array());
         $groupOptions = \bootstrap\helpers\BSArray::popValue('groupOptions', $htmlOptions, array());
         self::addCssClass('btn-group', $groupOptions);
@@ -2704,7 +2519,6 @@ EOD;
         if (\bootstrap\helpers\BSArray::popValue('split', $htmlOptions, false)) {
             $output .= self::createButton($type, $label, $htmlOptions);
             $output .= self::dropdownToggleButton('', $htmlOptions);
-
         } else {
             $output .= self::dropdownToggleLink($label, $htmlOptions);
         }
@@ -2722,8 +2536,7 @@ EOD;
      * @return string the button.
      * @throws CException if the button type is valid.
      */
-    protected static function createButton($type, $label, $htmlOptions)
-    {
+    protected static function createButton($type, $label, $htmlOptions) {
         $url = \bootstrap\helpers\BSArray::popValue('url', $htmlOptions, '#');
         $ajaxOptions = \bootstrap\helpers\BSArray::popValue('ajaxOptions', $htmlOptions, array());
         switch ($type) {
@@ -2773,8 +2586,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated hyperlink
      */
-    public static function link($text, $url = '#', $htmlOptions = array())
-    {
+    public static function link($text, $url = '#', $htmlOptions = array()) {
         if ($url !== false) {
             $htmlOptions['href'] = parent::normalizeUrl($url);
         }
@@ -2788,8 +2600,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function dropdownToggleButton($label = '', $htmlOptions = array())
-    {
+    public static function dropdownToggleButton($label = '', $htmlOptions = array()) {
         return self::dropdownToggle(self::BUTTON_TYPE_HTML, $label, $htmlOptions);
     }
 
@@ -2800,8 +2611,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
      */
-    protected static function dropdownToggle($type, $label, $htmlOptions)
-    {
+    protected static function dropdownToggle($type, $label, $htmlOptions) {
         self::addCssClass('dropdown-toggle', $htmlOptions);
         $label .= ' <span class="caret"></span>';
         $htmlOptions['data-toggle'] = 'dropdown';
@@ -2819,8 +2629,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function dropdownToggleLink($label, $htmlOptions = array())
-    {
+    public static function dropdownToggleLink($label, $htmlOptions = array()) {
         return self::dropdownToggle(self::BUTTON_TYPE_HTML, $label, $htmlOptions);
     }
 
@@ -2832,8 +2641,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    protected static function dropdown($items, $htmlOptions = array())
-    {
+    protected static function dropdown($items, $htmlOptions = array()) {
         self::addCssClass('dropdown-menu', $htmlOptions);
         return self::menu($items, $htmlOptions);
     }
@@ -2845,8 +2653,7 @@ EOD;
      * @param integer $depth the current depth.
      * @return string the generated menu.
      */
-    public static function menu(array $items, $htmlOptions = array(), $depth = 0)
-    {
+    public static function menu(array $items, $htmlOptions = array(), $depth = 0) {
         // todo: consider making this method protected.
         if (!empty($items)) {
             $htmlOptions['role'] = 'menu';
@@ -2903,8 +2710,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu item.
      */
-    public static function menuLink($label, $url, $htmlOptions = array())
-    {
+    public static function menuLink($label, $url, $htmlOptions = array()) {
         $linkOptions = \bootstrap\helpers\BSArray::popValue('linkOptions', $htmlOptions, array());
         $content = self::link($label, $url, $linkOptions);
         return self::tag('li', $htmlOptions, $content);
@@ -2923,8 +2729,7 @@ EOD;
      * @param integer $depth the current depth.
      * @return string the generated dropdown.
      */
-    protected static function menuDropdown($label, $url, $items, $htmlOptions, $depth = 0)
-    {
+    protected static function menuDropdown($label, $url, $items, $htmlOptions, $depth = 0) {
         self::addCssClass($depth === 0 ? 'dropdown' : 'dropdown-submenu', $htmlOptions);
         $linkOptions = \bootstrap\helpers\BSArray::popValue('linkOptions', $htmlOptions, array());
         $menuOptions = \bootstrap\helpers\BSArray::popValue('menuOptions', $htmlOptions, array());
@@ -2950,8 +2755,7 @@ EOD;
      * @param int $depth the menu depth at which this link is located
      * @return string the generated menu item.
      */
-    public static function dropdownToggleMenuLink($label, $url = '#', $htmlOptions = array(), $depth = 0)
-    {
+    public static function dropdownToggleMenuLink($label, $url = '#', $htmlOptions = array(), $depth = 0) {
         self::addCssClass('dropdown-toggle', $htmlOptions);
         if ($depth === 0) {
             $label .= ' <b class="caret"></b>';
@@ -2966,8 +2770,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function inputButton($label = 'Submit', $htmlOptions = array())
-    {
+    public static function inputButton($label = 'Submit', $htmlOptions = array()) {
         return self::btn(self::BUTTON_TYPE_INPUTBUTTON, $label, $htmlOptions);
     }
 
@@ -2977,8 +2780,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function inputSubmitButton($label = 'Submit', $htmlOptions = array())
-    {
+    public static function inputSubmitButton($label = 'Submit', $htmlOptions = array()) {
         return self::btn(self::BUTTON_TYPE_INPUTSUBMIT, $label, $htmlOptions);
     }
 
@@ -2992,15 +2794,13 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function resetButton($label = 'Reset', $htmlOptions = array())
-    {
+    public static function resetButton($label = 'Reset', $htmlOptions = array()) {
         return self::btn(self::BUTTON_TYPE_RESET, $label, $htmlOptions);
     }
 
     //
     // COMPONENTS
     // --------------------------------------------------
-
     // Dropdowns
     // http://twitter.github.io/bootstrap/2.3.2/components.html#dropdowns
     // --------------------------------------------------
@@ -3011,8 +2811,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function imageButton($src, $htmlOptions = array())
-    {
+    public static function imageButton($src, $htmlOptions = array()) {
         return self::btn(self::BUTTON_TYPE_IMAGE, $src, $htmlOptions);
     }
 
@@ -3024,8 +2823,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array())
-    {
+    public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array()) {
         $htmlOptions['url'] = $url;
         $htmlOptions['ajaxOptions'] = $ajaxOptions;
         return self::btn(self::BUTTON_TYPE_AJAXLINK, $text, $htmlOptions);
@@ -3039,8 +2837,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function ajaxSubmitButton($label, $url, $ajaxOptions = array(), $htmlOptions = array())
-    {
+    public static function ajaxSubmitButton($label, $url, $ajaxOptions = array(), $htmlOptions = array()) {
         $ajaxOptions['type'] = 'POST';
         $htmlOptions['type'] = 'submit';
         return self::ajaxButton($label, $url, $ajaxOptions, $htmlOptions);
@@ -3054,8 +2851,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function ajaxButton($label, $url, $ajaxOptions = array(), $htmlOptions = array())
-    {
+    public static function ajaxButton($label, $url, $ajaxOptions = array(), $htmlOptions = array()) {
         $ajaxOptions['url'] = $url;
         $htmlOptions['ajaxOptions'] = $ajaxOptions;
         return self::btn(self::BUTTON_TYPE_AJAXBUTTON, $label, $htmlOptions);
@@ -3068,8 +2864,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated image tag.
      */
-    public static function imageRounded($src, $alt = '', $htmlOptions = array())
-    {
+    public static function imageRounded($src, $alt = '', $htmlOptions = array()) {
         $htmlOptions['type'] = self::IMAGE_TYPE_ROUNDED;
         return self::image($src, $alt, $htmlOptions);
     }
@@ -3085,8 +2880,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated image tag.
      */
-    public static function image($src, $alt = '', $htmlOptions = array())
-    {
+    public static function image($src, $alt = '', $htmlOptions = array()) {
         $type = \bootstrap\helpers\BSArray::popValue('type', $htmlOptions);
         if (!empty($type)) {
             self::addCssClass('img-' . $type, $htmlOptions);
@@ -3101,8 +2895,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated image tag.
      */
-    public static function imageCircle($src, $alt = '', $htmlOptions = array())
-    {
+    public static function imageCircle($src, $alt = '', $htmlOptions = array()) {
         $htmlOptions['type'] = self::IMAGE_TYPE_CIRCLE;
         return self::image($src, $alt, $htmlOptions);
     }
@@ -3114,11 +2907,11 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated image tag.
      */
-    public static function imageThumbnail($src, $alt = '', $htmlOptions = array())
-    {
+    public static function imageThumbnail($src, $alt = '', $htmlOptions = array()) {
         $htmlOptions['type'] = self::IMAGE_TYPE_THUMBNAIL;
         return self::image($src, $alt, $htmlOptions);
     }
+
     /**
      * Generates an image tag within polaroid frame.
      * @param string $src the image URL.
@@ -3126,12 +2919,10 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated image tag.
      */
-    public static function imageResponsive($src, $alt = '', $htmlOptions = array())
-    {
+    public static function imageResponsive($src, $alt = '', $htmlOptions = array()) {
         $htmlOptions['type'] = self::IMAGE_TYPE_RESPONSIVE;
         return self::image($src, $alt, $htmlOptions);
     }
-
 
     // Button dropdowns
     // http://twitter.github.io/bootstrap/2.3.2/components.html#buttonDropdowns
@@ -3143,8 +2934,7 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated button group.
      */
-    public static function verticalButtonGroup(array $buttons, $htmlOptions = array())
-    {
+    public static function verticalButtonGroup(array $buttons, $htmlOptions = array()) {
         $htmlOptions['vertical'] = true;
         return self::buttonGroup($buttons, $htmlOptions);
     }
@@ -3155,8 +2945,7 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated button group.
      */
-    public static function buttonGroup(array $buttons, $htmlOptions = array())
-    {
+    public static function buttonGroup(array $buttons, $htmlOptions = array()) {
         if (!empty($buttons)) {
             self::addCssClass('btn-group', $htmlOptions);
 
@@ -3225,8 +3014,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function buttonDropdown($label, $items, $htmlOptions = array())
-    {
+    public static function buttonDropdown($label, $items, $htmlOptions = array()) {
         $htmlOptions['items'] = $items;
         $type = \bootstrap\helpers\BSArray::popValue('type', $htmlOptions, self::BUTTON_TYPE_LINKBUTTON);
         return self::btn($type, $label, $htmlOptions);
@@ -3238,8 +3026,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button tag.
      */
-    public static function linkButton($label = 'Submit', $htmlOptions = array())
-    {
+    public static function linkButton($label = 'Submit', $htmlOptions = array()) {
         return self::btn(self::BUTTON_TYPE_LINK, $label, $htmlOptions);
     }
 
@@ -3249,18 +3036,18 @@ EOD;
      * @param array $htmlOptions
      * @return string
      */
-    public static function alertLink($label = '',$htmlOptions = array()){
-        self::addCssClass('alert-link',$htmlOptions);
-        return self::createButton(self::BUTTON_TYPE_LINK,$label, $htmlOptions);
+    public static function alertLink($label = '', $htmlOptions = array()) {
+        self::addCssClass('alert-link', $htmlOptions);
+        return self::createButton(self::BUTTON_TYPE_LINK, $label, $htmlOptions);
     }
+
     /**
      * Generates an button.
      * @param string $label the button label text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function button($label = 'Button', $htmlOptions = array())
-    {
+    public static function button($label = 'Button', $htmlOptions = array()) {
         return self::htmlButton($label, $htmlOptions);
     }
 
@@ -3270,8 +3057,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function htmlButton($label = 'Button', $htmlOptions = array())
-    {
+    public static function htmlButton($label = 'Button', $htmlOptions = array()) {
         return self::btn(self::BUTTON_TYPE_HTML, $label, $htmlOptions);
     }
 
@@ -3281,8 +3067,7 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated button toolbar.
      */
-    public static function buttonToolbar(array $groups, $htmlOptions = array())
-    {
+    public static function buttonToolbar(array $groups, $htmlOptions = array()) {
         if (!empty($groups)) {
             self::addCssClass('btn-toolbar', $htmlOptions);
             $parentOptions = array(
@@ -3320,8 +3105,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function splitButtonDropdown($label, $items, $htmlOptions = array())
-    {
+    public static function splitButtonDropdown($label, $items, $htmlOptions = array()) {
         $htmlOptions['split'] = true;
         return self::buttonDropdown($label, $items, $htmlOptions);
     }
@@ -3332,8 +3116,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function stackedTabs($items, $htmlOptions = array())
-    {
+    public static function stackedTabs($items, $htmlOptions = array()) {
         $htmlOptions['stacked'] = true;
         return self::tabs($items, $htmlOptions);
     }
@@ -3344,8 +3127,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function tabs($items, $htmlOptions = array())
-    {
+    public static function tabs($items, $htmlOptions = array()) {
         return self::nav(self::NAV_TYPE_TABS, $items, $htmlOptions);
     }
 
@@ -3356,15 +3138,13 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function nav($type, $items, $htmlOptions = array())
-    {
+    public static function nav($type, $items, $htmlOptions = array()) {
         self::addCssClass('nav', $htmlOptions);
         if (!empty($type)) {
-            if($type == 'navbar')
+            if ($type == 'navbar')
                 self::addCssClass('navbar-nav', $htmlOptions);
             else
                 self::addCssClass('nav-' . $type, $htmlOptions);
-
         }
         $justified = \bootstrap\helpers\BSArray::popValue('justified', $htmlOptions, false);
         if ($justified) {
@@ -3382,8 +3162,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function stackedPills($items, $htmlOptions = array())
-    {
+    public static function stackedPills($items, $htmlOptions = array()) {
         $htmlOptions['stacked'] = true;
         return self::pills($items, $htmlOptions);
     }
@@ -3394,13 +3173,11 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function pills($items, $htmlOptions = array())
-    {
+    public static function pills($items, $htmlOptions = array()) {
         return self::nav(self::NAV_TYPE_PILLS, $items, $htmlOptions);
     }
 
-    public static function listGroup($items, $htmlOptions = array())
-    {
+    public static function listGroup($items, $htmlOptions = array()) {
         $htmlOptions['listGroup'] = true;
         return self::listGroupHeader($items, $htmlOptions);
     }
@@ -3412,8 +3189,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function listGroupHeader($items, $htmlOptions = array())
-    {
+    public static function listGroupHeader($items, $htmlOptions = array()) {
         if (!empty($type)) {
             self::addCssClass('nav-' . $type, $htmlOptions);
         }
@@ -3427,8 +3203,7 @@ EOD;
      * @param integer $depth the current depth.
      * @return string the generated menu.
      */
-    public static function listGroupMenu(array $items, $htmlOptions = array(), $depth = 0)
-    {
+    public static function listGroupMenu(array $items, $htmlOptions = array(), $depth = 0) {
         // todo: consider making this method protected.
         if (!empty($items)) {
             $htmlOptions['class'] = 'list-group';
@@ -3484,8 +3259,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function navList($items, $htmlOptions = array())
-    {
+    public static function navList($items, $htmlOptions = array()) {
         foreach ($items as $i => $itemOptions) {
             if (!isset($itemOptions['url']) && !isset($itemOptions['items'])) {
                 $label = \bootstrap\helpers\BSArray::popValue('label', $itemOptions, '');
@@ -3501,24 +3275,23 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated header.
      */
-    public static function menuHeader($label, $htmlOptions = array())
-    {
+    public static function menuHeader($label, $htmlOptions = array()) {
         self::addCssClass('nav-header', $htmlOptions);
         return self::tag('li', $htmlOptions, $label);
     }
+
     /**
      * Generates a menu text.
      * @param string $label the emphasis text.
      * @param array $htmlOptions additional HTML options.
      * @return string the generated emphasis.
      */
-    public static function menuText($label, $htmlOptions = array())
-    {
+    public static function menuText($label, $htmlOptions = array()) {
         self::addCssClass('navbar-text', $htmlOptions);
-        $pull = \bootstrap\helpers\BSArray::popValue('pull',$htmlOptions,false);
+        $pull = \bootstrap\helpers\BSArray::popValue('pull', $htmlOptions, false);
 
-        if($pull)
-            self::addCssClass('pull-'.$pull,$htmlOptions);
+        if ($pull)
+            self::addCssClass('pull-' . $pull, $htmlOptions);
 
         return self::emphasis($label, $htmlOptions);
     }
@@ -3529,8 +3302,7 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated header.
      */
-    public static function dropDownHeader($label, $htmlOptions = array())
-    {
+    public static function dropDownHeader($label, $htmlOptions = array()) {
         self::addCssClass('dropdown-header', $htmlOptions);
         return self::tag('li', $htmlOptions, $label);
     }
@@ -3540,8 +3312,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu item.
      */
-    public static function menuDivider($htmlOptions = array())
-    {
+    public static function menuDivider($htmlOptions = array()) {
         self::addCssClass('divider', $htmlOptions);
         return self::tag('li', $htmlOptions);
     }
@@ -3552,11 +3323,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function tabbableTabs($tabs, $htmlOptions = array())
-    {
+    public static function tabbableTabs($tabs, $htmlOptions = array()) {
         return self::tabbable(self::NAV_TYPE_TABS, $tabs, $htmlOptions);
     }
-
 
     /**
      * Generates a tabbable menu.
@@ -3565,8 +3334,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    protected static function tabbable($type, $tabs, $htmlOptions = array())
-    {
+    protected static function tabbable($type, $tabs, $htmlOptions = array()) {
         self::addCssClass('tabbable', $htmlOptions);
         $placement = \bootstrap\helpers\BSArray::popValue('placement', $htmlOptions);
         if (!empty($placement)) {
@@ -3591,8 +3359,7 @@ EOD;
      * @param integer $i the running index.
      * @return array the items.
      */
-    protected static function normalizeTabs($tabs, &$panes, $i = 0)
-    {
+    protected static function normalizeTabs($tabs, &$panes, $i = 0) {
         $menuItems = array();
         foreach ($tabs as $tabOptions) {
             if (isset($tabOptions['visible']) && $tabOptions['visible'] === false) {
@@ -3635,8 +3402,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function tabbablePills($pills, $htmlOptions = array())
-    {
+    public static function tabbablePills($pills, $htmlOptions = array()) {
         return self::tabbable(self::NAV_TYPE_PILLS, $pills, $htmlOptions);
     }
 
@@ -3648,8 +3414,7 @@ EOD;
      *
      * @see http://getbootstrap.com/components/#navbar
      */
-    public static function navbar($content, $htmlOptions = array())
-    {
+    public static function navbar($content, $htmlOptions = array()) {
         self::addCssClass('navbar', $htmlOptions);
         $position = \bootstrap\helpers\BSArray::popValue('position', $htmlOptions);
         if (!empty($position)) {
@@ -3659,8 +3424,9 @@ EOD;
         if (!empty($color)) {
             self::addCssClass('navbar-' . $color, $htmlOptions);
         }
-        \bootstrap\helpers\BSArray::defaultValue('role','navigation',$htmlOptions);
-        return self::tag('nav', $htmlOptions, $content);;
+        \bootstrap\helpers\BSArray::defaultValue('role', 'navigation', $htmlOptions);
+        return self::tag('nav', $htmlOptions, $content);
+        ;
     }
 
     /**
@@ -3670,8 +3436,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function navbarBrandLink($label, $url, $htmlOptions = array())
-    {
+    public static function navbarBrandLink($label, $url, $htmlOptions = array()) {
         self::addCssClass('navbar-brand', $htmlOptions);
         return self::link($label, $url, $htmlOptions);
     }
@@ -3683,8 +3448,7 @@ EOD;
      * @param string $tag the HTML tag.
      * @return string the generated text block.
      */
-    public static function navbarText($text, $htmlOptions = array(), $tag = 'p')
-    {
+    public static function navbarText($text, $htmlOptions = array(), $tag = 'p') {
         self::addCssClass('navbar-text', $htmlOptions);
         return self::tag($tag, $htmlOptions, $text);
     }
@@ -3694,8 +3458,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated divider.
      */
-    public static function navbarMenuDivider($htmlOptions = array())
-    {
+    public static function navbarMenuDivider($htmlOptions = array()) {
         self::addCssClass('divider', $htmlOptions);
         return self::tag('li', $htmlOptions);
     }
@@ -3711,8 +3474,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes
      * @return string the generated form.
      */
-    public static function navbarForm($action, $method = 'post', $htmlOptions = array())
-    {
+    public static function navbarForm($action, $method = 'post', $htmlOptions = array()) {
         self::addCssClass('navbar-form', $htmlOptions);
         return self::form($action, $method, $htmlOptions);
     }
@@ -3728,8 +3490,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes
      * @return string the generated form.
      */
-    public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
-    {
+    public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array()) {
         self::addCssClass('navbar-search', $htmlOptions);
         return self::searchForm($action, $method, $htmlOptions);
     }
@@ -3741,8 +3502,7 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated form.
      */
-    public static function searchForm($action, $method = 'post', $htmlOptions = array())
-    {
+    public static function searchForm($action, $method = 'post', $htmlOptions = array()) {
         self::addCssClass('form-search', $htmlOptions);
         $inputOptions = \bootstrap\helpers\BSArray::popValue('inputOptions', $htmlOptions, array());
         $inputOptions = \bootstrap\helpers\BSArray::merge(array('type' => 'text', 'placeholder' => 'Search'), $inputOptions);
@@ -3760,13 +3520,12 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated icon.
      */
-    public static function navbarCollapseLink($target, $htmlOptions = array())
-    {
+    public static function navbarCollapseLink($target, $htmlOptions = array()) {
         self::addCssClass('navbar-toggle', $htmlOptions);
         $htmlOptions['data-toggle'] = 'collapse';
         $htmlOptions['data-target'] = $target;
         $content = '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
-        \bootstrap\helpers\BSArray::defaultValue('type','button',$htmlOptions);
+        \bootstrap\helpers\BSArray::defaultValue('type', 'button', $htmlOptions);
         return self::tag('button', $htmlOptions, $content);
     }
 
@@ -3776,8 +3535,7 @@ EOD;
      * @param array $links the breadcrumb links.
      * @return string the generated breadcrumb.
      */
-    public static function breadcrumbs($links)
-    {
+    public static function breadcrumbs($links) {
         $breadCrumbWidget = new BsBreadcrumb();
         $breadCrumbWidget->links = $links;
         return $breadCrumbWidget->run();
@@ -3793,8 +3551,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated pagination.
      */
-    public static function pagination(array $items, $htmlOptions = array())
-    {
+    public static function pagination(array $items, $htmlOptions = array()) {
         if (!empty($items)) {
             self::addCssClass('pagination', $htmlOptions);
             $size = \bootstrap\helpers\BSArray::popValue('size', $htmlOptions);
@@ -3830,11 +3587,10 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function paginationLink($label, $url, $htmlOptions = array())
-    {
+    public static function paginationLink($label, $url, $htmlOptions = array()) {
         $linkOptions = \bootstrap\helpers\BSArray::popValue('linkOptions', $htmlOptions, array());
         if (\bootstrap\helpers\BSArray::popValue('active', $htmlOptions, false)) {
-            $label .= self::tag('span',array('class' => 'sr-only'));
+            $label .= self::tag('span', array('class' => 'sr-only'));
             self::addCssClass('active', $htmlOptions);
         }
         if (\bootstrap\helpers\BSArray::popValue('disabled', $htmlOptions, false)) {
@@ -3854,8 +3610,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated pager.
      */
-    public static function pager(array $links, $htmlOptions = array())
-    {
+    public static function pager(array $links, $htmlOptions = array()) {
         if (!empty($links)) {
             self::addCssClass('pager', $htmlOptions);
             $output = self::openTag('ul', $htmlOptions);
@@ -3882,8 +3637,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function pagerLink($label, $url, $htmlOptions = array())
-    {
+    public static function pagerLink($label, $url, $htmlOptions = array()) {
         $linkOptions = \bootstrap\helpers\BSArray::popValue('linkOptions', $htmlOptions, array());
         if (\bootstrap\helpers\BSArray::popValue('previous', $htmlOptions, false)) {
             self::addCssClass('previous', $htmlOptions);
@@ -3908,8 +3662,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated span.
      */
-    public static function labelBs($label, $htmlOptions = array())
-    {
+    public static function labelBs($label, $htmlOptions = array()) {
         self::addCssClass('label', $htmlOptions);
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         if (!empty($color)) {
@@ -3924,8 +3677,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated span.
      */
-    public static function badge($label, $htmlOptions = array())
-    {
+    public static function badge($label, $htmlOptions = array()) {
         self::addCssClass('badge', $htmlOptions);
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         if (!empty($color)) {
@@ -3941,8 +3693,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated hero unit.
      */
-    public static function jumbotron($heading, $content, $htmlOptions = array())
-    {
+    public static function jumbotron($heading, $content, $htmlOptions = array()) {
         self::addCssClass('jumbotron', $htmlOptions);
         $headingOptions = \bootstrap\helpers\BSArray::popValue('headingOptions', $htmlOptions, array());
         $output = self::openTag('div', $htmlOptions);
@@ -3965,8 +3716,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated pager header.
      */
-    public static function pageHeader($heading, $subtext = '', $htmlOptions = array())
-    {
+    public static function pageHeader($heading, $subtext = '', $htmlOptions = array()) {
         self::addCssClass('page-header', $htmlOptions);
         $headerOptions = \bootstrap\helpers\BSArray::popValue('headerOptions', $htmlOptions, array());
         $subtextOptions = \bootstrap\helpers\BSArray::popValue('subtextOptions', $htmlOptions, array());
@@ -3978,13 +3728,13 @@ EOD;
         return $output;
     }
 
-    public static function rowThumbnails(array $thumbnails,$htmlOptions){
-        if(empty($thumbnails))
+    public static function rowThumbnails(array $thumbnails, $htmlOptions) {
+        if (empty($thumbnails))
             return false;
 
-        $output = self::openTag('div',array('class' => 'row'));
-        $row = \bootstrap\helpers\BSArray::popValue('row',$htmlOptions,false);
-        if(!$row){
+        $output = self::openTag('div', array('class' => 'row'));
+        $row = \bootstrap\helpers\BSArray::popValue('row', $htmlOptions, false);
+        if (!$row) {
             $row = array(
                 'lg' => '3',
                 'md' => '4',
@@ -3992,38 +3742,38 @@ EOD;
                 'xs' => '12'
             );
         }
-        foreach($thumbnails as $timage){
-            $output.=self::openTag('div',array(
-                'class' => self::generateThumbnailRowClass($row)
+        foreach ($thumbnails as $timage) {
+            $output.=self::openTag('div', array(
+                        'class' => self::generateThumbnailRowClass($row)
             ));
-            if(isset($timage['image'])){
+            if (isset($timage['image'])) {
                 $image = $timage['image'];
             }
-            if(isset($timage['url'])){
+            if (isset($timage['url'])) {
                 $url = $timage['url'];
             }
-            $output .=self::thumbnailLink(parent::tag('img',$image),$url);
+            $output .=self::thumbnailLink(parent::tag('img', $image), $url);
             $output.="</div>";
         }
         $output.="</div>";
         return $output;
     }
 
-    private static function generateThumbnailRowClass($row){
+    private static function generateThumbnailRowClass($row) {
         $cssCLass = '';
-        foreach($row as $key =>$value){
+        foreach ($row as $key => $value) {
             $cssCLass .="col-{$key}-{$value} ";
         }
         return $cssCLass;
     }
+
     /**
      * Generates a list of thumbnails.
      * @param array $thumbnails the list configuration.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated thumbnails.
      */
-    public static function thumbnails(array $thumbnails, $htmlOptions = array())
-    {
+    public static function thumbnails(array $thumbnails, $htmlOptions = array()) {
         if (!empty($thumbnails)) {
             self::addCssClass('thumbnails', $htmlOptions);
             $defaultSpan = \bootstrap\helpers\BSArray::popValue('span', $htmlOptions, 3);
@@ -4054,9 +3804,7 @@ EOD;
                     $content = parent::image($image, $imageAlt, $imageOptions) . $content;
                 }
                 $url = \bootstrap\helpers\BSArray::popValue('url', $thumbnailOptions, false);
-                $output .= $url !== false
-                    ? self::thumbnailLink($content, $url, $thumbnailOptions)
-                    : self::thumbnail($content, $thumbnailOptions);
+                $output .= $url !== false ? self::thumbnailLink($content, $url, $thumbnailOptions) : self::thumbnail($content, $thumbnailOptions);
             }
             $output .= '</ul>';
             return $output;
@@ -4076,8 +3824,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated thumbnail.
      */
-    public static function thumbnailLink($content, $url = '#', $htmlOptions = array())
-    {
+    public static function thumbnailLink($content, $url = '#', $htmlOptions = array()) {
         $itemOptions = \bootstrap\helpers\BSArray::popValue('itemOptions', $htmlOptions, array());
         self::addCssClass('thumbnail', $htmlOptions);
         $content = self::link($content, $url, $htmlOptions);
@@ -4090,8 +3837,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated thumbnail.
      */
-    public static function thumbnail($content, $htmlOptions = array())
-    {
+    public static function thumbnail($content, $htmlOptions = array()) {
         $itemOptions = \bootstrap\helpers\BSArray::popValue('itemOptions', $htmlOptions, array());
         self::addCssClass('thumbnail', $htmlOptions);
         //$output = self::openTag('li', $itemOptions);
@@ -4107,8 +3853,7 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated alert.
      */
-    public static function blockAlert($color, $message, $htmlOptions = array())
-    {
+    public static function blockAlert($color, $message, $htmlOptions = array()) {
         $htmlOptions['block'] = true;
         return self::alert($color, $message, $htmlOptions);
     }
@@ -4120,8 +3865,7 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated alert.
      */
-    public static function alert($color, $message, $htmlOptions = array())
-    {
+    public static function alert($color, $message, $htmlOptions = array()) {
         self::addCssClass('alert', $htmlOptions);
         if (!empty($color)) {
             self::addCssClass('alert-' . $color, $htmlOptions);
@@ -4152,8 +3896,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function closeLink($label = self::CLOSE_TEXT, $url = '#', $htmlOptions = array())
-    {
+    public static function closeLink($label = self::CLOSE_TEXT, $url = '#', $htmlOptions = array()) {
         $htmlOptions['href'] = $url;
         return self::close('a', $label, $htmlOptions);
     }
@@ -4165,8 +3908,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
      */
-    protected static function close($tag, $label, $htmlOptions = array())
-    {
+    protected static function close($tag, $label, $htmlOptions = array()) {
         self::addCssClass('close', $htmlOptions);
         $dismiss = \bootstrap\helpers\BSArray::popValue('dismiss', $htmlOptions);
         if (!empty($dismiss)) {
@@ -4186,8 +3928,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated progress bar.
      */
-    public static function animatedProgressBar($width = 0, $htmlOptions = array())
-    {
+    public static function animatedProgressBar($width = 0, $htmlOptions = array()) {
         $htmlOptions['animated'] = true;
         return self::stripedProgressBar($width, $htmlOptions);
     }
@@ -4198,8 +3939,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated progress bar.
      */
-    public static function stripedProgressBar($width = 0, $htmlOptions = array())
-    {
+    public static function stripedProgressBar($width = 0, $htmlOptions = array()) {
         $htmlOptions['striped'] = true;
         return self::progressBar($width, $htmlOptions);
     }
@@ -4210,8 +3950,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated progress bar.
      */
-    public static function progressBar($width = 0, $htmlOptions = array())
-    {
+    public static function progressBar($width = 0, $htmlOptions = array()) {
         $progressOption = array();
         $barOption = $htmlOptions;
 
@@ -4248,8 +3987,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated bar.
      */
-    protected static function bar($width = 0, $htmlOptions = array())
-    {
+    protected static function bar($width = 0, $htmlOptions = array()) {
         self::addCssClass('progress-bar', $htmlOptions);
 
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
@@ -4284,15 +4022,12 @@ EOD;
      * @param array $htmlOptions the options.
      * @return array the options.
      */
-    public static function addCssStyle($style, &$htmlOptions)
-    {
+    public static function addCssStyle($style, &$htmlOptions) {
         if (is_array($style)) {
             $style = implode('; ', $style);
         }
         $style = rtrim($style, ';');
-        $htmlOptions['style'] = isset($htmlOptions['style'])
-            ? rtrim($htmlOptions['style'], ';') . '; ' . $style
-            : $style;
+        $htmlOptions['style'] = isset($htmlOptions['style']) ? rtrim($htmlOptions['style'], ';') . '; ' . $style : $style;
     }
 
     /**
@@ -4301,8 +4036,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated progress bar.
      */
-    public static function stackedProgressBar(array $bars, $htmlOptions = array())
-    {
+    public static function stackedProgressBar(array $bars, $htmlOptions = array()) {
         if (!empty($bars)) {
             self::addCssClass('progress', $htmlOptions);
             $output = self::openTag('div', $htmlOptions);
@@ -4331,8 +4065,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated span.
      */
-    public static function bsLabel($label, $htmlOptions = array())
-    {
+    public static function bsLabel($label, $htmlOptions = array()) {
 //        $htmlOptions = self::addCssClass('label', $htmlOptions);
         $color = \bootstrap\helpers\BSArray::popValue('color', $htmlOptions);
         if (!empty($color))
@@ -4349,8 +4082,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string generated list.
      */
-    public static function mediaList(array $items, $htmlOptions = array())
-    {
+    public static function mediaList(array $items, $htmlOptions = array()) {
         if (!empty($items)) {
             self::addCssClass('media-list', $htmlOptions);
             $output = '';
@@ -4365,13 +4097,10 @@ EOD;
     //
     // JAVASCRIPT
     // --------------------------------------------------
-
     // Modals
     // http://twitter.github.io/bootstrap/2.3.2/javascript.html#modals
     // --------------------------------------------------
-
     // todo: create modal methods here.
-
     // Tooltips and Popovers
     // http://twitter.github.io/bootstrap/2.3.2/javascript.html#tooltips
     // http://twitter.github.io/bootstrap/2.3.2/javascript.html#popovers
@@ -4383,8 +4112,7 @@ EOD;
      * @param string $tag the item tag name.
      * @return string generated objects.
      */
-    public static function medias(array $items, $tag = 'div')
-    {
+    public static function medias(array $items, $tag = 'div') {
         if (!empty($items)) {
             $output = '';
             foreach ($items as $itemOptions) {
@@ -4415,8 +4143,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the media object.
      */
-    public static function media($image, $heading, $content, $htmlOptions = array())
-    {
+    public static function media($image, $heading, $content, $htmlOptions = array()) {
         $tag = \bootstrap\helpers\BSArray::popValue('tag', $htmlOptions, 'div');
         self::addCssClass('media', $htmlOptions);
         $linkOptions = \bootstrap\helpers\BSArray::popValue('linkOptions', $htmlOptions, array());
@@ -4452,8 +4179,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated well.
      */
-    public static function well($content, $htmlOptions = array())
-    {
+    public static function well($content, $htmlOptions = array()) {
         self::addCssClass('well', $htmlOptions);
         $size = \bootstrap\helpers\BSArray::popValue('size', $htmlOptions);
         if (!empty($size)) {
@@ -4472,8 +4198,7 @@ EOD;
      * @param array $htmlOptions the HTML options for the button.
      * @return string the generated button.
      */
-    public static function closeButton($label = self::CLOSE_TEXT, $htmlOptions = array())
-    {
+    public static function closeButton($label = self::CLOSE_TEXT, $htmlOptions = array()) {
         return self::close('button', $label, $htmlOptions);
     }
 
@@ -4484,8 +4209,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function collapseLink($label, $target, $htmlOptions = array())
-    {
+    public static function collapseLink($label, $target, $htmlOptions = array()) {
         $htmlOptions['data-toggle'] = 'collapse';
         return self::link($label, $target, $htmlOptions);
     }
@@ -4498,8 +4222,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated tooltip.
      */
-    public static function tooltip($label, $url, $content, $htmlOptions = array())
-    {
+    public static function tooltip($label, $url, $content, $htmlOptions = array()) {
         $htmlOptions['data-toggle'] = 'tooltip';
         return self::tooltipPopover($label, $url, $content, $htmlOptions);
     }
@@ -4512,8 +4235,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated tooltip.
      */
-    protected static function tooltipPopover($label, $url, $title, $htmlOptions)
-    {
+    protected static function tooltipPopover($label, $url, $title, $htmlOptions) {
         $htmlOptions['title'] = $title;
         if (\bootstrap\helpers\BSArray::popValue('animation', $htmlOptions)) {
             $htmlOptions['data-animation'] = true;
@@ -4546,8 +4268,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated popover.
      */
-    public static function popover($label, $title, $content, $htmlOptions = array())
-    {
+    public static function popover($label, $title, $content, $htmlOptions = array()) {
         $htmlOptions['data-content'] = $content;
         $htmlOptions['data-toggle'] = 'popover';
         return self::tooltipPopover($label, '#', $title, $htmlOptions);
@@ -4562,8 +4283,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated carousel.
      */
-    public static function carousel(array $items, $htmlOptions = array())
-    {
+    public static function carousel(array $items, $htmlOptions = array()) {
         if (!empty($items)) {
             $id = \bootstrap\helpers\BSArray::getValue('id', $htmlOptions, parent::ID_PREFIX . parent::$count++);
             \bootstrap\helpers\BSArray::defaultValue('id', $id, $htmlOptions);
@@ -4627,8 +4347,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated indicators.
      */
-    public static function carouselIndicators($target, $numSlides, $htmlOptions = array())
-    {
+    public static function carouselIndicators($target, $numSlides, $htmlOptions = array()) {
         self::addCssClass('carousel-indicators', $htmlOptions);
         $output = self::openTag('ol', $htmlOptions);
         for ($i = 0; $i < $numSlides; $i++) {
@@ -4650,8 +4369,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated item.
      */
-    public static function carouselItem($content, $label, $caption, $htmlOptions = array())
-    {
+    public static function carouselItem($content, $label, $caption, $htmlOptions = array()) {
         self::addCssClass('item', $htmlOptions);
         $overlayOptions = \bootstrap\helpers\BSArray::popValue('overlayOptions', $htmlOptions, array());
         self::addCssClass('carousel-caption', $overlayOptions);
@@ -4684,8 +4402,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function carouselPrevLink($label, $url = '#', $htmlOptions = array())
-    {
+    public static function carouselPrevLink($label, $url = '#', $htmlOptions = array()) {
         self::addCssClass('carousel-control left', $htmlOptions);
         $htmlOptions['data-slide'] = 'prev';
         return self::link($label, $url, $htmlOptions);
@@ -4698,8 +4415,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function carouselNextLink($label, $url = '#', $htmlOptions = array())
-    {
+    public static function carouselNextLink($label, $url = '#', $htmlOptions = array()) {
         self::addCssClass('carousel-control right', $htmlOptions);
         $htmlOptions['data-slide'] = 'next';
         return self::link($label, $url, $htmlOptions);
@@ -4710,10 +4426,10 @@ EOD;
      * @param $htmlOptions
      * @return mixed
      */
-    public static function addClassName($className, $htmlOptions)
-    {
-        if (is_array($className))
+    public static function addClassName($className, $htmlOptions) {
+        if (is_array($className)) {
             $className = implode(' ', $className);
+        }
         $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $className : $className;
         return $htmlOptions;
     }

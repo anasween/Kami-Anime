@@ -48,6 +48,14 @@ class YumAuthController extends YumController {
         }
     }
 
+    public function getUserByEmail($email) {
+        $profile = YumProfile::model()->find('email = :email', array(
+            ':email' => $email));
+        if ($profile && $profile->user) {
+            return $profile->user;
+        }
+    }
+
     public function loginByUsername() {
         $user = $this->getUser($this->loginForm->username);
         if ($user) {
@@ -109,7 +117,7 @@ class YumAuthController extends YumController {
                 // User found and authenticated at foreign party. Is he already 
                 // registered at our application?
                 $hybridAuthProfile = $success->getUserProfile();
-                $user = $this->getUser($hybridAuthProfile->displayName);
+                $user = getUserByEmail($hybridAuthProfile->email);
                 if (!$user && !YumProfile::model()->findByAttributes(array(
                             'email' => $hybridAuthProfile->email))) {
                     // No, he is not, so we register the user and sync the profile fields

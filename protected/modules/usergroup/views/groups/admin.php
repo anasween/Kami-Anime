@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 );
 Yii::app()->clientScript->registerScript('search', "
     $('.search-button').click(function(){
-        $('.search-form').toggle();
+        $('.search-form').toggle(500);
         return false;
     });
     $('.search-form form').submit(function(){
@@ -15,11 +15,14 @@ Yii::app()->clientScript->registerScript('search', "
         return false;
     });
 ");
-		?>
 
-<h1> <?php echo Yum::t('Manage usergroups'); ?></h1>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Manage usergroups'));
 
-<?php echo CHtml::link(Yum::t('Advanced Search'),'#',array('class'=>'search-button')); ?>
+echo BSHtml::linkButton(Yum::t('Advanced search'),array(
+    'class'=>'search-button',
+    'color' => BSHtml::BUTTON_COLOR_DEFAULT
+    )); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -27,9 +30,7 @@ Yii::app()->clientScript->registerScript('search', "
 </div>
 
 <?php
-$locale = CLocale::getInstance(Yii::app()->language);
-
- $this->widget('bootstrap.widgets.BsGridView', array(
+$this->widget('bootstrap.widgets.BsGridView', array(
 	'id'=>'usergroup-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -43,3 +44,5 @@ $locale = CLocale::getInstance(Yii::app()->language);
 		),
 	),
 )); 
+
+echo '</div>';

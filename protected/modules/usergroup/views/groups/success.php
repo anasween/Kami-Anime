@@ -1,3 +1,4 @@
+<div class="well">
 <?php 
 echo Yum::t('The Usergroup {groupname} has been successfully created', array('groupname' => $model))
 ?>
@@ -19,3 +20,5 @@ echo BSHtml::buttonGroup(array(
         'type' => BSHtml::BUTTON_TYPE_LINK
     )
 ));
+?>
+</div>

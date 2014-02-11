@@ -68,10 +68,8 @@ class YumUserController extends YumController {
                     if (Yum::hasModule('profile')) {
                         $profile = new YumProfile();
                         $profile->user_id = $user->id;
-                        $profile->timestamp = time();
                         $profile->firstname = $user->username;
                         $profile->lastname = $user->username;
-                        $profile->privacy = 'protected';
                         $profile->email = 'e@mail.de';
                         $profile->save();
                     }
@@ -199,8 +197,9 @@ class YumUserController extends YumController {
 
         // When opening a empty user creation mask, we most probably want to
         // insert an _active_ user
-        if (!$user->status)
+        if (!$user->status) {
             $user->status = 1;
+        }
 
         if (isset($_POST['YumUser'])) {
             $user->attributes = $_POST['YumUser'];
@@ -335,7 +334,7 @@ class YumUserController extends YumController {
                     $this->redirect('//user/user/admin');
                 }
             }
-        } else if (isset($_POST['confirmPassword'])) {
+        } elseif (isset($_POST['confirmPassword'])) {
             if (CPasswordHelper::verifyPassword($_POST['confirmPassword'], $user->password)) {
                 if ($user->delete()) {
                     Yii::app()->user->logout();

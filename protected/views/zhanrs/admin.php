@@ -11,7 +11,7 @@ $this->breadcrumbs=array(
 Yii::app()->clientScript->registerScript('search',
     "
     $('.search-button').click(function(){
-        $('.search-form').toggle();
+        $('.search-form').toggle(500);
             return false;
         });
         $('.search-form form').submit(function(){
@@ -21,8 +21,8 @@ Yii::app()->clientScript->registerScript('search',
         return false;
     });"
 );
-?>
-<?php echo BSHtml::pageHeader(Yum::t('Manage'),Yum::t('Zhanrs')) ?>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Manage'),Yum::t('Zhanrs')) ?>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title"><?php echo BSHtml::button(Yum::t('Advanced search'),array('class' =>'search-button', 'icon' => BSHtml::GLYPHICON_SEARCH,'color' => BSHtml::BUTTON_COLOR_PRIMARY), '#'); ?></h3>
@@ -53,7 +53,5 @@ Yii::app()->clientScript->registerScript('search',
         )); ?>
     </div>
 </div>
-
-
-
-
+<?php
+echo '</div>';

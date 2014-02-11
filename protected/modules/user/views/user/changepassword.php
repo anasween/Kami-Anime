@@ -4,9 +4,9 @@ $this->pageTitle = Yum::t("Change password");
 $this->breadcrumbs = array(
             Yum::t("Change password")
         );
-?>
-<h2><?php echo Yum::t('Change password'); ?></h2>
-<?php
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Change password'));
+
 if(isset($expired) && $expired)
 {
     $this->renderPartial('password_expired');
@@ -15,11 +15,10 @@ if(isset($expired) && $expired)
 
 <div class="form">
 <?php 
-$formTb = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+$formBs = $this->beginWidget('bootstrap.widgets.BsActiveForm', array(
     'id'=>'password-form',
     'enableAjaxValidation'=>false,
     'enableClientValidation'=>true,
-    'type' => 'vertical',
     'htmlOptions' => array(
         'enctype'=>'multipart/form-data',
         'class' => 'well'
@@ -32,7 +31,7 @@ $formTb = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php 
 if(!Yii::app()->user->isGuest) 
 {
-    echo $formTb->PasswordFieldControlGroup($form,'currentPassword'); 
+    echo $formBs->PasswordFieldControlGroup($form,'currentPassword'); 
 } 
 ?>
 
@@ -47,3 +46,5 @@ if(!Yii::app()->user->isGuest)
 
 <?php $this->endWidget(); ?>
 </div><!-- form -->
+<?php
+echo '</div>';

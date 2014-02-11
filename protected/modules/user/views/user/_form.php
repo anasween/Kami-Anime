@@ -24,14 +24,16 @@ foreach($models as $m)
     if($m->hasErrors())
     {
 	$hasErrors = true;
+        break;
     }
 }
 if($hasErrors) 
 {
     echo '<div class="alert alert-error">';
-    echo CHtml::errorSummary($models);
+    echo BsHtml::errorSummary($models);
     echo '</div>';
 }
+unset($hasErrors);
 ?>
 
 <?php echo Yum::requiredFieldNote(); ?>
@@ -62,7 +64,7 @@ else
 <?php if(Yum::hasModule('role')) { 
     Yii::import('application.modules.role.models.*');
 ?>
-<div class="roles">
+<div class="roles" style="margin-bottom: 10px;">
 <label> <?php echo Yum::t('User belongs to these roles'); ?> </label>
 
 <?php 
@@ -71,7 +73,7 @@ $this->widget('YumModule.components.select2.ESelect2', array(
     'attribute' => 'roles',
     'htmlOptions' => array(
             'multiple' => 'multiple',
-            'style' => 'width:220px;'),
+            'style' => 'width:100%;'),
     'data' => CHtml::listData(YumRole::model()->findAll(), 'id', 'title'),
 )); 
 ?>

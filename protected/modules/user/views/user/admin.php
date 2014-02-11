@@ -6,6 +6,9 @@ $this->breadcrumbs = array(
             Yum::t('Manage')
         );
 
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Manage users'));
+
 echo BSHtml::linkButton(Yum::t('Create new User'), array(
         'color' => BSHtml::BUTTON_COLOR_SUCCESS,
         'icon' =>  BSHtml::GLYPHICON_PLUS,
@@ -44,19 +47,6 @@ if(Yum::hasModule('profile') && isset($profile))
         );
     }
 }
-
-$columns[] = array(
-    'name'=>'createtime',
-    'filter' => false,
-    'value'=>'date(UserModule::$dateFormat,$data->createtime)',
-    
-);
-$columns[] = array(
-    'name'=>'lastvisit',
-    'filter' => false,
-    'value'=>'date(UserModule::$dateFormat,$data->lastvisit)',
-    
-);
 $columns[] = array(
     'name'=>'status',
     'filter' => array(
@@ -95,3 +85,5 @@ $this->widget(
             'columns'=>$columns,
         )
 );
+
+echo '</div>';

@@ -17,7 +17,9 @@ $this->breadcrumbs = array(
 
 echo Yum::renderFlash();
 
-echo '<div class="item">';
+echo '<div class="well">';
+
+echo BSHtml::pageHeader($this->title);
 
 if (Yii::app()->user->isAdmin()) {
     $attributes = array(
@@ -39,24 +41,26 @@ if (Yii::app()->user->isAdmin()) {
     }
 
     array_push($attributes,
-            /*
-              There is no added value to showing the password/salt/activationKey because
-              these are all encrypted 'password', 'salt', 'activationKey', */ array(
-        'name' => 'createtime',
-        'value' => date(UserModule::$dateFormat, $model->createtime),
-            ), array(
-        'name' => 'lastvisit',
-        'value' => date(UserModule::$dateFormat, $model->lastvisit),
-            ), array(
-        'name' => 'lastpasswordchange',
-        'value' => date(UserModule::$dateFormat, $model->lastpasswordchange),
-            ), array(
-        'name' => 'superuser',
-        'value' => YumUser::itemAlias("AdminStatus", $model->superuser),
-            ), array(
-        'name' => 'status',
-        'value' => YumUser::itemAlias("UserStatus", $model->status),
-            )
+        array(
+            'name' => 'createtime',
+            'value' => date(UserModule::$dateFormat, $model->createtime),
+        ), 
+        array(
+            'name' => 'lastvisit',
+            'value' => date(UserModule::$dateFormat, $model->lastvisit),
+        ), 
+        array(
+            'name' => 'lastpasswordchange',
+            'value' => date(UserModule::$dateFormat, $model->lastpasswordchange),
+        ), 
+        array(
+            'name' => 'superuser',
+            'value' => YumUser::itemAlias("AdminStatus", $model->superuser),
+        ), 
+        array(
+            'name' => 'status',
+            'value' => YumUser::itemAlias("UserStatus", $model->status),
+        )
     );
 
     $this->widget(
@@ -108,11 +112,14 @@ if (Yum::hasModule('role') && Yii::app()->user->isAdmin()) {
     echo '<h2>' . Yum::t('This user belongs to these roles:') . '</h2>';
 
     if ($model->roles) {
-        echo "<ul>";
+        $roles = array();
         foreach ($model->roles as $role) {
-            echo CHtml::tag('li', array(), CHtml::link($role->title, array('//role/role/view', 'id' => $role->id)), true);
+            array_push($roles, array(
+                'label' => $role->title,
+                'url' => array('//role/role/view', 'id' => $role->id)
+            ));
         }
-        echo "</ul>";
+        echo BSHtml::stackedPills($roles);
     } else {
         printf('<p>%s</p>', Yum::t('None'));
     }
@@ -150,6 +157,6 @@ if (Yum::hasModule('profile')) {
     );
 }
 
-echo BSHtml::buttonGroup($buttons);
+echo BSHtml::buttonGroup($buttons, array('style' => 'margin-top: 10px;'));
 
 echo '</div>';

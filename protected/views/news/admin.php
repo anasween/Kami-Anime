@@ -6,11 +6,7 @@ $this->breadcrumbs = array(
             Yum::t('Manage'),    
         );?>
 <div class="well">
-<h1><?php echo Yum::t('Manage news') ?></h1>
-<p>
-Вы можете вставить оператор выражения (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-или <b>=</b>) в начало каждого из поисковых запросов.
-</p>
+<?php echo BSHtml::pageHeader(Yum::t('Manage'), Yum::t('News')) ?>
 
 <?php 
 $columns=array(

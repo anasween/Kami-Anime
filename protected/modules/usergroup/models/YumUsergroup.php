@@ -36,7 +36,7 @@ class YumUsergroup extends YumActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'id' => Yum::t('group id'),
+            'id' => Yum::t('ID'),
             'title' => Yum::t('Group title'),
             'description' => Yum::t('Description'),
             'participants' => Yum::t('Participants'),

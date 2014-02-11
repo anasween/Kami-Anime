@@ -9,7 +9,7 @@
  * @property string $name_en
  * @property string $name_jp
  * @property string $poster
- * @property string $autor_id
+ * @property integer $autor_id
  * @property string $create
  * @property string $modify
  * @property integer $year
@@ -20,37 +20,84 @@
  * @property YumUser $autor
  * @property AnimeZhanrs[] $animeZhanrs
  */
-class Anime extends CActiveRecord
-{
+class Anime extends CActiveRecord {
+
+    /**
+     * Path to poster.
+     * @var string
+     */
+    public $poster;
+    
     /**
      * @return string the associated database table name
      */
-    public function tableName()
-    {
+    public function tableName() {
         return 'anime';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules()
-    {
+    public function rules() {
         return array(
-            array('name_ru, name_en, name_jp, poster, autor_id, modify, year, description', 'required'),
-            array('year, views', 'numerical', 'integerOnly'=>true),
-            array('name_ru, name_en, name_jp', 'length', 'max'=>100),
-            array('poster', 'length', 'max'=>255),
-            array('autor_id', 'length', 'max'=>10),
-            array('create', 'safe'),
-            array('id, name_ru, name_en, name_jp, poster, autor_id, create, modify, year, views, description', 'safe', 'on'=>'search'),
+            array('name_ru, name_en, name_jp, autor_id, year, description', 'required'),
+            array('year, views', 'numerical', 'integerOnly' => true),
+            array('name_ru, name_en, name_jp', 'length', 'max' => 100),
+            array('autor_id', 'length', 'max' => 10),
+            array('createtime', 'safe'),
+            array('id, name_ru, name_en, name_jp, autor_id, year, description', 'safe', 'on' => 'search'),
+            array('poster', 'file', 'types' => 'jpg, png', 'allowEmpty' => true),
         );
+    }
+
+    /**
+     * Delete old poster before save new. 
+     * @return boolean
+     */
+    protected function beforeSave() {
+        if (!parent::beforeSave()) {
+            return false;
+        }
+        $poster = CUploadedFile::getInstance($this, 'poster');
+        if ($poster) {
+            $this->deletePoster();
+
+            $this->poster = $poster;
+            $ext = pathinfo($poster, PATHINFO_EXTENSION);
+            $newName = md5(rand(1,9999).time()) . '.' . $ext;
+            $this->poster->saveAs(Yii::getPathOfAlias('webroot.media') . DIRECTORY_SEPARATOR . $newName);
+            $this->poster = $newName;
+        }
+        return true;
+    }
+
+    /**
+     * Delete poster before delete document.
+     * @return boolean
+     */
+    protected function beforeDelete() {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+        $this->deletePoster();
+        return true;
+    }
+
+    /**
+     * Delete poster.
+     */
+    public function deletePoster() {
+        $posterPath = Yii::getPathOfAlias('webroot.media') . DIRECTORY_SEPARATOR .
+                $this->poster;
+        if (is_file($posterPath)) {
+            unlink($posterPath);
+        }
     }
 
     /**
      * @return array relational rules.
      */
-    public function relations()
-    {
+    public function relations() {
         return array(
             'autor' => array(self::BELONGS_TO, 'YumUser', 'autor_id'),
             'animeZhanrs' => array(self::HAS_MANY, 'AnimeZhanrs', 'anime_id'),
@@ -60,16 +107,15 @@ class Anime extends CActiveRecord
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return array(
-            'id' => Yum::t('ID'),
-            'name_ru' => Yum::t('Name Ru'),
-            'name_en' => Yum::t('Name En'),
-            'name_jp' => Yum::t('Name Jp'),
+            'id' => 'ID',
+            'name_ru' => Yum::t('Name ru'),
+            'name_en' => Yum::t('Name en'),
+            'name_jp' => Yum::t('Name jp'),
             'poster' => Yum::t('Poster'),
             'autor_id' => Yum::t('Autor'),
-            'create' => Yum::t('Create'),
+            'createtime' => Yum::t('create time'),
             'modify' => Yum::t('Modify'),
             'year' => Yum::t('Year'),
             'views' => Yum::t('Views'),
@@ -89,26 +135,19 @@ class Anime extends CActiveRecord
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search()
-    {
-        $criteria=new CDbCriteria;
-
+    public function search() {
+        $criteria = new CDbCriteria;
+        
         $criteria->together = true;
         $criteria->with = array('autor');
-        $criteria->compare('id',$this->id,true);
-        $criteria->compare('name_ru',$this->name_ru,true);
-        $criteria->compare('name_en',$this->name_en,true);
-        $criteria->compare('name_jp',$this->name_jp,true);
-        $criteria->compare('poster',$this->poster,true);
+        $criteria->compare('t.id', $this->id, true);
+        $criteria->compare('t.name_ru', $this->name_ru, true);
+        $criteria->compare('t.name_en', $this->name_en, true);
+        $criteria->compare('t.name_jp', $this->name_jp, true);
         $criteria->compare('autor.username',$this->autor_id,true);
-        $criteria->compare('create',$this->create,true);
-        $criteria->compare('modify',$this->modify,true);
-        $criteria->compare('year',$this->year);
-        $criteria->compare('views',$this->views);
-        $criteria->compare('description',$this->description,true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -118,8 +157,16 @@ class Anime extends CActiveRecord
      * @param string $className active record class name.
      * @return Anime the static model class
      */
-    public static function model($className=__CLASS__)
-    {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+   
+    /**
+     * Returns path to poster.
+     * @return string
+     */
+    public function getPoster() {
+        return '/media/' . $this->poster;
+    }
+
 }

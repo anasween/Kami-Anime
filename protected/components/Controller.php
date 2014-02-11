@@ -47,7 +47,7 @@ class Controller extends CController {
                             Yum::t('Manage'), array('pull' => BSHtml::NAVBAR_NAV_PULL_RIGHT)
                     ),
                     array(
-                        'label' => Yum::t('User Administration'),
+                        'label' => Yum::t('User administration'),
                         'url' => array('//user/user/admin'),
                         'visible' => Yum::hasModule('user') && Yii::app()->user->can("user", "admin")
                     ),
@@ -57,7 +57,7 @@ class Controller extends CController {
                         'visible' => Yum::hasModule('avatar') && Yii::app()->user->can("avatar", "admin")
                     ),
                     array(
-                        'label' => Yum::t('Manage Roles'),
+                        'label' => Yum::t('Manage roles'),
                         'url' => array('//role/role/admin'),
                         'visible' => Yum::hasModule('role') && Yii::app()->user->can("role", "admin")
                     ),
@@ -67,7 +67,7 @@ class Controller extends CController {
                         'visible' => Yum::hasModule('role') && Yii::app()->user->can("role", "admin")
                     ),
                     array(
-                        'label' => Yum::t('Manage Actions'),
+                        'label' => Yum::t('Manage actions'),
                         'url' => array('//role/action/admin'),
                         'visible' => Yum::hasModule('role') && Yii::app()->user->can("role", "admin")
                     ),
@@ -121,6 +121,11 @@ class Controller extends CController {
                         'url' => array('/zhanrs/admin'),
                         'visible' => Yii::app()->user->can("zhanrs", "admin")
                     ),
+                    array(
+                        'label' => Yum::t('Manage anime'),
+                        'url' => array('/anime/admin'),
+                        'visible' => Yii::app()->user->can("anime", "admin")
+                    ),
                 )
             ),
             array(
@@ -135,12 +140,12 @@ class Controller extends CController {
                             )
                     ),
                     array(
-                        'label' => Yum::t('Create new User'),
+                        'label' => Yum::t('Create new user'),
                         'url' => array('//user/user/create'),
                         'visible' => Yum::hasModule('user') && Yii::app()->user->can("user", "create")
                     ),
                     array(
-                        'label' => Yum::t('Generate Demo Data'),
+                        'label' => Yum::t('Generate demo data'),
                         'url' => array('//user/user/generateData'),
                         'visible' => Yum::module()->debug
                     ),
@@ -183,6 +188,11 @@ class Controller extends CController {
                         'label' => Yum::t('Create new zhanr'),
                         'url' => array('/zhanrs/create'),
                         'visible' => Yii::app()->user->can("zhanrs", "create")
+                    ),
+                    array(
+                        'label' => Yum::t('Create new anime'),
+                        'url' => array('/anime/create'),
+                        'visible' => Yii::app()->user->can("anime", "create")
                     ),
                 )
             ),
@@ -265,7 +275,7 @@ class Controller extends CController {
                         'visible' => Yum::hasModule('avatar')
                     ),
                     array(
-                        'label' => Yum::t('Change admin Password'),
+                        'label' => Yum::t('Change admin password'),
                         'url' => array('//user/user/changePassword')
                     ),
                     array(

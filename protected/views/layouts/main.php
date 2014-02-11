@@ -53,14 +53,8 @@
         ),
         array(
             'label' => Yum::t('Anime'), 
-            'url' => '#', 
-            'active'=>Yii::app()->controller->id=='anime',
-            'items' => array(
-                array(
-                    'label' => '123',
-                )
-            ),
-            'visible' => false
+            'url' => array('/anime'), 
+            'active'=>Yii::app()->controller->id=='anime'
         ),
         array(
             'label' => Yum::t('Manga'), 

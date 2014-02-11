@@ -3,10 +3,9 @@ $this->breadcrumbs = array(
             Yum::t('Groups') => array('index'),
             Yum::t('Browse')
         );
-?>
-<h1> <?php echo Yum::t('Browse usergroups'); ?> </h1>
+echo '<div class="well">';
+echo BSHtml::pageHeader(Yum::t('Browse usergroups'));
 
-<?php 
 $form = $this->beginWidget('bootstrap.widgets.BsActiveForm', array(
         'layout' => BSHtml::FORM_LAYOUT_INLINE,
         'id' => 'searchForm',
@@ -30,3 +29,5 @@ $this->widget('bootstrap.widgets.BsListView', array(
        'dataProvider'=>$model->search(),
        'itemView' => '_view',
        )); 
+
+echo "</div>";

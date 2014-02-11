@@ -1,4 +1,5 @@
 <?php
+
 /**
  * BsWidget class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>
@@ -6,7 +7,6 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.behaviors
  */
-
 Yii::import('bootstrap.components.BSHtml');
 Yii::import('bootstrap.components.BSApi');
 
@@ -14,15 +14,14 @@ Yii::import('bootstrap.components.BSApi');
  * Bootstrap widget behavior.
  * @property $owner CWidget
  */
-class BsWidget extends CBehavior
-{
+class BsWidget extends CBehavior {
+
     private $_api;
 
     /**
      * Copies the id to the widget HTML attributes or vise versa.
      */
-    public function copyId()
-    {
+    public function copyId() {
         if (!isset($this->owner->htmlOptions['id'])) {
             $this->owner->htmlOptions['id'] = $this->owner->id;
         } else {
@@ -38,8 +37,7 @@ class BsWidget extends CBehavior
      * @param int $position the position of the JavaScript code.
      * @return boolean whether the plugin was registered.
      */
-    public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
-    {
+    public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END) {
         if (($api = $this->getApi()) !== null) {
             $api->registerPlugin($name, $selector, $options, $position);
             return true;
@@ -54,8 +52,7 @@ class BsWidget extends CBehavior
      * @param int $position the position of the JavaScript code.
      * @return boolean whether the events were registered.
      */
-    public function registerEvents($selector, $events, $position = CClientScript::POS_END)
-    {
+    public function registerEvents($selector, $events, $position = CClientScript::POS_END) {
         if (($api = $this->getApi()) !== null) {
             $api->registerEvents($selector, $events, $position);
             return true;
@@ -67,12 +64,12 @@ class BsWidget extends CBehavior
      * Returns the API instance.
      * @return TbApi the api.
      */
-    private function getApi()
-    {
+    private function getApi() {
         if (isset($this->_api)) {
             return $this->_api;
         } else {
             return $this->_api = Yii::app()->getComponent('bootstrap');
         }
     }
+
 }

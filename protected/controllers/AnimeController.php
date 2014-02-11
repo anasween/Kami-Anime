@@ -1,41 +1,36 @@
 <?php
 
-class NewsController extends Controller {
+class AnimeController extends Controller {
+    /**
+     * @return array action filters
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
+        );
+    }
 
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
     public function accessRules() {
         return array(
-            array('allow',
-                'actions' => array('index', 'view', 'error'),
+            array('allow', // allow all users to perform 'index' and 'view' actions
+                'actions' => array('index', 'view'),
                 'users' => array('*'),
             ),
-            array('allow',
-                'actions' => array(
-                    'admin',
-                    'delete',
-                    'create',
-                    'update',
-                    'index',
-                    'view'
-                ),
-                'expression' => 'Yii::app()->user->isAdmin()'
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('create', 'update'),
+                'users' => array('@'),
             ),
-            array('allow',
-                'actions' => array('update'),
-                'expression' => 'Yii::app()->user->can("news", "update")'
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array('admin', 'delete'),
+                'expression' => Yii::app()->user->isAdmin(),
             ),
-            array('allow',
-                'actions' => array('create'),
-                'expression' => 'Yii::app()->user->can("news", "create")'
-            ),
-            array('allow',
-                'actions' => array('admin'),
-                'expression' => 'Yii::app()->user->can("news", "admin")'
-            ),
-            array('allow',
-                'actions' => array('delete'),
-                'expression' => 'Yii::app()->user->can("news", "delete")'
-            ),
-            array('deny', // deny all other users
+            array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
@@ -46,25 +41,8 @@ class NewsController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
-        $newsModel = $this->loadModel($id);
-        $newsModel->views = $newsModel->views + 1;
-        $newsModel->save();
-
-        $commentModel = new Comments;
-        $commentModel->news_id = $id;
-
-        if (isset($_POST['Comments'])) {
-            $commentModel->attributes = $_POST['Comments'];
-            $commentModel->createtime = new CDbExpression('NOW()');
-            if ($commentModel->save()) {
-                $this->redirect(array('view', 'id' => $id));
-            }
-        }
-
         $this->render('view', array(
-            'model' => $newsModel,
-            'commentModel' => $commentModel,
-            'comments' => $newsModel->getCommentsDataProvider(),
+            'model' => $this->loadInternModel($id),
         ));
     }
 
@@ -73,12 +51,12 @@ class NewsController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new News;
+        $model = new Anime;
 
         $this->performAjaxValidation($model);
 
-        if (isset($_POST['News'])) {
-            $model->attributes = $_POST['News'];
+        if (isset($_POST['Anime'])) {
+            $model->attributes = $_POST['Anime'];
             if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -95,12 +73,12 @@ class NewsController extends Controller {
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate($id) {
-        $model = $this->loadModel($id);
+        $model = $this->loadInternModel($id);
 
         $this->performAjaxValidation($model);
 
-        if (isset($_POST['News'])) {
-            $model->attributes = $_POST['News'];
+        if (isset($_POST['Anime'])) {
+            $model->attributes = $_POST['Anime'];
             if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -118,7 +96,7 @@ class NewsController extends Controller {
      */
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
-            $this->loadModel($id)->delete();
+            $this->loadInternModel($id)->delete();
 
             if (!isset($_GET['ajax'])) {
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
@@ -132,15 +110,7 @@ class NewsController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('News', array(
-            'criteria'=>array(
-                'order'=>'create_Date DESC',
-            ),
-            'pagination'=>array(
-                'pageSize'=>20,
-            ),
-        ));
-
+        $dataProvider = new CActiveDataProvider('Anime');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -150,10 +120,10 @@ class NewsController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new News('search');
+        $model = new Anime('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['News'])) {
-            $model->attributes = $_GET['News'];
+        if (isset($_GET['Anime'])) {
+            $model->attributes = $_GET['Anime'];
         }
 
         $this->render('admin', array(
@@ -165,11 +135,11 @@ class NewsController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return News the loaded model
+     * @return Anime the loaded model
      * @throws CHttpException
      */
-    public function loadModel($id) {
-        $model = News::model()->findByPk($id);
+    public function loadInternModel($id) {
+        $model = Anime::model()->findByPk($id);
         if ($model === null) {
             throw new CHttpException(404, Yum::t('The requested page does not exist.'));
         }
@@ -178,22 +148,12 @@ class NewsController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param News $model the model to be validated
+     * @param Anime $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'news-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'anime-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
-        }
-    }
-
-    public function actionError() {
-        if ($error = Yii::app()->errorHandler->error) {
-            if (Yii::app()->request->isAjaxRequest) {
-                echo $error['message'];
-            } else {
-                $this->render('error', $error);
-            }
         }
     }
 

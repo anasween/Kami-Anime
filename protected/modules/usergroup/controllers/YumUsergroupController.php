@@ -24,7 +24,7 @@ class YumUsergroupController extends YumController {
             ),
             array('allow',
                 'actions' => array('admin', 'delete'),
-                'users' => array('admin'),
+                'expression' => Yii::app()->user->isAdmin(),
             ),
             array('deny',
                 'users' => array('*'),
@@ -51,8 +51,9 @@ class YumUsergroupController extends YumController {
                 }
             }
             $this->redirect(array('//usergroup/groups/view', 'id' => $id));
-        } else
+        } else {
             throw new CHttpException(404);
+        }
     }
 
     public function actionLeave($id = null) {
@@ -78,8 +79,9 @@ class YumUsergroupController extends YumController {
                 }
             }
             $this->redirect(array('//usergroup/groups/index'));
-        } else
+        } else {
             throw new CHttpException(404);
+        }
     }
 
     public function actionView($id) {
@@ -91,8 +93,9 @@ class YumUsergroupController extends YumController {
         if (isset($_POST['Comments'])) {
             $commentModel->attributes = $_POST['Comments'];
             $commentModel->createtime = new CDbExpression('NOW()');
-            if ($commentModel->save())
+            if ($commentModel->save()) {
                 $this->redirect(array('view', 'id' => $id));
+            }
         }
 
         $this->render('view', array(
@@ -103,13 +106,15 @@ class YumUsergroupController extends YumController {
 
     public function loadModel($id = false) {
         if ($this->_model === null) {
-            if (is_numeric($id))
+            if (is_numeric($id)) {
                 $this->_model = YumUsergroup::model()->findByPk($id);
-            else if (is_string($id))
+            } else if (is_string($id)) {
                 $this->_model = YumUsergroup::model()->find('title = :title', array(
                     ':title' => $id));
-            if ($this->_model === null)
-                throw new CHttpException(404, 'The requested Usergroup does not exist.');
+            }
+            if ($this->_model === null) {
+                throw new CHttpException(404, Yum::t('The requested usergroup does not exist.'));
+            }
         }
         return $this->_model;
     }
@@ -124,8 +129,9 @@ class YumUsergroupController extends YumController {
             $model->owner_id = Yii::app()->user->id;
             $model->participants = array($model->owner_id);
 
-            if ($model->save())
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('create', array('model' => $model));
@@ -154,13 +160,15 @@ class YumUsergroupController extends YumController {
             $this->loadModel()->delete();
 
             if (!isset($_GET['ajax'])) {
-                if (isset($_POST['returnUrl']))
+                if (isset($_POST['returnUrl'])) {
                     $this->redirect($_POST['returnUrl']);
-                else
+                } else {
                     $this->redirect(array('admin'));
+                }
             }
-        } else
+        } else {
             throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+        }
     }
 
     public function actionIndex($owner_id = null) {

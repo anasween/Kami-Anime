@@ -1,16 +1,18 @@
 <?php
 $this->title = Yum::t('Browse users');
 $this->breadcrumbs = array(
+            Yum::t("Users") => array('index'),
             Yum::t('Browse users')
         );
 ?>
-<div class="search_options">
+<div class="well">
 
-<?php 
+<?php
+echo BSHtml::pageHeader(Yum::t('Browse users'));
 $form=$this->beginWidget(
     'bootstrap.widgets.BsActiveForm', 
     array(
-        'layout' => BSHtml::FORM_LAYOUT_SEARCH,
+        'layout' => BSHtml::FORM_LAYOUT_INLINE,
         'id'=>'user-browse-form',
         'enableAjaxValidation'=>false,
         'htmlOptions' => array(
@@ -24,13 +26,12 @@ $form=$this->beginWidget(
 <?php
 echo BSHtml::textFieldControlGroup('search_username', $search_username, array(
     'submit' => array('//user/user/browse'),
-    'class' => 'form-control',
-    'style' => 'width: 200px',
-    'append' =>BSHtml::submitButton(Yum::t('Search'), array(
+    'class' => 'form-control col-md-12'
+));
+echo BSHtml::submitButton(Yum::t('Search'), array(
                     'color' => BSHtml::BUTTON_COLOR_INFO,
                     'icon' =>  BSHtml::GLYPHICON_SEARCH,
-                ))
-));
+                ));
 ?>
 </fieldset>
 <?php 
