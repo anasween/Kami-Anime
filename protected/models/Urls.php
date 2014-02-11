@@ -49,7 +49,6 @@ class Urls extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yum::t('ID'),
             'anime_id' => Yum::t('Anime'),
             'site_id' => Yum::t('Site'),
             'url' => Yum::t('Url'),

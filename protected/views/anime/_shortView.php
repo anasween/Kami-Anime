@@ -19,5 +19,17 @@ if ($zhanrs) {
 echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
 $content = BSHtml::tag('strong', array(), Yum::t('Type')) . ': ';
 echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content . $model->type . ' (' . $model->series_count . ' эп.)');
+$content = BSHtml::tag('strong', array(), Yum::t('Useful urls')) . ': ';
+echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
+$content = '';
+$urls = $model->urls;
+$count = count($urls);
+if ($urls) {
+    foreach ($urls as $url) {
+        $content .= BSHtml::link($url->site->title, $url->url, array());
+        $content .= (!--$count) ? '.' : ', ';
+    }
+}
+echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
 $content = BSHtml::tag('strong', array(), Yum::t('Description')) . ': ';
 echo BSHtml::tag('p', array(), $content . $model->description);

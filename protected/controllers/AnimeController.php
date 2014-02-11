@@ -31,7 +31,7 @@ class AnimeController extends Controller {
                 'expression' => 'Yii::app()->user->can("anime", "create")'
             ),
             array('allow',
-                'actions' => array('admin'),
+                'actions' => array('admin', 'createUrl'),
                 'expression' => 'Yii::app()->user->can("anime", "admin")'
             ),
             array('allow',
@@ -189,6 +189,21 @@ class AnimeController extends Controller {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'anime-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
+        }
+    }
+    
+    public function actionCreateUrl() {
+        $model = new Urls;
+        $model->unsetAttributes();
+        
+        if (isset($_POST['Urls'])) {
+            $model->attributes = $_POST['Urls'];
+            if ($model->save()) {
+                echo BSHtml::alert(BSHtml::ALERT_COLOR_SUCCESS, Yum::t('Success. Url to this anime was add.'));
+                Yii::app()->end();
+            } else {
+                echo BSHtml::alert(BSHtml::ALERT_COLOR_DANGER, Yum::t('Url to this site already exist.'));
+            }
         }
     }
 
