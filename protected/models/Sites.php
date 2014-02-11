@@ -14,6 +14,12 @@
 class Sites extends CActiveRecord {
 
     /**
+     * Path to logo.
+     * @var string
+     */
+    public $logo;
+    
+    /**
      * @return string the associated database table name
      */
     public function tableName() {
@@ -29,7 +35,52 @@ class Sites extends CActiveRecord {
             array('title', 'length', 'max' => 100),
             array('logo', 'length', 'max' => 255),
             array('title', 'safe', 'on' => 'search'),
+            array('logo', 'file', 'types' => 'jpg, png, gif', 'allowEmpty' => true),
         );
+    }
+    
+     /**
+     * Delete old logo before save new. 
+     * @return boolean
+     */
+    protected function beforeSave() {
+        if (!parent::beforeSave()) {
+            return false;
+        }
+        $logo = CUploadedFile::getInstance($this, 'logo');
+        if ($logo) {
+            $this->deleteLogo();
+
+            $this->logo = $logo;
+            $ext = pathinfo($logo, PATHINFO_EXTENSION);
+            $newName = md5(rand(1,9999).time()) . '.' . $ext;
+            $this->logo->saveAs(Yii::getPathOfAlias('webroot.media.logo') . DIRECTORY_SEPARATOR . $newName);
+            $this->logo = $newName;
+        }
+        return true;
+    }
+
+    /**
+     * Delete logo before delete document.
+     * @return boolean
+     */
+    protected function beforeDelete() {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+        $this->deleteLogo();
+        return true;
+    }
+
+    /**
+     * Delete logo.
+     */
+    public function deleteLogo() {
+        $logoPath = Yii::getPathOfAlias('webroot.media.logo') . DIRECTORY_SEPARATOR .
+                $this->logo;
+        if (is_file($logoPath)) {
+            unlink($logoPath);
+        }
     }
 
     /**
@@ -82,6 +133,24 @@ class Sites extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    
+    /**
+     * Returns path top logo.
+     * @return string
+     */
+    public function getLogoPath() {
+        return '/media/logo/' . $this->logo;
+    }
+    
+    /**
+     * Returns generated site logo html.
+     * @return string
+     */
+    public function getLogo() {
+        if ($this->logo) {
+            return BSHtml::imageThumbnail($this->getLogoPath());
+        }
     }
 
 }

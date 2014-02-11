@@ -126,6 +126,11 @@ class Controller extends CController {
                         'url' => array('/anime/admin'),
                         'visible' => Yii::app()->user->can("anime", "admin")
                     ),
+                    array(
+                        'label' => Yum::t('Manage sites'),
+                        'url' => array('/sites/admin'),
+                        'visible' => Yii::app()->user->can("sites", "admin")
+                    ),
                 )
             ),
             array(
@@ -193,6 +198,11 @@ class Controller extends CController {
                         'label' => Yum::t('Create new anime'),
                         'url' => array('/anime/create'),
                         'visible' => Yii::app()->user->can("anime", "create")
+                    ),
+                    array(
+                        'label' => Yum::t('Create new site'),
+                        'url' => array('/sites/create'),
+                        'visible' => Yii::app()->user->can("sites", "create")
                     ),
                 )
             ),

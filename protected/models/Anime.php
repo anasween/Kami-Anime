@@ -169,8 +169,14 @@ class Anime extends CActiveRecord {
      * Returns path to poster.
      * @return string
      */
-    public function getPoster() {
+    public function getPosterPath() {
         return '/media/' . $this->poster;
+    }
+    
+    public function getPoster() {
+        if($this->poster){
+            return BSHtml::imageThumbnail($this->getPosterPath());
+        }
     }
     
     /**

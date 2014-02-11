@@ -41,9 +41,7 @@
 
     <?php echo $form->textFieldControlGroup($model, 'name_jp', array('maxlength' => 100)); ?>
     
-    <?php if($model->poster){
-        echo BSHtml::imageThumbnail($model->getPoster());
-    } ?>
+    <?php echo $model->getPoster();?>
     <?php echo $form->fileFieldControlGroup($model, 'poster'); ?>
 
     <?php echo $form->numberFieldControlGroup($model, 'year', array('maxlength' => 4)); ?>
