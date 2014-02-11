@@ -40,12 +40,13 @@ class Anime extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('name_ru, name_en, name_jp, autor_id, year, description', 'required'),
+            array('name_ru, name_en, name_jp, autor_id, year, description, type, series_count', 'required'),
             array('year, views, series_count', 'numerical', 'integerOnly' => true),
             array('name_ru, name_en, name_jp', 'length', 'max' => 100),
+            array('year', 'length', 'max' => 4),
             array('autor_id', 'length', 'max' => 10),
             array('createtime', 'safe'),
-            array('id, name_ru, name_en, name_jp, autor_id, year, description', 'safe', 'on' => 'search'),
+            array('name_ru, name_en, name_jp, autor_id', 'safe', 'on' => 'search'),
             array('poster', 'file', 'types' => 'jpg, png', 'allowEmpty' => true),
         );
     }
@@ -192,6 +193,19 @@ class Anime extends CActiveRecord {
                 $result = Yii::app()->db->createCommand($query)->execute();
             }
         }
+    }
+    
+    public static function getTypes() {
+        return array(
+            'ТВ' => 'ТВ',
+            'ТВ-спэшл' => 'ТВ-спэшл',
+            'OVA' => 'OVA',
+            'ONA' => 'ONA',
+            'полнометражный фильм' => 'полнометражный фильм',
+            'короткометражный фильм' => 'короткометражный фильм',
+            'музыкальное видео' => 'музыкальное видео',
+            'рекламный ролик' => 'рекламный ролик'
+        );
     }
 
 }
