@@ -70,11 +70,12 @@ class Urls extends CActiveRecord {
      */
     public function search() {
         $criteria = new CDbCriteria;
-
-        $criteria->compare('id', $this->id, true);
-        $criteria->compare('anime_id', $this->anime_id, true);
-        $criteria->compare('site_id', $this->site_id, true);
-        $criteria->compare('url', $this->url, true);
+        
+        $criteria->together = true;
+        $criteria->with = array('anime', 'site');
+        $criteria->compare('anime.name_ru', $this->anime_id, true);
+        $criteria->compare('site.title', $this->site_id, true);
+        $criteria->compare('t.url', $this->url, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
