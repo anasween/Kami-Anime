@@ -18,17 +18,25 @@ class AnimeController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow', // allow all users to perform 'index' and 'view' actions
+            array('allow',
                 'actions' => array('index', 'view'),
                 'users' => array('*'),
             ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
-                'users' => array('@'),
+            array('allow',
+                'actions' => array('update'),
+                'expression' => 'Yii::app()->user->can("anime", "update")'
             ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('admin', 'delete'),
-                'expression' => Yii::app()->user->isAdmin(),
+            array('allow',
+                'actions' => array('create'),
+                'expression' => 'Yii::app()->user->can("anime", "create")'
+            ),
+            array('allow',
+                'actions' => array('admin'),
+                'expression' => 'Yii::app()->user->can("anime", "admin")'
+            ),
+            array('allow',
+                'actions' => array('delete'),
+                'expression' => 'Yii::app()->user->can("anime", "delete")'
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -41,8 +49,12 @@ class AnimeController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
+        $model = $this->loadInternModel($id);
+        $model->views = $model->views + 1;
+        $model->save();
+        
         $this->render('view', array(
-            'model' => $this->loadInternModel($id),
+            'model' => $model,
         ));
     }
 
@@ -52,13 +64,22 @@ class AnimeController extends Controller {
      */
     public function actionCreate() {
         $model = new Anime;
+        $model->animeZhanrs = new AnimeZhanrs;
 
         $this->performAjaxValidation($model);
 
         if (isset($_POST['Anime'])) {
             $model->attributes = $_POST['Anime'];
+            $model->createtime = new CDbExpression('NOW()');
             if ($model->save()) {
+                if (isset($_POST['Anime']['zhanrs'])) {
+                    $model->syncZhanrs($_POST['Anime']['zhanrs']);
+                } else {
+                    $model->syncZhanrs();
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            } else {
+                throw new CHttpException(400, Yum::t('Invalid request. Please do not repeat this request again.'));
             }
         }
 
@@ -79,7 +100,13 @@ class AnimeController extends Controller {
 
         if (isset($_POST['Anime'])) {
             $model->attributes = $_POST['Anime'];
+            $model->modify = new CDbExpression('NOW()');
             if ($model->save()) {
+                if (isset($_POST['Anime']['zhanrs'])) {
+                    $model->syncZhanrs($_POST['Anime']['zhanrs']);
+                } else {
+                    $model->syncZhanrs();
+                }
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
@@ -140,6 +167,14 @@ class AnimeController extends Controller {
      */
     public function loadInternModel($id) {
         $model = Anime::model()->findByPk($id);
+        if ($model === null) {
+            throw new CHttpException(404, Yum::t('The requested page does not exist.'));
+        }
+        return $model;
+    }
+    
+    public function loadAnimeZhanrsModel($id) {
+        $model = AnimeZhanrs::model()->findByPk($id);
         if ($model === null) {
             throw new CHttpException(404, Yum::t('The requested page does not exist.'));
         }

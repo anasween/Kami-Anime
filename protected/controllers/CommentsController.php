@@ -70,8 +70,9 @@ class CommentsController extends Controller
         if(isset($_POST['Comments']))
         {
             $model->attributes=$_POST['Comments'];
-            if($model->save())
-                $this->redirect(array('//news/view','id'=>$model->news_id));
+            if ($model->save()) {
+                $this->redirect(array('//news/view', 'id' => $model->news_id));
+            }
         }
 
         $this->render('update',array(
@@ -86,18 +87,18 @@ class CommentsController extends Controller
     */
     public function actionDelete($id)
     {
-        if(Yii::app()->request->isPostRequest)
-        {
+        if (Yii::app()->request->isPostRequest) {
             $comment = $this->loadInternModel($id);
             $news_id = $comment->news_id;
             $comment->delete();
             unset($comment);
 
-            if(!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('//news/view', 'id'=>$news_id));
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('//news/view', 'id' => $news_id));
+            }
+        } else {
+            throw new CHttpException(400, Yum::t('Invalid request. Please do not repeat this request again.'));
         }
-        else
-            throw new CHttpException(400,Yum::t('Invalid request. Please do not repeat this request again.'));
     }
 
     /**
@@ -118,8 +119,9 @@ class CommentsController extends Controller
     {
         $model=new Comments('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['Comments']))
-            $model->attributes=$_GET['Comments'];
+        if (isset($_GET['Comments'])) {
+            $model->attributes = $_GET['Comments'];
+        }
 
         $this->render('admin',array(
             'model'=>$model,
@@ -136,8 +138,9 @@ class CommentsController extends Controller
     public function loadInternModel($id)
     {
         $model=Comments::model()->findByPk($id);
-        if($model===null)
-            throw new CHttpException(404,'The requested page does not exist.');
+        if ($model === null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 

@@ -1,22 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "zhanrs".
+ * This is the model class for table "sites".
  *
- * The followings are the available columns in table 'zhanrs':
+ * The followings are the available columns in table 'sites':
  * @property string $id
  * @property string $title
+ * @property string $logo
  *
  * The followings are the available model relations:
- * @property AnimeZhanrs[] $animeZhanrs
+ * @property Urls[] $urls
  */
-class Zhanrs extends CActiveRecord {
+class Sites extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'zhanrs';
+        return 'sites';
     }
 
     /**
@@ -25,8 +26,9 @@ class Zhanrs extends CActiveRecord {
     public function rules() {
         return array(
             array('title', 'required'),
-            array('title', 'length', 'max' => 255),
-            array('id, title', 'safe', 'on' => 'search'),
+            array('title', 'length', 'max' => 100),
+            array('logo', 'length', 'max' => 255),
+            array('title', 'safe', 'on' => 'search'),
         );
     }
 
@@ -35,7 +37,7 @@ class Zhanrs extends CActiveRecord {
      */
     public function relations() {
         return array(
-            'zhanrs' => array(self::MANY_MANY, 'Zhanrs', 'anime_zhanrs(anime_id, zhanr_id)'),
+            'urls' => array(self::HAS_MANY, 'Urls', 'site_id'),
         );
     }
 
@@ -46,6 +48,7 @@ class Zhanrs extends CActiveRecord {
         return array(
             'id' => Yum::t('ID'),
             'title' => Yum::t('Title'),
+            'logo' => Yum::t('Logo'),
         );
     }
 
@@ -63,8 +66,7 @@ class Zhanrs extends CActiveRecord {
      */
     public function search() {
         $criteria = new CDbCriteria;
-
-        $criteria->compare('id', $this->id, true);
+        
         $criteria->compare('title', $this->title, true);
 
         return new CActiveDataProvider($this, array(
@@ -76,7 +78,7 @@ class Zhanrs extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Zhanrs the static model class
+     * @return Sites the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

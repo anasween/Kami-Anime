@@ -11,6 +11,15 @@ if ($model->poster) {
 }
 $content = BSHtml::tag('strong', array(), Yum::t('Year')) . ': ';
 echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content . $model->year);
+$content = BSHtml::tag('strong', array(), Yum::t('Zhanrs')) . ': ';
+$zhanrs = $model->zhanrs;
+$count = count($zhanrs);
+if ($zhanrs) {
+    foreach ($zhanrs as $zhanr) {
+        $content .= $zhanr->title;
+        $content .= (!--$count) ? '.' : ', ';
+    }
+}
+echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
 $content = BSHtml::tag('strong', array(), Yum::t('Description')) . ': ';
 echo BSHtml::tag('p', array(), $content . $model->description);
-unset($content);

@@ -41,7 +41,7 @@ class Anime extends CActiveRecord {
     public function rules() {
         return array(
             array('name_ru, name_en, name_jp, autor_id, year, description', 'required'),
-            array('year, views', 'numerical', 'integerOnly' => true),
+            array('year, views, series_count', 'numerical', 'integerOnly' => true),
             array('name_ru, name_en, name_jp', 'length', 'max' => 100),
             array('autor_id', 'length', 'max' => 10),
             array('createtime', 'safe'),
@@ -100,7 +100,8 @@ class Anime extends CActiveRecord {
     public function relations() {
         return array(
             'autor' => array(self::BELONGS_TO, 'YumUser', 'autor_id'),
-            'animeZhanrs' => array(self::HAS_MANY, 'AnimeZhanrs', 'anime_id'),
+            'zhanrs' => array(self::MANY_MANY, 'Zhanrs', 'anime_zhanrs(anime_id, zhanr_id)'),
+            'urls' => array(self::HAS_MANY, 'Urls', 'anime_id'),
         );
     }
 
@@ -115,11 +116,14 @@ class Anime extends CActiveRecord {
             'name_jp' => Yum::t('Name jp'),
             'poster' => Yum::t('Poster'),
             'autor_id' => Yum::t('Autor'),
-            'createtime' => Yum::t('create time'),
+            'createtime' => Yum::t('Create time'),
             'modify' => Yum::t('Modify'),
             'year' => Yum::t('Year'),
             'views' => Yum::t('Views'),
             'description' => Yum::t('Description'),
+            'series_count' => Yum::t('Series count'),
+            'type' => Yum::t('Type'),
+            'zhanrs' => Yum::t('Zhanrs')
         );
     }
 
@@ -167,6 +171,21 @@ class Anime extends CActiveRecord {
      */
     public function getPoster() {
         return '/media/' . $this->poster;
+    }
+    
+    /**
+     * Synchronise zhanrs.
+     * @param array $zhanrs
+     */
+    public function syncZhanrs($zhanrs = null) {
+        $query = sprintf("delete from %s where anime_id = %s", 'anime_zhanrs', $this->id);
+        $result = Yii::app()->db->createCommand($query)->execute();
+        if ($zhanrs) {
+            foreach ($zhanrs as $zhanr) {
+                $query = sprintf("insert into %s (anime_id, zhanr_id) values(%s, %s)", 'anime_zhanrs', $this->id, $zhanr);
+                $result = Yii::app()->db->createCommand($query)->execute();
+            }
+        }
     }
 
 }

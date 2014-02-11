@@ -47,8 +47,23 @@
     <?php echo $form->fileFieldControlGroup($model, 'poster'); ?>
 
     <?php echo $form->numberFieldControlGroup($model, 'year', array('maxlength' => 4)); ?>
+    
+    <?php
+    echo $form->LabelEx($model, 'zhanrs');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'zhanrs',
+        'value' => Yii::app()->user->id,
+        'htmlOptions' => array(
+            'multiple' => 'multiple',
+            'style' => 'width:100%;',
+         ),
+        'data' => CHtml::listData(Zhanrs::model()->findAll(), 'id', 'title'),
+    )); 
+    ?>
 
-    <?php 
+    <?php
+    echo $form->LabelEx($model, 'description', array('style' => 'margin-top: 10px;'));
     $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
             'model' => $model,
             'attribute' => 'description',

@@ -32,7 +32,7 @@ if (Yii::app()->user->can('news'))
 }
 $footer = BSHtml::icon(BSHtml::GLYPHICON_EYE_OPEN) . ' '
                 . $data->views . ' | '
-                . '<a href="' . $this->createUrl('user/admin/view',array('id'=>$data->autor->id)) . '">'
+                . '<a href="' . $this->createUrl('/profile/profile/view',array('id'=>$data->autor->id)) . '">'
                 . BSHtml::icon(BSHtml::GLYPHICON_USER) . ' '
                 . $data->autor->username 
                 . '</a> | '

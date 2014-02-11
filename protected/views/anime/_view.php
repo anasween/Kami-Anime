@@ -34,7 +34,19 @@ if (Yii::app()->user->can('anime'))
     }
 }
 
+$footer = BSHtml::icon(BSHtml::GLYPHICON_EYE_OPEN) . ' '
+                . $data->views . ' | '
+                . '<a href="' . $this->createUrl('/profile/profile/view',array('id'=>$data->autor->id)) . '">'
+                . BSHtml::icon(BSHtml::GLYPHICON_USER) . ' '
+                . $data->autor->username 
+                . '</a> | '
+                . BSHtml::icon(BSHtml::GLYPHICON_CALENDAR) . ' '
+                . Yii::app()->dateFormatter->format('d MMMM yyyy HH:mm:ss', $data->createtime);
+
+$footer .= BSHtml::tag('div', array('class' => 'pull-right'), BSHtml::link(BSHtml::icon(BSHtml::GLYPHICON_CLOUD) . ' ' . Yum::t('More'), $this->createUrl('/anime/view',array('id'=>$data->id))));
+
 $this->widget('bootstrap.widgets.BsPanel',array(
     'header' => $header,
     'body' => $this->renderPartial('_shortView', array('model'=>$data), true, true),
+    'footer' => $footer
 )); 
