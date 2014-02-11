@@ -47,11 +47,25 @@
     <?php echo $form->numberFieldControlGroup($model, 'year', array('maxlength' => 4)); ?>
     
     <?php
+    echo $form->LabelEx($model, 'type');
+    $this->widget('YumModule.components.select2.ESelect2', array(
+        'model' => $model,
+        'attribute' => 'type',
+        'htmlOptions' => array(
+            'multiple' => false,
+            'style' => 'width:100%;',
+         ),
+        'data' => Anime::getTypes(),
+    )); 
+    ?>
+    
+    <?php echo $form->numberFieldControlGroup($model, 'series_count', array('maxlength' => 4)); ?>
+    
+    <?php
     echo $form->LabelEx($model, 'zhanrs');
     $this->widget('YumModule.components.select2.ESelect2', array(
         'model' => $model,
         'attribute' => 'zhanrs',
-        'value' => Yii::app()->user->id,
         'htmlOptions' => array(
             'multiple' => 'multiple',
             'style' => 'width:100%;',
