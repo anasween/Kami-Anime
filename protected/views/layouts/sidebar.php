@@ -8,6 +8,9 @@ $model = YumUser::model()->findByPk(Yii::app()->user->id);
     </div>
     <div class="clearfix"></div>
     <?php
+    $unreadMessages = YumMessage::unread();
+    $messageLabel = Yum::t('Messages');
+    $messageLabel .= ($unreadMessages) ? BSHtml::badge($unreadMessages, array('pull' => BSHtml::PULL_RIGHT)) : '';
     echo BSHtml::stackedPills(array(
         array(
             'label' => Yum::t('Profile'),
@@ -22,7 +25,7 @@ $model = YumUser::model()->findByPk(Yii::app()->user->id);
             'active' => Yii::app()->controller->id === 'friendship',
         ),
         array(
-            'label' => Yum::t('Messages') . BSHtml::badge(YumMessage::unread(), array('pull' => BSHtml::PULL_RIGHT)),
+            'label' => $messageLabel,
             'url' => array('/message/message/index'),
             'active' => Yii::app()->controller->id === 'message',
         ),
