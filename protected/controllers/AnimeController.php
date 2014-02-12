@@ -209,85 +209,33 @@ class AnimeController extends Controller {
     public function actionAddFromWA() {
         if (isset($_POST['ParseWA'])) {
             for ($i=$_POST['ParseWA']['from']; $i<=$_POST['ParseWA']['to']; $i++) {
-                $attributes = array();
                 $urlWA = "http://www.world-art.ru/animation/animation.php?id=".$i;
-                $url = "https://web.archive.org/web/".$urlWA;
-                echo 'start ' . $url . '<br>';
-                $content = $this->getContent($url);
-                preg_match('|size=3><b>([^\[]+?)\s*\[.*?year=(\d+).*?font><br>([^<]+)<br>([^<]+)|is', $content, $matches);
-                $attributes['name_ru'] = $matches[1];
-                $attributes['name_en'] = $matches[3];
-                $attributes['name_jp'] = $matches[4];
-                $attributes['year'] = $matches[2];
-                preg_match('|Жанр</b>:(.*?)<br>|is', $content, $matches);
-                $zhanrs = preg_replace('|<[^>]+>|is', '', str_replace('&nbsp;', '', $matches[1]));
-                preg_match('|Тип</b>:\s*(.*?)<br>|is', $content, $matches);
-                $type = explode(' (', $matches[1]);
-                $series_count = explode(' эп', $type[1]);
-                if (is_numeric($series_count[0])) {
-                    $attributes['series_count'] = $series_count[0];
-                }
-                unset($series_count);
-                $type = explode(', ', $type[0]);
-                $attributes['type'] = $type[0];
-                unset($type);
-                preg_match_all("#justify\s*class='review'>(.*?)(?:&copy;|</table)#is", $content, $matches, PREG_SET_ORDER);
-                $attributes['description'] = '<p>'.trim(preg_replace('|<[^>]+>|is', '', $matches[0][1])).'</p>';
-                $attributes['autor_id'] = 3;
-                if (isset($attributes['name_ru'])) {
+                echo 'Запрашиваю страницу ' . $urlWA . '<br>';
+                $content = $this->getContent("https://web.archive.org/web/".$urlWA);
+                $attributes = $this->parseWAPage($content);
+                $attributes['url'] = $urlWA;
+                if ($attributes['name_ru']) {
                     try {
                         $alreadyExist = Anime::model()->findByAttributes(array('name_ru' => $attributes['name_ru']));
                     } catch (Exception $e) {
-                        if (strpos($e, 'MySQL server has gone away')) {
-                            $i--;
-                            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Mysql error');
-                            continue;
-                        } else {
-                            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Error ' . $e);
-                        }
+                        echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка ' . $e);
                     }
                 } else {
-                    echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Parse error');
+                    echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка при парсинге.');
                     continue;
                 }
                 if (!$alreadyExist) {
-                    $anime = new Anime;
-                    $anime->attributes = $attributes;
-                    $anime->createtime = new CDbExpression('NOW()');
-                    $anime->modify = new CDbExpression('NOW()');
                     try {
-                        If ($anime->save()) {
-                            $zhanrsID = array();
-                            $zhanrs = explode(',', $zhanrs);
-                            foreach ($zhanrs as $zhanr_low) {
-                                $zhanr = ucfirst($zhanr_low);
-                                If(!$zhanrModel = Zhanrs::model()->findByAttributes(array('title' => $zhanr))) {
-                                    $zhanrModel = new Zhanrs;
-                                    $zhanrModel->title = $zhanr;
-                                    $zhanrModel->save();
-                                }
-                                array_push($zhanrsID, $zhanrModel->id);
-                            }
-                            unset($zhanrs);
-                            $anime->syncZhanrs($zhanrsID);
-                            $urls = new Urls;
-                            $urls->anime_id = $anime->id;
-                            $urls->site_id = 1;
-                            $urls->url = $urlWA;
-                            $urls->save();
-                            echo BSHtml::tag('p', array('style' => 'color: #99ff99'), $anime->name_ru . ' succefully add.');
-                        } else {
-                            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Bad url.');
-                        }
+                        $this->createAnime($attributes);
                     } catch (Exception $e) {
                         if (strpos($e, ' Duplicate entry')) {
-                            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Error duplicate variable.');
+                            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка. Данное аниме уже есть в базе.');
                         } else {
-                            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Error ' . $e);
+                            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка ' . $e);
                         }
                     }
                 } else {
-                    echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Error duplicate variable.');
+                    echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка. Данное аниме уже есть в базе.');
                 }
             }
             Yii::app()->end();
@@ -329,19 +277,75 @@ class AnimeController extends Controller {
                 return $data;  
             }
             $last_url = parse_url(curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));  
-            if (!$url['scheme'])  
-                $url['scheme'] = $last_url['scheme'];  
-            if (!$url['host'])  
-                $url['host'] = $last_url['host'];  
-            if (!$url['path'])  
-                $url['path'] = $last_url['path'];  
+            if (!$url['scheme']) {
+                $url['scheme'] = $last_url['scheme'];
+            }
+            if (!$url['host']) {
+                $url['host'] = $last_url['host'];
+            }
+            if (!$url['path']) {
+                $url['path'] = $last_url['path'];
+            }
             $new_url = $url['scheme'] . '://' . $url['host'] . $url['path'] . ($url['query']?'?'.$url['query']:'');  
             curl_setopt($ch, CURLOPT_URL, $new_url);  
-            //debug('Redirecting to', $new_url);  
             return $this->curl_redir_exec($ch);  
         }else{  
             $curl_loops=0;  
             return $data;  
+        }
+    }
+    
+    private function parseWAPage($content) {
+        $attributes = array();
+        preg_match('|size=3><b>([^\[]+?)\s*\[.*?year=(\d+).*?font><br>([^<]+)<br>([^<]+)|is', $content, $matches);
+        $attributes['name_ru'] = $matches[1];
+        $attributes['name_en'] = $matches[3];
+        $attributes['name_jp'] = $matches[4];
+        $attributes['year'] = $matches[2];
+        preg_match('|Жанр</b>:(.*?)<br>|is', $content, $matches);
+        $attributes['zhanrsList'] = preg_replace('|<[^>]+>|is', '', str_replace('&nbsp;', '', $matches[1]));
+        preg_match('|Тип</b>:\s*(.*?)<br>|is', $content, $matches);
+        $type = explode(' (', $matches[1]);
+        $series_count = explode(' эп', $type[1]);
+        if (is_numeric($series_count[0])) {
+            $attributes['series_count'] = $series_count[0];
+        }
+        unset($series_count);
+        $type = explode(', ', $type[0]);
+        $attributes['type'] = $type[0];
+        unset($type);
+        preg_match_all("#justify\s*class='review'>(.*?)(?:&copy;|</table)#is", $content, $matches, PREG_SET_ORDER);
+        $attributes['description'] = '<p>'.trim(preg_replace('|<[^>]+>|is', '', $matches[0][1])).'</p>';
+        $attributes['autor_id'] = 3;
+        return $attributes;
+    }
+    
+    private function createAnime($attributes) {
+        $anime = new Anime;
+        $anime->attributes = $attributes;
+        $anime->createtime = new CDbExpression('NOW()');
+        $anime->modify = new CDbExpression('NOW()');
+        If ($anime->save()) {
+            $zhanrsID = array();
+            $attributes['zhanrsList'] = explode(',', $attributes['zhanrsList']);
+            foreach ($attributes['zhanrsList'] as $zhanr_low) {
+                $zhanr = ucfirst($zhanr_low);
+                If(!$zhanrModel = Zhanrs::model()->findByAttributes(array('title' => $zhanr))) {
+                    $zhanrModel = new Zhanrs;
+                    $zhanrModel->title = $zhanr;
+                    $zhanrModel->save();
+                }
+                array_push($zhanrsID, $zhanrModel->id);
+            }
+            $anime->syncZhanrs($zhanrsID);
+            $urls = new Urls;
+            $urls->anime_id = $anime->id;
+            $urls->site_id = 1;
+            $urls->url = $attributes['url'];
+            $urls->save();
+            echo BSHtml::tag('p', array('style' => 'color: #99ff99'), $anime->name_ru . ' успешно добавлено.');
+        } else {
+            echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Неверная ссылка.');
         }
     }
 }
