@@ -10,15 +10,18 @@
  * @property string $name_jp
  * @property string $poster
  * @property integer $autor_id
- * @property string $create
+ * @property string $createtime
  * @property string $modify
  * @property integer $year
  * @property integer $views
  * @property string $description
+ * @property string $type
+ * @property integer $series_count
  *
  * The followings are the available model relations:
  * @property YumUser $autor
- * @property AnimeZhanrs[] $animeZhanrs
+ * @property Zhanrs[] $zhanrs
+ * @property Urls[] $urls
  */
 class Anime extends CActiveRecord {
 
