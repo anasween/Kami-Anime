@@ -31,7 +31,7 @@ class AnimeController extends Controller {
                 'expression' => 'Yii::app()->user->can("anime", "create")'
             ),
             array('allow',
-                'actions' => array('admin', 'createUrl', 'addFromWA'),
+                'actions' => array('admin', 'createUrl', 'editUrl', 'addFromWA'),
                 'expression' => 'Yii::app()->user->can("anime", "admin")'
             ),
             array('allow',
@@ -188,6 +188,24 @@ class AnimeController extends Controller {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'anime-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
+        }
+    }
+    
+    public function actionEditUrl() {
+        if (isset($_POST['Urls'])) {
+            $urls = Yii::app()->request->getParam('Urls');
+            try {
+            $model = Urls::model()->findByAttributes(array('anime_id' => $urls['anime_id'], 'site_id' => $urls['site_id']));
+            } catch(Exception $e) {
+                echo BSHtml::alert(BSHtml::ALERT_COLOR_DANGER, Yum::t('Error.'));
+            }
+            $model->url = $urls['url'];
+            if ($model->save()) {
+                echo BSHtml::alert(BSHtml::ALERT_COLOR_SUCCESS, Yum::t('Success. Url to this anime was updated.'));
+                Yii::app()->end();
+            } else {
+                echo BSHtml::alert(BSHtml::ALERT_COLOR_DANGER, Yum::t('Error.'));
+            }
         }
     }
     

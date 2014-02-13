@@ -26,17 +26,6 @@ if (Yii::app()->user->can('anime')) {
                     'title' => '',
                     'data-toggle' => 'tooltip'
                 ),
-                array(
-                    'icon' => BSHtml::GLYPHICON_PLUS,
-                    'url' => '#',
-                    'visible' => Yii::app()->user->can('urls', 'create'),
-                    'color' => BSHtml::BUTTON_COLOR_SUCCESS,
-                    'type' => BSHtml::BUTTON_TYPE_LINK,
-                    'data-title' => Yum::t('Add url'),
-                    'title' => Yum::t('Add url'),
-                    'data-toggle' => 'modal',
-                    'data-target' => '#add-url-' . $data->id,
-                ),
         ), array(
                 'size' => BSHtml::BUTTON_SIZE_MINI
     ));
@@ -60,10 +49,4 @@ $this->widget('bootstrap.widgets.BsPanel', array(
     'header' => $header,
     'body' => $this->renderPartial('_shortView', array('model' => $data), true, true),
     'footer' => $footer
-));
-
-$this->widget('bootstrap.widgets.BsModal', array(
-    'id' => 'add-url-' . $data->id,
-    'header' => Yum::t('Add url'),
-    'content' => $this->renderPartial('_urlForm', array('model' => new Urls, 'id' => $data->id), true, true),
 ));

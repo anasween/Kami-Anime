@@ -4,243 +4,211 @@
 */
 @bg-color: #ebedef; 
 @color: #7c8698;
+@hover-color: #00526e;
+@link-color: #008cba;
 @item-bg-color: #ffffff;
 
-.border_radius(@radius)
-{
+.border_radius(@radius) {
     border-radius: @radius; 
     -webkit-border-radius: @radius; 
     -moz-border-radius: @radius; 
     -khtml-border-radius: @radius;
 }
 
-body
-{
+body {
     background-color: @bg-color !important;
     color: @color;
 }
 
-footer
-{
+footer {
     text-align: center;
 }
 
-.pagination
-{
+.pagination {
     text-align: center;
     margin: 0; 
 }
 
-.bs-sidebar
-{
-    &.profile
-    {
+.bs-sidebar {
+    &.profile {
         margin-bottom: 20px;
         width: 270px;
-        
-        .avatar
-        {
+
+        .avatar {
             float: left;
             margin: 5px;
         }
-        
-        .shortinfo
-        {
+
+        .shortinfo {
             float: left;
             margin: 5px;
         }
     }
 }
 
-.post
-{
+.post {
     margin-bottom: 20px;
-    
-    h1
-    {
+
+    h1 {
         text-align: center;
-        
-        .btn-group
-        {
+
+        .btn-group {
             float: right;
-            
-            &>.btn
-            {
+
+            &>.btn {
                 margin: 0;
             }
         }
     }
-    
-    .post_description
-    {
+
+    .post_description {
         text-align: center;
         vertical-align: middle;
-        
-        div
-        {
+
+        div {
             margin-top: 10px;
         }
     }
-    
-    .btn
-    {
-        /*margin: 10px;*/
-    }
-    
-    .post_body
-    {
-        
-    }
 }
 
-.comment
-{
-    .btn-group
-    {
+.anime-useful-urls {
+    padding: 5px;
+    display: inline-block;
+    
+    &:hover {
+        .url-moder {
+            display: inline-block;
+        }
+    }
+
+    .url-moder {
+        margin-left: 2px;
+        display: none;
+        color: @link-color;
+
+        &:hover {
+            cursor: pointer;
+            color: @hover-color;
+        }
+    }
+
+}
+
+.comment {
+    .btn-group {
         float: right;
     }
-    
-    .info
-    {
-        h3
-        {
+
+    .info {
+        h3 {
             text-align: center;
             margin: 0;
         }
     }
-    
-    .avatar
-    {
+
+    .avatar {
         text-align: center;
-        
-        img
-        {
+
+        img {
             width: 90% !important;
         }
     }
 }
 
-.list-view
-{
+.list-view {
     padding: 0 !important;
 }
 
-.view_user
-{
+.view_user {
     padding: 5px;
     text-align: center;
     display: inline-block;
     .border_radius(10px);
-    
-    &.online
-    {
+
+    &.online {
         background-color: #4C834C;
     }
-    
-    img
-    {
+
+    img {
         .border_radius(10px);
         width: 50px;
     }
-    
-    .avatar
-    {
+
+    .avatar {
         margin: 0;
     }
-    
-    p
-    {
+
+    p {
         margin: 0;
         font-weight: bold;
     }
-    
-    &:hover
-    {
+
+    &:hover {
         cursor: pointer;
     }
 }
 
-.view
-{
+.view {
     margin-bottom: 10px;
 }
 
-.sort-link
-{
-    .caret
-    {
+.sort-link {
+    .caret {
         display: none;
     }
-    
-    &.asc
-    {
-        .caret
-        {
+
+    &.asc {
+        .caret {
             border-bottom: 4px solid;
             display: inline-block;
             border-top: 0;
         }
     }
-    
-    &.desc
-    {
-        .caret
-        {
+
+    &.desc {
+        .caret {
             display: inline-block;
         }
     }
 }
 
-.grid-view-loading
-{
-    &:before
-    {
+.grid-view-loading {
+    &:before {
         content: url('../images/loading.gif');
     }
 }
 
-.list-view-loading
-{
-    &:before
-    {
+.list-view-loading {
+    &:before {
         content: url('../images/loading.gif');
     }
 }
 
-.sorter
-{
-    ul
-    {
+.sorter {
+    ul {
         display: inline-block;
         width: 100%;
-        
-        li
-        {
+
+        li {
             float: right;
             display: inline;
             margin-left: 5px;
-            
-            a
-            {
-                .caret
-                {
+
+            a {
+                .caret {
                     display: none;
                 }
 
-                &.asc
-                {
-                    .caret
-                    {
+                &.asc {
+                    .caret {
                         border-bottom: 4px solid;
                         display: inline-block;
                         border-top: 0;
                     }
                 }
 
-                &.desc
-                {
-                    .caret
-                    {
+                &.desc {
+                    .caret {
                         display: inline-block;
                     }
                 }
@@ -249,8 +217,7 @@ footer
     }
 }
 
-.moder-panel
-{
+.moder-panel {
     margin: 10px;
     float: right;
 }

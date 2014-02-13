@@ -15,11 +15,6 @@ footer {
 }
 .bs-sidebar.profile {
   margin-bottom: 20px;
-  background-color: #ffffff;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -khtml-border-radius: 5px;
   width: 270px;
 }
 .bs-sidebar.profile .avatar {
@@ -29,14 +24,6 @@ footer {
 .bs-sidebar.profile .shortinfo {
   float: left;
   margin: 5px;
-}
-.item {
-  background-color: #ffffff;
-  border-radius: 20px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -khtml-border-radius: 20px;
-  padding: 20px;
 }
 .post {
   margin-bottom: 20px;
@@ -57,8 +44,21 @@ footer {
 .post .post_description div {
   margin-top: 10px;
 }
-.post .btn {
-  /*margin: 10px;*/
+.anime-useful-urls {
+  padding: 5px;
+  display: inline-block;
+}
+.anime-useful-urls:hover .url-moder {
+  display: inline-block;
+}
+.anime-useful-urls .url-moder {
+  margin-left: 2px;
+  display: none;
+  color: #008cba;
+}
+.anime-useful-urls .url-moder:hover {
+  cursor: pointer;
+  color: #00526e;
 }
 .comment .btn-group {
   float: right;

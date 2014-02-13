@@ -16,6 +16,7 @@
          */
         $cs->registerCssFile($themePath . '/css/bootstrap.min.css');
         $cs->registerCssFile($themePath . '/css/bootstrap-theme.min.css');
+        $cs->registerCssFile($themePath . '/css/jquery.jgrowl.min.css');
 
         /**
          * JavaScripts
@@ -23,6 +24,8 @@
         $cs->registerCoreScript('jquery', CClientScript::POS_END);
         $cs->registerCoreScript('jquery.ui', CClientScript::POS_END);
         $cs->registerScriptFile($themePath . '/js/bootstrap.min.js', CClientScript::POS_END);
+        $cs->registerScriptFile($themePath . '/js/siteFuncs.js', CClientScript::POS_END);
+        $cs->registerScriptFile($themePath . '/js/jquery.jgrowl.min.js', CClientScript::POS_END);
         $cs->registerScript(
             'tooltip', "$('[data-toggle=\"tooltip\"]').tooltip();"
             . "$('[data-toggle=\"popover\"]').popover({'trigger': 'click', 'html': true, 'placement': 'top'})", 
@@ -130,4 +133,26 @@
         </div>
     </div>
 </body>
+<div class="modal fade bs-modal-sm" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="confirmModalLabel">123</h4>
+            </div>
+            <div class="modal-body" style="text-align: right;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Нет!</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Да!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="jgrowl" class="jGrowl bottom-right"></div>
+<?php 
+$this->widget('bootstrap.widgets.BsModal', array(
+    'id' => 'addUrlModal',
+    'header' => Yum::t('Add url'),
+    'content' => $this->renderPartial('//anime/_urlForm', array('model' => new Urls), true, true),
+));
+?>
 </html>

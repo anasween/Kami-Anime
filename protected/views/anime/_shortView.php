@@ -20,16 +20,57 @@ echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
 $content = BSHtml::tag('strong', array(), Yum::t('Type')) . ': ';
 echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content . $model->type . ' (' . $model->series_count . ' эп.)');
 $content = BSHtml::tag('strong', array(), Yum::t('Useful urls')) . ': ';
-echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
-$content = '';
 $urls = $model->urls;
+unset($count);
 $count = count($urls);
-if ($urls) {
-    foreach ($urls as $url) {
-        $content .= BSHtml::link($url->site->title, $url->url, array());
-        $content .= (!--$count) ? '.' : ', ';
+if (Yii::app()->user->can('urls', 'admin')) {
+    $content .= BSHtml::icon(BSHtml::GLYPHICON_PLUS, array(
+        'class' => 'url-moder url-add-link',
+        'data-title' => Yum::t('Create'),
+        'title' => '',
+        'data-toggle' => 'tooltip'
+    ));
+    $allContent = BSHtml::tag('div', array(
+        'class' => 'anime-useful-urls',
+        'anime-id' => $model->id,
+    ), $content);
+    echo BSHtml::tag('div', array('style' => 'text-align: center;'), $allContent);
+} else {
+    if ($urls) {
+        echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
     }
 }
-echo BSHtml::tag('p', array('style' => 'text-align: center;'), $content);
-$content = BSHtml::tag('strong', array(), Yum::t('Description')) . ': ';
-echo BSHtml::tag('p', array(), $content . $model->description);
+$content = '';
+if ($urls) {
+    foreach ($urls as $url) {
+        if (Yii::app()->user->can('urls', 'admin')) {
+            $divContent = BSHtml::link($url->site->title, $url->url, array());
+            $divContent .= BSHtml::icon(BSHtml::GLYPHICON_PENCIL, array(
+                'class' => 'url-moder url-edit-link',
+                'data-title' => Yum::t('Edit'),
+                'title' => '',
+                'data-toggle' => 'tooltip'
+            ));
+            $divContent .= BSHtml::icon(BSHtml::GLYPHICON_REMOVE, array(
+                'class' => 'url-moder url-delete-link',
+                'data-title' => Yum::t('Delete'),
+                'title' => '',
+                'data-toggle' => 'tooltip'
+            ));
+            $divContent .= (!--$count) ? '.' : ', ';
+            $content .= BSHtml::tag('div', array(
+                'class' => 'anime-useful-urls',
+                'anime-id' => $model->id,
+                'site-id' => $url->site->id
+            ), $divContent);
+        } else {
+            $content .= BSHtml::link($url->site->title, $url->url, array());
+            $content .= (!--$count) ? '.' : ', ';
+        }
+    }
+}
+echo BSHtml::tag('div', array('style' => 'text-align: center;'), $content);
+if ($model->description) {
+    $content = BSHtml::tag('strong', array(), Yum::t('Description')) . ': ';
+    echo BSHtml::tag('p', array(), $content . $model->description);
+}

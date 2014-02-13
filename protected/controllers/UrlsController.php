@@ -72,12 +72,15 @@ class UrlsController extends Controller {
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete($id) {
+    public function actionDelete() {
         if (Yii::app()->request->isPostRequest) {
-            $this->loadInternModel($id)->delete();
-            if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            $anime_id = Yii::app()->request->getParam('anime_id');
+            $site_id = Yii::app()->request->getParam('site_id');
+            $model = Urls::model()->findByAttributes(array('anime_id' => $anime_id, 'site_id' => $site_id));
+            if ($model->delete()) {
+                echo Yum::t('Succefully deleted!');
             }
+            Yii::app()->end();
         } else {
             throw new CHttpException(400, Yum::t('Invalid request. Please do not repeat this request again.'));
         }

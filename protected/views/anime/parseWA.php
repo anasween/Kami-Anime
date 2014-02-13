@@ -1,7 +1,7 @@
 <?php
 echo '<div class="well">';
-echo BSHtml::pageHeader(Yum::t('Parse anime from WA'));
-echo BSHtml::tag('div', array('id' => 'info'), '');
+echo BSHtml::pageHeader(Yum::t('Парсинг аниме с WA'));
+echo BSHtml::tag('div', array('id' => 'info', 'class' => 'well'), '');
 $this->beginWidget('bootstrap.widgets.BsActiveForm', array(
         'id' => 'parseWA-form',
         'enableAjaxValidation' => false,
