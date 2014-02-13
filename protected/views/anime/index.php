@@ -11,19 +11,12 @@ $this->breadcrumbs = array(
 );
 echo '<div class="well">';
 echo BSHtml::pageHeader(Yum::t('Anime'));
-$this->widget('bootstrap.widgets.BsListView', array(
-    'dataProvider' => $dataProvider,
-    'itemView' => '_view',
-    'emptyText' => Yum::t('No anime found'),
-    'template' => '
-        <div class="row">
-            <div class="col-md-12" style="text-align: center;">{pager}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">{items}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" style="text-align: center;">{pager}</div>
-        </div>'
-));
+$this->renderPartial('_loop', array('dataProvider'=>$dataProvider));
 echo '</div>';
+if (Yii::app()->user->can('urls','admin')) {
+    $this->widget('bootstrap.widgets.BsModal', array(
+        'id' => 'addUrlModal',
+        'header' => Yum::t('Add url'),
+        'content' => $this->renderPartial('//anime/_urlForm', array('model' => new Urls), true, true),
+    ));
+}

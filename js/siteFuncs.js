@@ -60,7 +60,6 @@ jQuery(function($) {
         $('[name="Urls[anime_id]"]', form).val(anime_id);
         $('[name="Urls[site_id]"]', form).val(site_id);
         $('[name="Urls[url]"]', form).val(url);
-//        $('[name="Urls[site_id]"]', form).attr("disabled","disabled");
         $('#urlsEditbtn', form).show();
         $('#urlsAddbtn', form).hide();
         modal.modal('show');
@@ -72,7 +71,6 @@ jQuery(function($) {
         var form = $('form', modal);
         $('[name="Urls[anime_id]"]', form).val(anime_id);
         $('[name="Urls[url]"]', form).val('');
-        $('[name="Urls[site_id]"]', form).removeAttr("disabled");
         $('#urlsEditbtn', form).hide();
         $('#urlsAddbtn', form).show();
         modal.modal('show');

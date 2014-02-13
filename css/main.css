@@ -48,6 +48,9 @@ footer {
   padding: 5px;
   display: inline-block;
 }
+.anime-useful-urls.block {
+  display: block;
+}
 .anime-useful-urls:hover .url-moder {
   display: inline-block;
 }

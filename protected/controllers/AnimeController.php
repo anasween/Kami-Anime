@@ -1,6 +1,7 @@
 <?php
 
 class AnimeController extends Controller {
+    
     /**
      * @return array action filters
      */
@@ -19,7 +20,7 @@ class AnimeController extends Controller {
     public function accessRules() {
         return array(
             array('allow',
-                'actions' => array('index', 'view'),
+                'actions' => array('index', 'view', 'list'),
                 'users' => array('*'),
             ),
             array('allow',
@@ -52,7 +53,7 @@ class AnimeController extends Controller {
         $model = $this->loadInternModel($id);
         $model->views = $model->views + 1;
         $model->save();
-        
+
         $this->render('view', array(
             'model' => $model,
         ));
@@ -135,10 +136,36 @@ class AnimeController extends Controller {
     /**
      * Lists all models.
      */
-    public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Anime');
-        $this->render('index', array(
-            'dataProvider' => $dataProvider,
+    public function actionIndex() { 
+        $dataProvider = new CActiveDataProvider('Anime', array(
+            'sort'=>array(
+                'defaultOrder'=>'modify DESC',
+            ),
+            'pagination'=>array(
+                'pageSize'=>10,
+            ),
+        ));
+ 
+        if (Yii::app()->request->isAjaxRequest){
+            $this->renderPartial('_loop', array(
+                'dataProvider'=>$dataProvider,
+            ));
+            Yii::app()->end();
+        } else {
+            $this->render('index', array(
+                'dataProvider'=>$dataProvider,
+            ));
+        }
+    }
+    
+    /**
+     * Show all news in list view.
+     */
+    public function actionList() {
+        $criteria=new CDbCriteria;
+        $criteria->order = 'name_ru ASC';
+        $this->render('items', array(
+            'models'=>Anime::model()->findAll($criteria),
         ));
     }
 
@@ -171,14 +198,6 @@ class AnimeController extends Controller {
         }
         return $model;
     }
-    
-    public function loadAnimeZhanrsModel($id) {
-        $model = AnimeZhanrs::model()->findByPk($id);
-        if ($model === null) {
-            throw new CHttpException(404, Yum::t('The requested page does not exist.'));
-        }
-        return $model;
-    }
 
     /**
      * Performs the AJAX validation.
@@ -190,13 +209,13 @@ class AnimeController extends Controller {
             Yii::app()->end();
         }
     }
-    
+
     public function actionEditUrl() {
         if (isset($_POST['Urls'])) {
             $urls = Yii::app()->request->getParam('Urls');
             try {
-            $model = Urls::model()->findByAttributes(array('anime_id' => $urls['anime_id'], 'site_id' => $urls['site_id']));
-            } catch(Exception $e) {
+                $model = Urls::model()->findByAttributes(array('anime_id' => $urls['anime_id'], 'site_id' => $urls['site_id']));
+            } catch (Exception $e) {
                 echo BSHtml::alert(BSHtml::ALERT_COLOR_DANGER, Yum::t('Error.'));
             }
             $model->url = $urls['url'];
@@ -208,11 +227,11 @@ class AnimeController extends Controller {
             }
         }
     }
-    
+
     public function actionCreateUrl() {
         $model = new Urls;
         $model->unsetAttributes();
-        
+
         if (isset($_POST['Urls'])) {
             $model->attributes = $_POST['Urls'];
             if ($model->save()) {
@@ -223,13 +242,13 @@ class AnimeController extends Controller {
             }
         }
     }
-    
+
     public function actionAddFromWA() {
         if (isset($_POST['ParseWA'])) {
-            for ($i=$_POST['ParseWA']['from']; $i<=$_POST['ParseWA']['to']; $i++) {
-                $urlWA = "http://www.world-art.ru/animation/animation.php?id=".$i;
+            for ($i = $_POST['ParseWA']['from']; $i <= $_POST['ParseWA']['to']; $i++) {
+                $urlWA = "http://www.world-art.ru/animation/animation.php?id=" . $i;
                 echo 'Запрашиваю страницу ' . $urlWA . '<br>';
-                $content = $this->getContent("https://web.archive.org/web/".$urlWA);
+                $content = $this->getContent("https://web.archive.org/web/" . $urlWA);
                 $attributes = $this->parseWAPage($content);
                 $attributes['url'] = $urlWA;
                 if ($attributes['name_ru']) {
@@ -260,41 +279,40 @@ class AnimeController extends Controller {
         }
         $this->render('parseWA');
     }
-    
+
     private function getContent($url) {
-        $ch = curl_init (); // инициализация
-        curl_setopt ($ch , CURLOPT_URL , $url); // адрес страницы для скачивания
-        curl_setopt ($ch , CURLOPT_USERAGENT , "Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.7.12) Gecko/20050919 Firefox/1.0.7"); // каким браузером будем прикидываться
+        $ch = curl_init(); // инициализация
+        curl_setopt($ch, CURLOPT_URL, $url); // адрес страницы для скачивания
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.7.12) Gecko/20050919 Firefox/1.0.7"); // каким браузером будем прикидываться
         curl_setopt($ch, CURLOPT_TIMEOUT, 3); //TIMEOUT
-        curl_setopt ($ch , CURLOPT_RETURNTRANSFER , 1 ); // выводим загруженную страницу в переменную
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // выводим загруженную страницу в переменную
         $content = $this->curl_redir_exec($ch); // скачиваем страницу
         curl_close($ch); // закрываем соединение
         return $content;
     }
-    
-    private function curl_redir_exec($ch){
-        static $curl_loops = 0;  
-        static $curl_max_loops = 20;  
-        if ($curl_loops >= $curl_max_loops)  
-        {  
-        $curl_loops = 0;  
-            return FALSE;  
-        }  
-        curl_setopt($ch, CURLOPT_HEADER, true);  
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
-        $data = curl_exec($ch);  
-        list($header, $data) = explode("\r\n\r\n", $data, 2);  
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
-        if ($http_code == 301 || $http_code == 302){  
-            $matches = array();  
-            preg_match('/Location:(.*?)\n/', $header, $matches);  
-            $url = @parse_url(trim(array_pop($matches)));  
-            if (!$url){  
+
+    private function curl_redir_exec($ch) {
+        static $curl_loops = 0;
+        static $curl_max_loops = 20;
+        if ($curl_loops >= $curl_max_loops) {
+            $curl_loops = 0;
+            return FALSE;
+        }
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $data = curl_exec($ch);
+        list($header, $data) = explode("\r\n\r\n", $data, 2);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($http_code == 301 || $http_code == 302) {
+            $matches = array();
+            preg_match('/Location:(.*?)\n/', $header, $matches);
+            $url = @parse_url(trim(array_pop($matches)));
+            if (!$url) {
                 //couldn't process the url to redirect to  
-                $curl_loops = 0;  
-                return $data;  
+                $curl_loops = 0;
+                return $data;
             }
-            $last_url = parse_url(curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));  
+            $last_url = parse_url(curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
             if (!$url['scheme']) {
                 $url['scheme'] = $last_url['scheme'];
             }
@@ -304,15 +322,15 @@ class AnimeController extends Controller {
             if (!$url['path']) {
                 $url['path'] = $last_url['path'];
             }
-            $new_url = $url['scheme'] . '://' . $url['host'] . $url['path'] . ($url['query']?'?'.$url['query']:'');  
-            curl_setopt($ch, CURLOPT_URL, $new_url);  
-            return $this->curl_redir_exec($ch);  
-        }else{  
-            $curl_loops=0;  
-            return $data;  
+            $new_url = $url['scheme'] . '://' . $url['host'] . $url['path'] . ($url['query'] ? '?' . $url['query'] : '');
+            curl_setopt($ch, CURLOPT_URL, $new_url);
+            return $this->curl_redir_exec($ch);
+        } else {
+            $curl_loops = 0;
+            return $data;
         }
     }
-    
+
     private function parseWAPage($content) {
         $attributes = array();
         preg_match('|size=3><b>([^\[]+?)\s*\[.*?year=(\d+).*?font><br>([^<]+)<br>([^<]+)|is', $content, $matches);
@@ -333,11 +351,11 @@ class AnimeController extends Controller {
         $attributes['type'] = $type[0];
         unset($type);
         preg_match_all("#justify\s*class='review'>(.*?)(?:&copy;|</table)#is", $content, $matches, PREG_SET_ORDER);
-        $attributes['description'] = '<p>'.trim(preg_replace('|<[^>]+>|is', '', $matches[0][1])).'</p>';
+        $attributes['description'] = '<p>' . trim(preg_replace('|<[^>]+>|is', '', $matches[0][1])) . '</p>';
         $attributes['autor_id'] = 3;
         return $attributes;
     }
-    
+
     private function createAnime($attributes) {
         $anime = new Anime;
         $anime->attributes = $attributes;
@@ -348,7 +366,7 @@ class AnimeController extends Controller {
             $attributes['zhanrsList'] = explode(',', $attributes['zhanrsList']);
             foreach ($attributes['zhanrsList'] as $zhanr_low) {
                 $zhanr = ucfirst($zhanr_low);
-                If(!$zhanrModel = Zhanrs::model()->findByAttributes(array('title' => $zhanr))) {
+                If (!$zhanrModel = Zhanrs::model()->findByAttributes(array('title' => $zhanr))) {
                     $zhanrModel = new Zhanrs;
                     $zhanrModel->title = $zhanr;
                     $zhanrModel->save();
@@ -366,4 +384,5 @@ class AnimeController extends Controller {
             echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Неверная ссылка.');
         }
     }
+
 }

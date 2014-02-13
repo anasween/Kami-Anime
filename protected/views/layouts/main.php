@@ -132,27 +132,20 @@
             </footer>
         </div>
     </div>
-</body>
-<div class="modal fade bs-modal-sm" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="confirmModalLabel">123</h4>
-            </div>
-            <div class="modal-body" style="text-align: right;">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Нет!</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Да!</button>
+    <div class="modal fade bs-modal-sm" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="confirmModalLabel">123</h4>
+                </div>
+                <div class="modal-body" style="text-align: right;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Нет!</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Да!</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="jgrowl" class="jGrowl bottom-right"></div>
-<?php 
-$this->widget('bootstrap.widgets.BsModal', array(
-    'id' => 'addUrlModal',
-    'header' => Yum::t('Add url'),
-    'content' => $this->renderPartial('//anime/_urlForm', array('model' => new Urls), true, true),
-));
-?>
+    <div id="jgrowl" class="jGrowl bottom-right"></div>
+</body>
 </html>
