@@ -148,6 +148,9 @@ footer {
 .sorter ul li a.desc .caret {
   display: inline-block;
 }
+.label {
+  color: #7c8698 !important;
+}
 .moder-panel {
   margin: 10px;
   float: right;

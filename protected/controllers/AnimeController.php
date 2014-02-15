@@ -136,15 +136,23 @@ class AnimeController extends Controller {
     /**
      * Lists all models.
      */
-    public function actionIndex() { 
-        $dataProvider = new CActiveDataProvider('Anime', array(
+    public function actionIndex($title = null) { 
+        $dataProviderOptions = array(
             'sort'=>array(
                 'defaultOrder'=>'modify DESC',
             ),
             'pagination'=>array(
                 'pageSize'=>10,
             ),
-        ));
+        );
+        
+        if ($title) {
+            $criteria=new CDbCriteria;
+            $criteria->condition = '(name_ru LIKE \'%'.$title.'%\') OR (name_en LIKE \'%'.$title.'%\') OR (name_jp LIKE \'%'.$title.'%\')';
+            $dataProviderOptions['criteria'] = $criteria;
+        }
+        
+        $dataProvider = new CActiveDataProvider('Anime', $dataProviderOptions);
  
         if (Yii::app()->request->isAjaxRequest){
             $this->renderPartial('_loop', array(
@@ -154,6 +162,7 @@ class AnimeController extends Controller {
         } else {
             $this->render('index', array(
                 'dataProvider'=>$dataProvider,
+                'title' => $title
             ));
         }
     }
@@ -169,33 +178,48 @@ class AnimeController extends Controller {
         ));
     }
     
-    public function actionSearch(array $zhanrs) {
-        $condition = '';
-        foreach ($zhanrs as $zhanr) {
-            if ($condition) {
-                $condition .= ', '.$zhanr;
-            } else {
-                $condition .= $zhanr;
-            }
-        }
-        $condition = 'zhanrs.id IN ('.$condition.')';
-        $criteria=new CDbCriteria;
-        $criteria->together = true;
-        $criteria->with = array('zhanrs');
-        $criteria->condition = $condition;
-        $criteria->having = 'COUNT(t.id)='.count($zhanrs);
-        $criteria->group = 't.id';
-        $dataProvider = new CActiveDataProvider('Anime', array(
+    public function actionSearch(array $options = null) {
+        
+        $dataProviderOptions = array(
             'sort'=>array(
                 'defaultOrder'=>'modify DESC',
             ),
-            'criteria' => $criteria,
             'pagination'=>array(
                 'pageSize'=>10,
             ),
-        ));
-        $this->render('zhanrSearch', array(
+        );
+        if ($options) {
+            $criteria=new CDbCriteria;
+            $condition = '';
+            if (isset($options['zhanrs'])) {
+                foreach ($options['zhanrs'] as $zhanr) {
+                    if ($condition) {
+                        $condition .= ', '.$zhanr;
+                    } else {
+                        $condition .= $zhanr;
+                    }
+                }
+                $condition = '(zhanrs.id IN ('.$condition.'))';
+                $criteria->together = true;
+                $criteria->with = array('zhanrs');
+                $criteria->having = 'COUNT(t.id)='.count($options['zhanrs']);
+                $criteria->group = 't.id';
+            }
+            if (isset($options['title'])) {
+                if ($condition) {
+                    $condition .= ' AND ';
+                }
+                $condition .= '((name_ru LIKE \'%'.$options['title'].'%\') OR (name_en LIKE \'%'.$options['title'].'%\') OR (name_jp LIKE \'%'.$options['title'].'%\'))';
+            }
+            if ($condition) {
+                $criteria->condition = $condition;
+                $dataProviderOptions['criteria'] = $criteria;
+            }
+        }
+        $dataProvider = new CActiveDataProvider('Anime', $dataProviderOptions);
+        $this->render('search', array(
             'dataProvider'=>$dataProvider,
+            'options' => $options
         ));
     }
 

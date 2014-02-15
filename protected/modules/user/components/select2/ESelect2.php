@@ -50,13 +50,15 @@ class ESelect2 extends CInputWidget
             list($this->name, $this->id) = $this->resolveNameId();
             $this->selector = '#' . $this->id;
 
-            if (isset($this->htmlOptions['placeholder']))
+            if (isset($this->htmlOptions['placeholder'])) {
                 $this->options['placeholder'] = $this->htmlOptions['placeholder'];
+            }
 
             if (!isset($this->htmlOptions['multiple'])) {
                 $data = array();
-                if (isset($this->options['placeholder']))
+                if (isset($this->options['placeholder'])) {
                     $data[''] = '';
+                }
                 $this->data = $data + $this->data;
             }
 
@@ -72,18 +74,23 @@ class ESelect2 extends CInputWidget
         $cs = Yii::app()->clientScript;
         $cs->registerCssFile($bu . '/select2.css');
 
-        if (YII_DEBUG)
-            $cs->registerScriptFile($bu . '/select2.js');
-        else
-            $cs->registerScriptFile($bu . '/select2.min.js');
+        if (YII_DEBUG) {
+            $cs->registerScriptFile($bu . '/select2.js', CClientScript::POS_END);
+        } else {
+            $cs->registerScriptFile($bu . '/select2.min.js', CClientScript::POS_END);
+        }
 
         $options = CJavaScript::encode(CMap::mergeArray($this->defaultOptions, $this->options));
         ob_start();
-        echo "jQuery('{$this->selector}').select2({$options})";
-        foreach ($this->events as $event => $handler)
-            echo ".on('{$event}', " . CJavaScript::encode($handler) . ")";
+        $scriptText = '';
+        $scriptText .= "jQuery('{$this->selector}').select2({$options})";
+        foreach ($this->events as $event => $handler) {
+            $scriptText .= ".on('{$event}', " . CJavaScript::encode($handler) . ")";
+        }
+        
+        $cs->registerScript('select2Script', $scriptText, CClientScript::POS_END);
 
-        $cs->registerScript(__CLASS__ . '#' . $this->id, ob_get_clean() . ';');
+        $cs->registerScript(__CLASS__ . '#' . $this->id, ob_get_clean() . ';', CClientScript::POS_END);
         
     }
 
