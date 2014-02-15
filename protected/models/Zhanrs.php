@@ -35,7 +35,7 @@ class Zhanrs extends CActiveRecord {
      */
     public function relations() {
         return array(
-            'zhanrs' => array(self::MANY_MANY, 'Zhanrs', 'anime_zhanrs(anime_id, zhanr_id)'),
+            'anime' => array(self::MANY_MANY, 'Anime', 'anime_zhanrs(zhanr_id, anime_id)'),
         );
     }
 

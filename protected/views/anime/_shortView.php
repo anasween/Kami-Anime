@@ -8,11 +8,11 @@ echo BSHtml::tag('h2', array('style' => 'text-align: center;'), $model->name_en)
 echo BSHtml::tag('h3', array('style' => 'text-align: center;'), $model->name_jp);
 echo $model->getPoster();
 $content = BSHtml::tag('strong', array(), Yum::t('Zhanrs')) . ': ';
-$zhanrs = $model->zhanrs;
+$zhanrs = $model->getZhanrs();
 $count = count($zhanrs);
 if ($zhanrs) {
     foreach ($zhanrs as $zhanr) {
-        $content .= $zhanr->title;
+        $content .= BSHtml::link($zhanr->title, array('/anime/search', 'zhanrs' => $zhanr->id));
         $content .= (!--$count) ? '.' : ', ';
     }
 }

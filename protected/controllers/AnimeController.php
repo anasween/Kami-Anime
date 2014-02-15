@@ -20,7 +20,7 @@ class AnimeController extends Controller {
     public function accessRules() {
         return array(
             array('allow',
-                'actions' => array('index', 'view', 'list'),
+                'actions' => array('index', 'view', 'list', 'search'),
                 'users' => array('*'),
             ),
             array('allow',
@@ -166,6 +166,36 @@ class AnimeController extends Controller {
         $criteria->order = 'name_ru ASC';
         $this->render('items', array(
             'models'=>Anime::model()->findAll($criteria),
+        ));
+    }
+    
+    public function actionSearch(array $zhanrs) {
+        $condition = '';
+        foreach ($zhanrs as $zhanr) {
+            if ($condition) {
+                $condition .= ', '.$zhanr;
+            } else {
+                $condition .= $zhanr;
+            }
+        }
+        $condition = 'zhanrs.id IN ('.$condition.')';
+        $criteria=new CDbCriteria;
+        $criteria->together = true;
+        $criteria->with = array('zhanrs');
+        $criteria->condition = $condition;
+        $criteria->having = 'COUNT(t.id)='.count($zhanrs);
+        $criteria->group = 't.id';
+        $dataProvider = new CActiveDataProvider('Anime', array(
+            'sort'=>array(
+                'defaultOrder'=>'modify DESC',
+            ),
+            'criteria' => $criteria,
+            'pagination'=>array(
+                'pageSize'=>10,
+            ),
+        ));
+        $this->render('zhanrSearch', array(
+            'dataProvider'=>$dataProvider,
         ));
     }
 

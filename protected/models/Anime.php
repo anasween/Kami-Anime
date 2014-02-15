@@ -210,5 +210,13 @@ class Anime extends CActiveRecord {
             'рекламный ролик' => 'рекламный ролик'
         );
     }
+    
+    public function getZhanrs() {
+        $criteria=new CDbCriteria;
+        $criteria->together = true;
+        $criteria->with = array('anime');
+        $criteria->condition = 'anime.id = '.$this->id;
+        return Zhanrs::model()->findAll($criteria);
+    }
 
 }
