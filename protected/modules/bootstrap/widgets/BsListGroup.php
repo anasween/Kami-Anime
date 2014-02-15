@@ -113,8 +113,8 @@ class BsListGroup extends CWidget {
                 $content .= BSHtml::link($linkContent, $item['url'], $item['htmlOptions']);
             }
         }
-
-        echo BSHtml::tag('div', array('class' => 'list-group'), $content);
+        BSHtml::addCssClass('active', $this->htmlOptions);
+        echo BSHtml::tag('div', $this->htmlOptions, $content);
     }
 
 }
