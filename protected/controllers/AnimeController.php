@@ -1,7 +1,7 @@
 <?php
 
 class AnimeController extends Controller {
-    
+
     /**
      * @return array action filters
      */
@@ -32,7 +32,7 @@ class AnimeController extends Controller {
                 'expression' => 'Yii::app()->user->can("anime", "create")'
             ),
             array('allow',
-                'actions' => array('admin', 'createUrl', 'editUrl', 'addFromWA'),
+                'actions' => array('admin', 'createUrl', 'editUrl', 'addFromWA', 'addConnectionsFromWA'),
                 'expression' => 'Yii::app()->user->can("anime", "admin")'
             ),
             array('allow',
@@ -54,8 +54,21 @@ class AnimeController extends Controller {
         $model->views = $model->views + 1;
         $model->save();
 
+        $commentModel = new Comments;
+        $commentModel->anime_id = $id;
+
+        if (isset($_POST['Comments'])) {
+            $commentModel->attributes = $_POST['Comments'];
+            $commentModel->createtime = new CDbExpression('NOW()');
+            if ($commentModel->save()) {
+                $this->redirect(array('view', 'id' => $id));
+            }
+        }
+
         $this->render('view', array(
             'model' => $model,
+            'commentModel' => $commentModel,
+            'comments' => $model->getCommentsDataProvider(),
         ));
     }
 
@@ -136,80 +149,87 @@ class AnimeController extends Controller {
     /**
      * Lists all models.
      */
-    public function actionIndex($title = null) { 
+    public function actionIndex($title = null) {
         $dataProviderOptions = array(
-            'sort'=>array(
-                'defaultOrder'=>'modify DESC',
+            'sort' => array(
+                'defaultOrder' => 'modify DESC',
             ),
-            'pagination'=>array(
-                'pageSize'=>10,
+            'pagination' => array(
+                'pageSize' => 10,
             ),
         );
-        
+
         if ($title) {
-            $criteria=new CDbCriteria;
-            $criteria->condition = '(name_ru LIKE \'%'.$title.'%\') OR (name_en LIKE \'%'.$title.'%\') OR (name_jp LIKE \'%'.$title.'%\')';
+            $criteria = new CDbCriteria;
+            $criteria->condition = '(name_ru LIKE \'%' . $title . '%\') OR (name_en LIKE \'%' . $title . '%\') OR (name_jp LIKE \'%' . $title . '%\')';
             $dataProviderOptions['criteria'] = $criteria;
         }
-        
+
         $dataProvider = new CActiveDataProvider('Anime', $dataProviderOptions);
- 
-        if (Yii::app()->request->isAjaxRequest){
+
+        if (Yii::app()->request->isAjaxRequest) {
             $this->renderPartial('_loop', array(
-                'dataProvider'=>$dataProvider,
+                'dataProvider' => $dataProvider,
             ));
             Yii::app()->end();
         } else {
             $this->render('index', array(
-                'dataProvider'=>$dataProvider,
+                'dataProvider' => $dataProvider,
                 'title' => $title
             ));
         }
     }
-    
+
     /**
      * Show all news in list view.
      */
     public function actionList() {
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
         $criteria->order = 'name_ru ASC';
         $this->render('items', array(
-            'models'=>Anime::model()->findAll($criteria),
+            'models' => Anime::model()->findAll($criteria),
         ));
     }
-    
+
     public function actionSearch(array $options = null) {
-        
+
         $dataProviderOptions = array(
-            'sort'=>array(
-                'defaultOrder'=>'modify DESC',
+            'sort' => array(
+                'defaultOrder' => 'modify DESC',
             ),
-            'pagination'=>array(
-                'pageSize'=>10,
+            'pagination' => array(
+                'pageSize' => 10,
             ),
         );
         if ($options) {
-            $criteria=new CDbCriteria;
+            $criteria = new CDbCriteria;
             $condition = '';
             if (isset($options['zhanrs'])) {
+                if (!is_array($options['zhanrs'])) {
+                    $options['zhanrs'] = array($options['zhanrs']);
+                }
                 foreach ($options['zhanrs'] as $zhanr) {
                     if ($condition) {
-                        $condition .= ', '.$zhanr;
+                        $condition .= ', ' . $zhanr;
                     } else {
                         $condition .= $zhanr;
                     }
                 }
-                $condition = '(zhanrs.id IN ('.$condition.'))';
+                $condition = '(zhanrs.id IN (' . $condition . '))';
                 $criteria->together = true;
                 $criteria->with = array('zhanrs');
-                $criteria->having = 'COUNT(t.id)='.count($options['zhanrs']);
+                $criteria->having = 'COUNT(t.id)=' . count($options['zhanrs']);
                 $criteria->group = 't.id';
+            } else {
+                $options['zhanrs'] = array();
             }
             if (isset($options['title'])) {
                 if ($condition) {
                     $condition .= ' AND ';
                 }
-                $condition .= '((name_ru LIKE \'%'.$options['title'].'%\') OR (name_en LIKE \'%'.$options['title'].'%\') OR (name_jp LIKE \'%'.$options['title'].'%\'))';
+                $condition .= '((name_ru LIKE \'%' . $options['title'] . '%\') OR (name_en LIKE \'%' . $options['title'] . '%\') OR (name_jp LIKE \'%' . $options['title'] . '%\'))';
+            } else {
+                $options['title'] = '';
             }
             if ($condition) {
                 $criteria->condition = $condition;
@@ -218,7 +238,7 @@ class AnimeController extends Controller {
         }
         $dataProvider = new CActiveDataProvider('Anime', $dataProviderOptions);
         $this->render('search', array(
-            'dataProvider'=>$dataProvider,
+            'dataProvider' => $dataProvider,
             'options' => $options
         ));
     }
@@ -302,20 +322,19 @@ class AnimeController extends Controller {
             for ($i = $_POST['ParseWA']['from']; $i <= $_POST['ParseWA']['to']; $i++) {
                 $urlWA = "http://www.world-art.ru/animation/animation.php?id=" . $i;
                 echo 'Запрашиваю страницу ' . $urlWA . '<br>';
-                $content = $this->getContent("https://web.archive.org/web/" . $urlWA);
-                $attributes = $this->parseWAPage($content);
-                $attributes['url'] = $urlWA;
-                if ($attributes['name_ru']) {
-                    try {
-                        $alreadyExist = Anime::model()->findByAttributes(array('name_ru' => $attributes['name_ru']));
-                    } catch (Exception $e) {
-                        echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка ' . $e);
-                    }
-                } else {
-                    echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка при парсинге.');
-                    continue;
+                try {
+                    $alreadyExist = Urls::model()->findByAttributes(array('url' => $urlWA));
+                } catch (Exception $e) {
+                    echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка ' . $e);
                 }
                 if (!$alreadyExist) {
+                    $content = $this->getContent("https://web.archive.org/web/" . $urlWA);
+                    $attributes = $this->parseWAPage($content);
+                    $attributes['url'] = $urlWA;
+                    if (!$attributes['name_ru']) {
+                        echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка при парсинге.');
+                        continue;
+                    }
                     try {
                         $this->createAnime($attributes);
                     } catch (Exception $e) {
@@ -332,6 +351,20 @@ class AnimeController extends Controller {
             Yii::app()->end();
         }
         $this->render('parseWA');
+    }
+
+    public function actionAddConnectionsFromWA() {
+        if (isset($_POST['ParseConnectionsWA'])) {
+            for ($i = $_POST['ParseConnectionsWA']['from']; $i <= $_POST['ParseConnectionsWA']['to']; $i++) {
+                $urlWA = "http://www.world-art.ru/animation/animation_connection.php?id=" . $i;
+                echo 'Запрашиваю страницу ' . $urlWA . '<br>';
+                $content = $this->getContent("https://web.archive.org/web/" . $urlWA);
+                preg_match_all('<a href=\'http:\/\/www.world-art.ru\/animation\/animation.php\?id\=(\d*?)\'', $content, $matches);
+                foreach ($matches as $match) {
+                    echo $match[1];
+                }
+            }
+        }
     }
 
     private function getContent($url) {

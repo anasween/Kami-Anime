@@ -47,6 +47,7 @@ class Comments extends CActiveRecord {
             'autor' => array(self::BELONGS_TO, 'YumUser', 'autor_id'),
             'groups' => array(self::BELONGS_TO, 'YumUsergroup', 'group_id'),
             'profiles' => array(self::BELONGS_TO, 'YumProfile', 'profile_id'),
+            'anime' => array(self::BELONGS_TO, 'Anime', 'anime_id'),
         );
     }
 

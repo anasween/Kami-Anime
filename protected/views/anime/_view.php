@@ -47,6 +47,6 @@ $footer .= BSHtml::tag('div', array('class' => 'pull-right'), BSHtml::link(BSHtm
 
 $this->widget('bootstrap.widgets.BsPanel', array(
     'header' => $header,
-    'body' => $this->renderPartial('_shortView', array('model' => $data), true, true),
+    'body' => $this->renderPartial('_shortView', array('model' => $data), true),
     'footer' => $footer
 ));

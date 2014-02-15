@@ -12,7 +12,7 @@ $zhanrs = $model->getZhanrs();
 $count = count($zhanrs);
 if ($zhanrs) {
     foreach ($zhanrs as $zhanr) {
-        $content .= BSHtml::link($zhanr->title, array('/anime/search', 'zhanrs' => $zhanr->id));
+        $content .= BSHtml::link($zhanr->title, array('/anime/search', 'options' => array('zhanrs' => $zhanr->id)));
         $content .= (!--$count) ? '.' : ', ';
     }
 }

@@ -17,6 +17,23 @@ echo BSHtml::button(Yum::t('Parse'), array(
     'data-loading-text' => Yum::t('Loading...')
 ));
 $this->endWidget();
+echo BSHtml::pageHeader(Yum::t('Парсинг связей с WA'));
+echo BSHtml::tag('div', array('id' => 'info-connections', 'class' => 'well'), '');
+$this->beginWidget('bootstrap.widgets.BsActiveForm', array(
+        'id' => 'parseWAConnections-form',
+        'enableAjaxValidation' => false,
+        'htmlOptions' => array(
+            'class' => 'well',
+            'enctype'=>'multipart/form-data'
+        )
+    ));
+echo BSHtml::numberField('ParseConnectionsWA[from]', 1, array('id' => 'valueConnectionsFrom'));
+echo BSHtml::numberField('ParseConnectionsWA[to]', 10, array('id' => 'valueConnectionsTo'));
+echo BSHtml::button(Yum::t('Parse'), array(
+    'id' => 'parseConnectionsWAbtn',
+    'data-loading-text' => Yum::t('Loading...')
+));
+$this->endWidget();
 echo '</div>';
 Yii::app()->clientScript->registerScript('parseWA', "
     function ajaxAction() {
@@ -44,4 +61,29 @@ Yii::app()->clientScript->registerScript('parseWA', "
         ajaxAction();
         return false;
     });
-");
+    function ajaxConnectionsAction() {
+        var from = parseInt($('#valueConnectionsFrom').val(), 10);
+        var to = parseInt($('#valueConnectionsTo').val(), 10);
+        if (from <= to) {
+            $('#parseConnectionsWAbtn').button('loading');
+            jQuery.ajax({
+                'type':'POST',
+                'url':'". $this->createUrl('/anime/addConnectionsFromWA')."',
+                'cache':false,
+                'data':'ParseConnectionsWA[from]='+from+'&ParseConnectionsWA[to]='+from,
+                'success':function(html){
+                    jQuery('#info-connections').html(html);
+                    var from = parseInt($('#valueConnectionsFrom').val(), 10);
+                    $('#valueConnectionsFrom').val(from + 1);
+                    ajaxConnectionsAction();
+                }
+            });
+        } else {
+            $('#parseConnectionsWAbtn').button('reset');
+        }
+    }
+    jQuery('body').on('click','#parseConnectionsWAbtn',function(){
+        ajaxConnectionsAction();
+        return false;
+    });
+", CClientScript::POS_END);

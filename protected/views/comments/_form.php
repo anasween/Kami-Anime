@@ -9,8 +9,6 @@
     ),
 )); 
 
-    //echo BSHtml::pageHeader(Yum::t('Write comment'));
-
     if ($model->news_id)
     {
         echo CHtml::hiddenField('Comments[news_id]', $model->news_id);
@@ -22,6 +20,10 @@
     elseif ($model->profile_id)
     {
         echo CHtml::hiddenField('Comments[profile_id]', $model->profile_id);
+    }
+    elseif ($model->anime_id)
+    {
+        echo CHtml::hiddenField('Comments[anime_id]', $model->anime_id);
     }
     echo CHtml::hiddenField('Comments[autor_id]', Yii::app()->user->id);
     $this->widget('ext.imperavi-redactor-widget.ImperaviRedactorWidget', array(

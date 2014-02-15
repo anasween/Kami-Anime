@@ -30,7 +30,7 @@ class Anime extends CActiveRecord {
      * @var string
      */
     public $poster;
-    
+
     /**
      * @return string the associated database table name
      */
@@ -68,7 +68,7 @@ class Anime extends CActiveRecord {
 
             $this->poster = $poster;
             $ext = pathinfo($poster, PATHINFO_EXTENSION);
-            $newName = md5(rand(1,9999).time()) . '.' . $ext;
+            $newName = md5(rand(1, 9999) . time()) . '.' . $ext;
             $this->poster->saveAs(Yii::getPathOfAlias('webroot.media') . DIRECTORY_SEPARATOR . $newName);
             $this->poster = $newName;
         }
@@ -106,6 +106,8 @@ class Anime extends CActiveRecord {
             'autor' => array(self::BELONGS_TO, 'YumUser', 'autor_id'),
             'zhanrs' => array(self::MANY_MANY, 'Zhanrs', 'anime_zhanrs(anime_id, zhanr_id)'),
             'urls' => array(self::HAS_MANY, 'Urls', 'anime_id'),
+            'connections' => array(self::MANY_MANY, 'Connections', 'anime_connections(anime_id, connection_id)'),
+            'comments' => array(self::HAS_MANY, 'Comments', 'news_id'),
         );
     }
 
@@ -145,14 +147,14 @@ class Anime extends CActiveRecord {
      */
     public function search() {
         $criteria = new CDbCriteria;
-        
+
         $criteria->together = true;
         $criteria->with = array('autor');
         $criteria->compare('t.id', $this->id, true);
         $criteria->compare('t.name_ru', $this->name_ru, true);
         $criteria->compare('t.name_en', $this->name_en, true);
         $criteria->compare('t.name_jp', $this->name_jp, true);
-        $criteria->compare('autor.username',$this->autor_id,true);
+        $criteria->compare('autor.username', $this->autor_id, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -168,7 +170,7 @@ class Anime extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-   
+
     /**
      * Returns path to poster.
      * @return string
@@ -176,13 +178,13 @@ class Anime extends CActiveRecord {
     public function getPosterPath() {
         return '/media/' . $this->poster;
     }
-    
+
     public function getPoster() {
-        if($this->poster){
+        if ($this->poster) {
             return BSHtml::imageThumbnail($this->getPosterPath());
         }
     }
-    
+
     /**
      * Synchronise zhanrs.
      * @param array $zhanrs
@@ -197,7 +199,7 @@ class Anime extends CActiveRecord {
             }
         }
     }
-    
+
     public static function getTypes() {
         return array(
             'ТВ' => 'ТВ',
@@ -210,13 +212,20 @@ class Anime extends CActiveRecord {
             'рекламный ролик' => 'рекламный ролик'
         );
     }
-    
+
     public function getZhanrs() {
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
         $criteria->together = true;
         $criteria->with = array('anime');
-        $criteria->condition = 'anime.id = '.$this->id;
+        $criteria->condition = 'anime.id = ' . $this->id;
         return Zhanrs::model()->findAll($criteria);
+    }
+
+    public function getCommentsDataProvider() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('anime_id', $this->id);
+
+        return new CActiveDataProvider('Comments', array('criteria' => $criteria));
     }
 
 }

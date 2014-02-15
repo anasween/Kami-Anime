@@ -24,14 +24,14 @@ $this->breadcrumbs = array(
             echo BSHtml::tag('div', array(
                 'id' => 'comment-add-form',
                 'style' => 'overflow: hidden; display: block;',
-            ), $this->renderPartial('//comments/_form', array('model'=>$commentModel), true, true));
+            ), $this->renderPartial('//comments/_form', array('model'=>$commentModel), true));
             echo '</div>';
         }
         ?>
         <?php
             $this->widget('bootstrap.widgets.BsListView', array(
                 'dataProvider' => $comments,
-                'itemView' => '_comment', 
+                'itemView' => '//comments/_view', 
                 'template' => "{items}\n{pager}",
                 'emptyText' => ''
             )); 
