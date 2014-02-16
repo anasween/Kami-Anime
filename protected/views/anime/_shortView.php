@@ -3,6 +3,8 @@
 /* @var $this AnimeController */
 /* @var $model Anime */
 
+$isView = (Yii::app()->controller->action->id === 'view');
+
 echo BSHtml::tag('h1', array('style' => 'text-align: center;'), $model->name_ru);
 echo BSHtml::tag('h2', array('style' => 'text-align: center;'), $model->name_en);
 echo BSHtml::tag('h3', array('style' => 'text-align: center;'), $model->name_jp);
@@ -73,4 +75,34 @@ echo BSHtml::tag('div', array('style' => 'text-align: center;'), $content);
 if ($model->description) {
     $content = BSHtml::tag('strong', array(), Yum::t('Description')) . ': ';
     echo BSHtml::tag('p', array(), $content . $model->description);
+}
+
+if ($isView) {
+    $this->widget('bootstrap.widgets.BsPanelGroup', array(
+        'collapse' => true,
+        'items' => array(
+            array(
+                'header' => Yum::t('Anime like this'),
+                'body' => $this->renderPartial('_animeLikeThis', array('anime' => $model->getAnimeLikeThis()), true),
+                'color' => BSHtml::BUTTON_COLOR_PRIMARY
+            ),
+        )
+    ));
+    $this->widget('bootstrap.widgets.BsPanelGroup', array(
+        'collapse' => true,
+        'items' => array(
+            array(
+                'header' => '1231231',
+                'body' => '1231231',
+            ),
+            array(
+                'header' => '1231231',
+                'body' => '1231231',
+            ),
+            array(
+                'header' => '1231231',
+                'body' => '1231231',
+            ),
+        )
+    ));
 }

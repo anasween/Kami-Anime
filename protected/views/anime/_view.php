@@ -3,6 +3,8 @@
 /* @var $this AnimeController */
 /* @var $data Anime */
 
+$isView = (Yii::app()->controller->action->id === 'view');
+
 $header = BSHtml::link($data->name_ru . '/' . $data->name_en . ' [' . $data->year . ']', array('anime/view', 'id' => $data->id));
 if (Yii::app()->user->can('anime')) {
     $content = BSHtml::buttonGroup(array(
@@ -42,8 +44,9 @@ $footer = BSHtml::icon(BSHtml::GLYPHICON_EYE_OPEN) . ' '
         . '</a> | '
         . BSHtml::icon(BSHtml::GLYPHICON_CALENDAR) . ' '
         . Yii::app()->dateFormatter->format('d MMMM yyyy HH:mm:ss', $data->createtime);
-
-$footer .= BSHtml::tag('div', array('class' => 'pull-right'), BSHtml::link(BSHtml::icon(BSHtml::GLYPHICON_CLOUD) . ' ' . Yum::t('More'), $this->createUrl('/anime/view', array('id' => $data->id))));
+if (!$isView) {
+    $footer .= BSHtml::tag('div', array('class' => 'pull-right'), BSHtml::link(BSHtml::icon(BSHtml::GLYPHICON_CLOUD) . ' ' . Yum::t('More'), $this->createUrl('/anime/view', array('id' => $data->id))));
+}
 
 $this->widget('bootstrap.widgets.BsPanel', array(
     'header' => $header,

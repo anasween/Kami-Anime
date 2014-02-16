@@ -11,12 +11,14 @@
  * @property integer $news_id
  * @property integer $group_id
  * @property integer $profile_id
+ * @property integer $anime_id
  *
  * The followings are the available model relations:
  * @property News $news
  * @property YumUser $autor
  * @property YumUsergroup $groups
  * @property YumProfile $profiles
+ * @property Anime $anime
  */
 class Comments extends CActiveRecord {
 
@@ -33,7 +35,7 @@ class Comments extends CActiveRecord {
     public function rules() {
         return array(
             array('autor_id, text, createtime', 'required'),
-            array('autor_id, news_id, group_id', 'numerical', 'integerOnly' => true),
+            array('autor_id, news_id, group_id, anime_id', 'numerical', 'integerOnly' => true),
             array('id, autor_id, text, createtime, news_id, group_id', 'safe', 'on' => 'search'),
         );
     }

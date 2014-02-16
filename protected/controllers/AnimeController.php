@@ -373,28 +373,29 @@ class AnimeController extends Controller {
                 }
                 $content = $this->getContent("https://web.archive.org/web/" . $urlWA);
                 preg_match_all('|animation.php\?id=(\d+s?)\'|is', $content, $matches);
-                $idArray = array();
                 foreach ($matches[1] as $match) {
                     $url = Urls::model()->findByAttributes(array('url' => "http://www.world-art.ru/animation/animation.php?id=" . $match));
                     if ($url) {
                         $anime = $url->anime;
                         if ($anime) {
-                            if(!in_array($anime->id, $idArray)) {
-                            array_push($idArray, $anime->id);
+                            if (!$connection->title) {
+                                $connection->title = $anime->name_ru;
+                                if (!$connection->save()) {
+                                    echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка при добавлении аниме в связь.');
+                                    continue;
+                                }
+                            }
+                            $anime->connection_id = $match;
+                            if ($anime->save()) {
+                                echo BSHtml::tag('p', array('style' => 'color: #99ff99'), $anime->name_ru .' связь успешно добавлена!');
+                            } else {
+                                echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка при добавлении аниме в связь.');
                             }
                         }
+                    } else {
+                        echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Аниме не найдено. http://www.world-art.ru/animation/animation.php?id=' . $match.'.');
                     }
                 }
-                if (!$connection->title) {
-                    $anime = Anime::model()->findByPK($idArray[0]);
-                    $connection->title = $anime->name_ru;
-                    if (!$connection->save()) {
-                        echo BSHtml::tag('p', array('style' => 'color: #ff9999'), 'Ошибка при добавлении аниме в связь.');
-                        continue;
-                    }
-                }
-                $connection->syncAnime($idArray);
-                echo BSHtml::tag('p', array('style' => 'color: #99ff99'), 'Связь '.$i.' успешно спарсина.');
                 Yii::app()->end();
             }
         }

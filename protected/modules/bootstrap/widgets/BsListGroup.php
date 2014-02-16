@@ -104,7 +104,7 @@ class BsListGroup extends CWidget {
                     $item['url'] = '#';
                 }
                 $colorClassName = 'list-group-item-';
-                $colorClassName .= (!isset($item['htmlOptions']['color'])) ? BSHtml::BUTTON_COLOR_DEFAULT : $item['htmlOptions']['color'];
+                $colorClassName .= (!isset($item['color'])) ? BSHtml::BUTTON_COLOR_DEFAULT : $item['color'];
                 BSHtml::addCssClass('list-group-item', $item['htmlOptions']);
                 BSHtml::addCssClass($colorClassName, $item['htmlOptions']);
                 if ($item['active']) {

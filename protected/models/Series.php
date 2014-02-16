@@ -1,23 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "connections".
+ * This is the model class for table "series".
  *
- * The followings are the available columns in table 'connections':
+ * The followings are the available columns in table 'series':
  * @property string $id
- * @property string $title
- * @property string $wa_url
+ * @property integer $number
+ * @property string $name_ru
+ * @property string $name_en
+ * @property string $description
+ * @property string $anime_id
  *
  * The followings are the available model relations:
- * @property Anime[] $animes
+ * @property Anime $anime
  */
-class Connections extends CActiveRecord {
+class Series extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'connections';
+        return 'series';
     }
 
     /**
@@ -25,9 +28,11 @@ class Connections extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('title', 'length', 'max' => 100),
-            array('wa_url', 'length', 'max' => 255),
-            array('id, title, wa_url', 'safe', 'on' => 'search'),
+            array('number', 'numerical', 'integerOnly' => true),
+            array('name_ru, name_en', 'length', 'max' => 100),
+            array('anime_id', 'length', 'max' => 10),
+            array('description', 'safe'),
+            array('id, number, name_ru, name_en, description, anime_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -36,7 +41,7 @@ class Connections extends CActiveRecord {
      */
     public function relations() {
         return array(
-            'animes' => array(self::HAS_MANY, 'Anime', 'connection_id'),
+            'anime' => array(self::BELONGS_TO, 'Anime', 'anime_id'),
         );
     }
 
@@ -46,8 +51,11 @@ class Connections extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => Yum::t('ID'),
-            'title' => Yum::t('Title'),
-            'wa_url' => Yum::t('Url WA'),
+            'number' => Yum::t('Number'),
+            'name_ru' => Yum::t('Name Ru'),
+            'name_en' => Yum::t('Name En'),
+            'description' => Yum::t('Description'),
+            'anime_id' => Yum::t('Anime'),
         );
     }
 
@@ -67,8 +75,11 @@ class Connections extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);
-        $criteria->compare('title', $this->title, true);
-        $criteria->compare('wa_url', $this->wa_url, true);
+        $criteria->compare('number', $this->number);
+        $criteria->compare('name_ru', $this->name_ru, true);
+        $criteria->compare('name_en', $this->name_en, true);
+        $criteria->compare('description', $this->description, true);
+        $criteria->compare('anime_id', $this->anime_id, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -79,7 +90,7 @@ class Connections extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Connections the static model class
+     * @return Series the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

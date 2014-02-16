@@ -22,6 +22,9 @@
  * @property YumUser $autor
  * @property Zhanrs[] $zhanrs
  * @property Urls[] $urls
+ * @property Connections $connections
+ * @property Comments[] $comments
+ * @property Series[] $series
  */
 class Anime extends CActiveRecord {
 
@@ -106,8 +109,9 @@ class Anime extends CActiveRecord {
             'autor' => array(self::BELONGS_TO, 'YumUser', 'autor_id'),
             'zhanrs' => array(self::MANY_MANY, 'Zhanrs', 'anime_zhanrs(anime_id, zhanr_id)'),
             'urls' => array(self::HAS_MANY, 'Urls', 'anime_id'),
-            'connections' => array(self::MANY_MANY, 'Connections', 'anime_connections(anime_id, connection_id)'),
-            'comments' => array(self::HAS_MANY, 'Comments', 'news_id'),
+            'connections' => array(self::BELONGS_TO, 'Connections', 'connection_id'),
+            'comments' => array(self::HAS_MANY, 'Comments', 'anime_id'),
+            'series' => array(self::HAS_MANY, 'Series', 'anime_id'),
         );
     }
 
@@ -179,6 +183,10 @@ class Anime extends CActiveRecord {
         return '/media/' . $this->poster;
     }
 
+    /**
+     * Returns HTML code with poster.
+     * @return string
+     */
     public function getPoster() {
         if ($this->poster) {
             return BSHtml::imageThumbnail($this->getPosterPath());
@@ -200,6 +208,10 @@ class Anime extends CActiveRecord {
         }
     }
 
+    /**
+     * Returns available types for anime.
+     * @return array
+     */
     public static function getTypes() {
         return array(
             'ТВ' => 'ТВ',
@@ -212,7 +224,11 @@ class Anime extends CActiveRecord {
             'рекламный ролик' => 'рекламный ролик'
         );
     }
-
+    
+    /**
+     * Returns genre of this anime.
+     * @return array genre of this anime.
+     */
     public function getZhanrs() {
         $criteria = new CDbCriteria;
         $criteria->together = true;
@@ -228,4 +244,38 @@ class Anime extends CActiveRecord {
         return new CActiveDataProvider('Comments', array('criteria' => $criteria));
     }
 
+    /**
+     * Returns limit of anime, what similar by genre to this anime.
+     * @param integer $limit
+     * @return array limit of anime.
+     */
+    public function getAnimeLikeThis($limit = 10) {
+        $animeArray = array();
+        $condition = '';
+        foreach ($this->zhanrs as $zhanr) {
+            if ($condition) {
+                $condition .= ', ' . $zhanr->id;
+            } else {
+                $condition .= $zhanr->id;
+            }
+        }
+        $criteria = new CDbCriteria;
+        $criteria->condition = '(zhanrs.id IN (' . $condition . ')) AND (t.id <> '.$this->id.')';
+        $criteria->together = true;
+        $criteria->with = array('zhanrs');
+        $criteria->group = 't.id';
+        $zhanrsCount = count($this->zhanrs);
+        while (count($animeArray) < $limit && $zhanrsCount > 0 ) {
+            $criteria->having = 'COUNT(t.id)=' . $zhanrsCount;
+            $result = self::model()->findAll($criteria);
+            foreach ($result as $anime) {
+                array_push($animeArray, $anime);
+                if (count($animeArray) >= $limit) {
+                    break;
+                }
+            }
+            $zhanrsCount--;
+        }
+        return $animeArray;
+    }
 }
