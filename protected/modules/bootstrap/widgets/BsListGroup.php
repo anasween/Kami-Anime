@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BsNavbar class file.
+ * BsListGroup class file.
  * @author beer (Amelevich Ilya) <ilya.amelevich@ya.ru>
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap/widgets
