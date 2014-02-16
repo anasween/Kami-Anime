@@ -25,7 +25,6 @@ class Connections extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('title', 'required'),
             array('title', 'length', 'max' => 100),
             array('wa_url', 'length', 'max' => 255),
             array('id, title, wa_url', 'safe', 'on' => 'search'),
@@ -46,9 +45,9 @@ class Connections extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => 'ID',
-            'title' => 'Title',
-            'wa_url' => 'Wa Url',
+            'id' => Yum::t('ID'),
+            'title' => Yum::t('Title'),
+            'wa_url' => Yum::t('Url WA'),
         );
     }
 
@@ -84,6 +83,21 @@ class Connections extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    
+    /**
+     * Synchronise anime.
+     * @param array $anime
+     */
+    public function syncAnime($anime = null) {
+        $query = sprintf("delete from %s where connection_id = %s", 'anime_connections', $this->id);
+        $result = Yii::app()->db->createCommand($query)->execute();
+        if ($anime) {
+            foreach ($anime as $a) {
+                $query = sprintf("insert into %s (connection_id, anime_id) values(%s, %s)", 'anime_connections', $this->id, $a);
+                $result = Yii::app()->db->createCommand($query)->execute();
+            }
+        }
     }
 
 }
